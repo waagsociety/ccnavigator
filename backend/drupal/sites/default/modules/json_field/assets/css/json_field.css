@@ -1,0 +1,11 @@
+@charset "UTF-8";
+/* @file json_field.css */
+
+/* CSS Overrides */
+.jsonview {
+  background-color: #EEE;
+  border: solid 1px #CCC;
+  overflow: scroll;
+  height: 400px;
+  padding: 10px;
+}
