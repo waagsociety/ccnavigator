@@ -13,9 +13,11 @@ class ToolSelectedList extends React.Component {
 	render() {
     var list = this.props.tools.map((tool, index) => { return <ToolSelectedListItem key={tool.uuid} entityId={tool.uuid} /> })
     return (
-      <div>
-        {list}
-      </div>
+			<table>
+				<tbody>
+        	{list}
+				</tbody>
+			</table>
     );
 	}
 

@@ -38,7 +38,7 @@ class ToolSelectedListItem extends React.Component {
   render() {
     return (
 			<tr className={css(Style.container)}>
-      	<td>{this.state.title}</td>
+				<td>{this.state.title}</td>
 				<td><button className={css(Style.delete)} onClick={this.onDelete.bind(this)}>delete</button></td>
 			</tr>
 		)
