@@ -1,0 +1,24 @@
+const store = createStore(reducer, {"todos":[{"id":0,"text":"bla","completed":false},{"id":1,"text":"fafsa","completed":false}],"visibilityFilter":"SHOW_ALL"})
+
+store.subscribe(()=>{
+  localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+})
+Before creating the store, check localStorage and parse any JSON under your key like this:
+
+const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStorage.getItem('reduxState')) : {}
+
+//
+{
+  uuid = "1278979",
+  logout_token = "asdsdfadf",
+  nodes: [
+    {
+      uuid:"1234",
+      state:"todo"
+    },
+    {
+      uuid:"1234",
+      state:"todo"
+    }
+  ]
+}
