@@ -22,8 +22,7 @@ const entityReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_ENTITY':
       return {
-        entityId : action.entityId,
-        entityType: action.entityType
+        entity : action.entity
       }
     default:
       return state;

@@ -1,6 +1,5 @@
 import 'whatwg-fetch';
 import Config from '../config/Config';
-var _ = require('lodash');
 var URI = require('urijs');
 
 let instance = null;
@@ -397,12 +396,6 @@ class ApiClient {
 		}
 	}
 
-	//get all data from a specific
-	getTermDataById(id, vocabulary) {
-		var data = vocabulary || [];
-		return data.filter(function(entry){ return entry.id  === id})[0];
-	}
-
 	//get all content for a term like : http://127.0.0.1/jsonapi/node/tool_block?filter[field_cat.uuid][value]=ba6de7a6-b720-42a0-ae8a-737563f20398
 	fetchContentWithTerm(termId, resultHandler) {
 		var uri = new URI({
@@ -452,69 +445,7 @@ class ApiClient {
 		return uri.href();
 	}
 
-	/**
-	  * make a structured hierarchy map from drupal its raw result
-		* TODO : refactor put in API Util or , subclass ApiClient??
-		*/
-	getHierachy(vocabulary) {
-		//use data as we received it from drupal
-		var data = vocabulary || [];
-		//get the parent of an item
-		var getParent = function(item, allItems) {
-			var parentId = ((((item.relationships || {}).parent || {}).data || [])[0] || {}).id;
-			if(parentId) {
-				const parentItem = allItems.filter(function(entry){ return entry.id === parentId })[0];
-				return parentItem;
-			}
-			return null;
-		};
-		//recursively get parent term, recursively add current hierarchy to parent
-		var getPathInHierachy = function(item, allItems, tree) {
-			var t1 = {};
-			t1[item.id] = tree;
-			var parent = getParent(item, allItems);
-			if(parent) {
-				var t2 = getPathInHierachy(parent, allItems, t1);
-				return t2;
-			}
-			return t1; //top level
-		}
-		//restructure the data in a hierarchical form
-		var tree = {};
-		for(var i=0;i<data.length;i++) {
-			var item = data[i];
-			//get the hierarchy of each term and merge it with those of other terms
-			var hierarchyPath = getPathInHierachy(item, data, {});// || [];
-			tree = _.merge({}, tree, hierarchyPath);
-		}
-		return tree;
-	}
 
-	// get the hierarchy of terms in simplified format, todo: combine with getHierachy to optimize
-	getHierachyWithDetails(vocabulary) {
-		var tree = this.getHierachy(vocabulary || []);
-		var result = [];
-		var walkTree = function(tree, newTree) {
-			for(var key in tree) {
-				var node = this.getTermDataById(key, vocabulary);
-				var simpleNode = {};
-				simpleNode.name = node.attributes.name;
-				simpleNode.id = node.id;
-				simpleNode.weight = node.attributes.weight;
-				simpleNode.cssClass = ((node.attributes.path || {}).alias || "").split("/").join(""); //make a css class from the path
-				simpleNode.children = [];
-				newTree.push(simpleNode);
-				walkTree(tree[key], simpleNode.children);
-			}
-			newTree.sort(function(a,b) {
-				var wA = a.weight || 0;
-				var wB = b.weight || 0;
-				return wA - wB;
-			});
-		}.bind(this);
-		walkTree(tree, result);
-		return result;
-	}
 }
 
 export default ApiClient;

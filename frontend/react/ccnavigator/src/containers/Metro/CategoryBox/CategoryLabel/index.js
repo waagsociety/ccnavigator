@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { css } from 'aphrodite';
 //own imports
+import { abbreviateString} from "util/utility.js"
 import { Style } from './style.js';
 import { setActiveEntity } from 'actions'
 
@@ -9,14 +10,18 @@ class CategoryLabel extends React.Component {
 
 	constructor(props) {
 		super(props);
+		var name = (this.props.entity.attributes || {}).name;
+		var shortName = abbreviateString(name);
     this.state = {
-      shortLabels: true
+      shortLabels: true,
+			name: name,
+			shortName: shortName
     }
 	}
 
   onLabelClicked(evt) {
     //set active entity to show modal
-    this.props.dispatch(setActiveEntity(evt.target.dataset.entityId));
+    this.props.dispatch(setActiveEntity(this.props.entity));
 	}
 
 	onLabelMouseEnter(evt) {
@@ -35,10 +40,8 @@ class CategoryLabel extends React.Component {
 	}
 
   render() {
-
-    //var shortName = abbreviateString(this.props.name);
-    var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.props.name : this.props.shortName);
-    var dots = new Array(this.props.toolsCnt)
+    var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.state.name : this.state.shortName);
+    var dots = new Array(this.props.entity.count || 0)
     dots.fill("•")
     return (
       <div

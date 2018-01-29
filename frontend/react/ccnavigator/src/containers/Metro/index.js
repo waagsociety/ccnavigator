@@ -1,5 +1,6 @@
 import React from 'react';
 import ApiClient from 'client/ApiClient'
+import ApiHelper from 'client/ApiHelper'
 import { css } from 'aphrodite';
 import { connect } from 'react-redux'
 import SVGMap from "./SVGMap"
@@ -9,79 +10,94 @@ import { Style } from './style.js';
 
 class Metro extends React.Component {
 
-	//
+	/**
+	 *
+	 */
 	componentDidMount() {
 		this.update();
 	}
 
-	//
+	/**
+	 * when language changes render the map content again
+	 */
 	componentWillReceiveProps(nextProps) {
 		if(this.props.language !== nextProps.language) {
 			this.update();
 		}
 	}
 
-	// a label in the map was clicked
-	onLabelClicked(evt) {
-		this.props.onTermClicked(evt.target.dataset.entityId);
-	}
-
-	// ask map container to zoom
+	/**
+	 * handler for zoom button
+	 */
 	onZoomIn(s) {
 		this.svgMap.onZoomIn()
 	}
 
-	// ask map container to zoom out
+	/**
+	 * handler for zoom button
+	 */
 	onZoomOut(s) {
 		this.svgMap.onZoomOut()
 	}
 
-	// update the data required for rendering
+	/**
+	 * flatten all categories in the hierarchy getting the ones that are parent but not grand parent, add a path like "3-1"
+	 */
+	flattenTree(tree) {
+		var isGrandParent = function(node) {
+			var reducer = (a, elem) => a + elem.children.length;
+			return node.children.reduce(reducer, 0) > 0;
+		}
+		var goDeeper = function(node, res, path) {
+			if(isGrandParent(node)) {
+				for(var i=0;i<node.children.length;i++) {
+					goDeeper(node.children[i], res, [...path,i]);
+				}
+			} else {
+				node.path = path.join("-");
+				res.push(node);
+			}
+		}
+		var result = [];
+		for(var i=0;i<tree.length;i++) {
+			goDeeper(tree[i], result, [i]);
+		}
+		return result;
+	}
+
+	/**
+	 * update the data required for rendering
+	 */
 	update() {
-		ApiClient.instance().fetchVocublary("category", function(data) {
-			if(data) {
-				var hierarchy = ApiClient.instance().getHierachyWithDetails(data);
-				this.setState({
-					data: hierarchy
-				});
+		//get the vocabulary with category labels to display on the map
+		ApiClient.instance().fetchVocublary("category", function(vocabulary) {
+			if(vocabulary) {
+				//get all tool nodes
+				ApiClient.instance().fetchContent("tool", function(toolData) {
+					if(toolData) {
+						//restructure / extend the vocabulary data
+						var vocabularyWithCount = ApiHelper.instance().extendVocabularyWithReferenceCount(vocabulary, toolData, "field_category");
+						var hierarchicalVocabulary = ApiHelper.instance().extendVocubalaryWithHierachy(vocabularyWithCount);
+						this.setState({
+							data: hierarchicalVocabulary
+						});
+					}
+				}.bind(this));
 			}
 		}.bind(this));
 	}
 
+	/*
+	 * mix the static map with rendered labels/boxes
+	 */
 	render() {
 		//when the data was received from the server we can make the boxes
 		if(this.state && this.state.data) {
-			//TODO: move to helper, flatten all categories in the hierarchy getting the ones that are parent but not grand parent, adding a path
-			var flattenTree = function(tree) {
-				var isGrandParent = function(node) {
-					var reducer = (a, elem) => a + elem.children.length;
-					return node.children.reduce(reducer, 0) > 0;
-				}
-				var goDeeper = function(node, res, path) {
-					if(isGrandParent(node)) {
-						for(var i=0;i<node.children.length;i++) {
-							goDeeper(node.children[i], res, [...path,i]);
-						}
-					} else {
-						node.path = path.join("-");
-						res.push(node);
-					}
-				}
-				var result = [];
-				for(var i=0;i<tree.length;i++) {
-					goDeeper(tree[i], result, [i]);
-				}
-				return result;
-			}
-
-			//
-			var categoryBoxes = flattenTree(this.state.data).map((cat, index) => {
-				return <CategoryBox key={cat.path} data={cat} path={cat.path} />
+			var categoryBoxes = this.flattenTree(this.state.data).map((termEntity, index) => {
+				return <CategoryBox key={termEntity.path} entity={termEntity} path={termEntity.path} />
 			});
-
 		}
-		//zoom works in ie only if we edit the content of the svg when we modify the transform
-		//var r = Math.round(Math.random() * 1000);
+		//
 		return (
 			<div>
 				<div className={css(Style.container)}>
@@ -97,7 +113,9 @@ class Metro extends React.Component {
 	}
 }
 
-//when language changes we need to do stuff
+/**
+ * update when language changes
+ */
 const mapStateToProps = (state, ownProps) => ({
   language: state.language
 })

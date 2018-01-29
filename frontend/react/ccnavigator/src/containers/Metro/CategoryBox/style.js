@@ -20,10 +20,10 @@ export const RawStyle = {
       transform: "translate(158px,727px) rotate(-45deg)"
     },
     "category-anchor-3-0" : { /*position top left corner of the boxes*/
-      transform: "translate(458px,450px) rotate(-45deg)"
+      transform: "translate(365px,450px) rotate(-45deg) scale(0.5, 0.5)"
     },
     "category-anchor-3-1" : { /*position top left corner of the boxes*/
-      transform: "translate(808px,450px) rotate(-45deg)"
+      transform: "translate(808px,450px) rotate(-45deg) scale(0.75, 0.75)"
     },
     "category-box" : {
       background: "none",
@@ -33,6 +33,14 @@ export const RawStyle = {
     },
     "category-box-row" : {
       background: "none"
+    },
+    "no-select": {
+      "user-select": "none",
+      "-webkit-touch-callout": "none", /* iOS Safari */
+      "-webkit-user-select": "none", /* Safari */
+      "-khtml-user-select": "none", /* Konqueror HTML */
+      "-moz-user-select": "none", /* Firefox */
+      "-ms-user-select": "none" /* Internet Explorer/Edge */
     }
 };
 

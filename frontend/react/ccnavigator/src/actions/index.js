@@ -27,10 +27,9 @@ export const setLanguage = (lang) => ({
 })
 
 //regarding what to show in modal window
-export const setActiveEntity = (entityId, entityType) => ({
+export const setActiveEntity = (entity) => ({
   type: 'SET_ACTIVE_ENTITY',
-  entityId: entityId,
-  entityType: entityType
+  entity: entity
 })
 
 //regarding zoomlevel of the map
