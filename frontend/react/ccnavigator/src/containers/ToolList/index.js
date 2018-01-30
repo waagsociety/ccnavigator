@@ -1,39 +1,26 @@
 import React from 'react';
+import { css } from 'aphrodite';
+//
 import ApiClient from 'client/ApiClient'
 import ToolListItem from "./ToolListItem"
+import {setActiveEntity} from "actions"
+import { connect } from 'react-redux'
+import { Style } from './style.js';
+import ModalHeader from 'components/ModalHeader'
 
 class ToolList extends React.Component {
 
 	constructor(props) {
 		super(props);
     this.state = {
-			list : null
 		}
 	}
 
 	componentDidMount() {
-    if(this.props.entityId) {
-      ApiClient.instance().fetchContentWithTerm(this.props.entityId, function(data){
-        this.setState({
-          list : data.data
-        });
-      }.bind(this));
-    }
+    if(this.props.entity) {
+
+		}
 	}
-
-	componentDidUpdate() {
-    console.log("Modal content componentDidUpdate")
-  }
-
-  componentWillUnmount() {
-    console.log("Modal content componentWillUnmount")
-	}
-
-  onClose() {
-    if(this.props.onClose) {
-      this.props.onClose();
-    }
-  }
 
   onToolSelected(item) {
     if(this.props.onToolSelected) {
@@ -41,25 +28,38 @@ class ToolList extends React.Component {
     }
   }
 
+	onClose() {
+		this.props.dispatch(setActiveEntity(null));
+	}
+
   render() {
-    var content = null;
-    if(this.state.list) {
-      content = this.state.list.map((item, index) => {
-        return (
-          <li key={index}>
-            <ToolListItem data={item} onToolSelected={this.onToolSelected.bind(this)} />
-          </li>
-        );
-      });
-    }
+
+		var	listItems = this.props.entity.nodes.map((node) => {
+				return (
+					<li key={node.id}>
+						<ToolListItem entity={node} />
+					</li>
+				)
+		});
+
+		console.log("ent", this.props.entity);
+		var label = "zone " + this.props.entity.path.join("-")
+		var subTitle = this.props.entity.attributes.field_subtitle || "";
+		var body = (this.props.entity.attributes.description || {}).value || "";
 
     return (
-      <div>
-        {content}
-      </div>
+			<div>
+				<ModalHeader onClose={this.onClose.bind(this)} label={label} title={this.props.entity.attributes.name} subTitle={subTitle}/>
+				<span>{this.props.entity.attributes.name}</span>
+	      <ul>
+	        {listItems}
+	      </ul>
+			</div>
     );
 	}
 
 }
+
+ToolList = connect()(ToolList)
 
 export default ToolList;

@@ -48,19 +48,18 @@ class Metro extends React.Component {
 			var reducer = (a, elem) => a + elem.children.length;
 			return node.children.reduce(reducer, 0) > 0;
 		}
-		var goDeeper = function(node, res, path) {
+		var goDeeper = function(node, res) {
 			if(isGrandParent(node)) {
 				for(var i=0;i<node.children.length;i++) {
-					goDeeper(node.children[i], res, [...path,i]);
+					goDeeper(node.children[i], res);
 				}
 			} else {
-				node.path = path.join("-");
 				res.push(node);
 			}
 		}
 		var result = [];
 		for(var i=0;i<tree.length;i++) {
-			goDeeper(tree[i], result, [i]);
+			goDeeper(tree[i], result);
 		}
 		return result;
 	}
@@ -76,8 +75,9 @@ class Metro extends React.Component {
 				ApiClient.instance().fetchContent("tool", function(toolData) {
 					if(toolData) {
 						//restructure / extend the vocabulary data
-						var vocabularyWithCount = ApiHelper.instance().extendVocabularyWithReferenceCount(vocabulary, toolData, "field_category");
-						var hierarchicalVocabulary = ApiHelper.instance().extendVocubalaryWithHierachy(vocabularyWithCount);
+						var vocabularyWithNodeRefs = ApiHelper.instance().extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
+						var hierarchicalVocabulary = ApiHelper.instance().makeVocubalaryHierarchical(vocabularyWithNodeRefs);
+						console.log("hierarchy", hierarchicalVocabulary);
 						this.setState({
 							data: hierarchicalVocabulary
 						});
@@ -87,17 +87,15 @@ class Metro extends React.Component {
 		}.bind(this));
 	}
 
-	/*
-	 * mix the static map with rendered labels/boxes
+	/**
+	 * mix the static map with rendered labels/category boxes
 	 */
 	render() {
-		//when the data was received from the server we can make the boxes
 		if(this.state && this.state.data) {
 			var categoryBoxes = this.flattenTree(this.state.data).map((termEntity, index) => {
-				return <CategoryBox key={termEntity.path} entity={termEntity} path={termEntity.path} />
+				return <CategoryBox key={termEntity.path} entity={termEntity} />
 			});
 		}
-		//
 		return (
 			<div>
 				<div className={css(Style.container)}>

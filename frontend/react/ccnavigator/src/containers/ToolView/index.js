@@ -7,11 +7,8 @@ class ToolView extends React.Component {
 
 	constructor(props) {
 		super(props);
-    //init state
-    this.state = {
-			title : null,
-      body : null
-		}
+
+		/*
     //fetch content
     if(this.props.entityId) {
       ApiClient.instance().fetchEntity(this.props.entityId, "node/tool", (data) => {
@@ -22,7 +19,7 @@ class ToolView extends React.Component {
           });
         }
       });
-    }
+    }*/
 	}
 
 	componentDidMount() {
@@ -36,19 +33,21 @@ class ToolView extends React.Component {
 	}
 
   onFlag() {
-    this.props.dispatch(setToolStatus(this.props.entityId, "todo"));
+    this.props.dispatch(setToolStatus(this.props.entity.id, "todo"));
   }
 
   render() {
 
     var status = (this.props.tool || {}).status;
+		var title = this.props.entity.attributes.title;
+		var body = (this.props.entity.attributes.body || {}).value || "";
 
     return (
       <div>
         <input type="submit" value="flag " onClick={this.onFlag.bind(this)}  />
         <span>{status}</span>
-        <h3>{this.state.title}</h3>
-        <div dangerouslySetInnerHTML={{__html: this.state.body}}></div>
+        <h3>{title}</h3>
+        <div dangerouslySetInnerHTML={{__html: body}}></div>
       </div>
     )
 	}

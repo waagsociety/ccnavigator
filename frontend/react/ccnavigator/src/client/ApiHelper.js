@@ -68,15 +68,18 @@ class ApiHelper {
   /**
 	  * get the terms in a hierarchy by referencing children
 		*/
-	extendVocubalaryWithHierachy(vocabulary) {
+	makeVocubalaryHierarchical(vocabulary) {
 		var tree = this.getHierachy(vocabulary || []);
 		var result = [];
-		var walkTree = function(tree, newTree) {
-			for(var key in tree) {
+		var walkTree = function(tree, newTree, path) {
+      var index = 0;
+      for(var key in tree) {
 				var node = this.getEntityDataById(key, vocabulary);
         node.children = []; //add array of references to children
+        node.path = [...path,index]
         newTree.push(node);
-				walkTree(tree[key], node.children);
+				walkTree(tree[key], node.children, node.path);
+        index += 1;
 			}
 			newTree.sort(function(a,b) {
         var wA = (a.attributes || {}).weight || 0;
@@ -84,22 +87,20 @@ class ApiHelper {
 				return wA - wB;
 			});
 		}.bind(this);
-		walkTree(tree, result);
+		walkTree(tree, result, []);
 		return result;
 	}
 
   /**
-   *  from an array of nodes count the appearance of a taxonomy term, return a mapping of taxonomy term id => count
+   *  from an array of nodes index the referenced taxonomy terms, return a mapping of taxonomy termId => array<nodeId>
    */
-  countContentNodesPerTerm(nodes, termField = "field_category") {
-    //count the categories linked in each tool node
-    var mapping = nodes.reduce(function(table, tool) {
-      var terms = ((tool.relationships || {})[termField] || {}).data || []
+  getContentNodesPerTerm(nodes, termField = "field_category") {
+    var mapping = nodes.reduce(function(table, node) {
+      var terms = ((node.relationships || {})[termField] || {}).data || []
       for(var i=0;i<terms.length;i++) {
-        //raise the cnt for linked category id
         var id = terms[i].id;
-        var cnt = table[id] || 0;
-        table[id] = cnt + 1;
+        var nodes = table[id] || [];
+        table[id] = [...nodes, node];
       }
       return table;
     }, {});
@@ -109,15 +110,13 @@ class ApiHelper {
   /**
    *
    */
-  extendVocabularyWithReferenceCount(vocabulary, nodes, termField) {
-    var table = this.countContentNodesPerTerm(nodes, termField);
+  extendVocabularyWithNodeReferences(vocabulary, nodes, termField) {
+    var table = this.getContentNodesPerTerm(nodes, termField)
     return vocabulary.map((term) => {
-      term.count = table[term.id] || 0;
+      term.nodes = table[term.id] || [];
       return term;
     });
-
   }
-
 
 }
 

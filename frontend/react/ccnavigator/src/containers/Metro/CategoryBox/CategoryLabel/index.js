@@ -41,7 +41,7 @@ class CategoryLabel extends React.Component {
 
   render() {
     var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.state.name : this.state.shortName);
-    var dots = new Array(this.props.entity.count || 0)
+    var dots = new Array(this.props.entity.nodes.length || 0)
     dots.fill("•")
     return (
       <div

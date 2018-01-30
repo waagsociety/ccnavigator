@@ -12,7 +12,7 @@ const userReducer = (state = null, action) => {
 const languageReducer = (state = "en", action) => {
   switch (action.type) {
     case 'SET_LANGUAGE':
-      return action.language
+      return action.language;
     default:
       return state;
   }
@@ -21,9 +21,7 @@ const languageReducer = (state = "en", action) => {
 const entityReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_ENTITY':
-      return {
-        entity : action.entity
-      }
+      return action.entity;
     default:
       return state;
   }

@@ -7,6 +7,22 @@ wraps ReactModal with some defaults
 
 ReactModal.setAppElement('body');
 
+const customStyles = {
+  overlay: {
+    background : "#000e"
+  },
+  content : {
+    background : "#e5e5e5",
+    top                   : '10%',
+    left                  : '20%',
+    right                 : '10%',
+    bottom                : '0%',
+    borderRadius          : '0px',
+    border                : 'none',
+    padding               : "none"
+  }
+};
+
 const Modal = (props) =>
 
   <ReactModal
@@ -14,7 +30,7 @@ const Modal = (props) =>
     onAfterOpen={() => {}}
     onRequestClose={() => {}}
     closeTimeoutMS={0}
-    style={{ overlay: {background : "#fffb"}, content: {background : "#eee"} }}
+    style={customStyles}
     contentLabel="Example Modal"
     ariaHideApp={true}
     shouldFocusAfterRender={true}

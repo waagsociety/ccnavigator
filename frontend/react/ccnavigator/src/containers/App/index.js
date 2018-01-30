@@ -7,6 +7,7 @@ import ToolList from "containers/ToolList"
 import ToolView from "containers/ToolView"
 import LanguageSelector from "containers/LanguageSelector"
 import { connect } from 'react-redux'
+import {setActiveEntity} from "actions"
 
 class App extends React.Component {
 
@@ -18,72 +19,42 @@ class App extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		//GET ALL TOOLS, parse to count categories??
-	}
-
-  componentDidUpdate() {
-
-  }
-
 	componentWillReceiveProps(newProps) {
-
-		if(newProps.activeEntity !== this.props.activeEntity) {
-			//check what kind of entity this is, a tool or a term
-			this.setState({
-	      showModal : true,
-	      entityId : newProps.activeEntity.entityId,
-	      mode : "list"
-	    });
-		}
+		console.log("new entity", newProps.activeEntity)
 	}
 
-
-  onTermClicked(entityId) {
-    this.setState({
-      showModal : true,
-      entityId : entityId,
-      mode : "list"
-    });
-  }
   onModalClose() {
-    this.setState({
-      showModal : false,
-      entityId : null,
-      mode : null
-    });
-  }
-
-  onToolSelected(entityId) {
-    this.setState({
-      showModal : true,
-      entityId : entityId,
-      mode : "view"
-    });
+    this.props.dispatch(setActiveEntity(null));
   }
 
   render() {
-
-    var modalContent = null;
-    if(this.state.showModal) {
-      switch (this.state.mode) {
-        case "list":
-          modalContent = <ToolList entityId={this.state.entityId} onToolSelected={this.onToolSelected.bind(this)} />
-          break;
-        case "view":
-          modalContent = <ToolView entityId={this.state.entityId} />
-          break;
-        default:
-      }
-    }
+		var modalContent = null;
+		if(this.props.activeEntity) {
+			switch (this.props.activeEntity.type) {
+				case "taxonomy_term--category":
+					if(this.props.activeEntity.children.length > 0) {
+						//a term with subcategories require a different layout
+						modalContent = <ToolList entity={this.props.activeEntity} />
+					}
+					else {
+						//a term ??
+						modalContent = <ToolList entity={this.props.activeEntity} />
+					}
+					break;
+				case "node--tool":
+					modalContent = <ToolView entity={this.props.activeEntity} />
+					break;
+				default:
+			}
+		}
 
     return (
       <div>
         <Login />
         <Panel />
 				<LanguageSelector/>
-        <Metro onTermClicked={this.onTermClicked.bind(this)} width="600" height="400"/>
-        <Modal isOpen={this.state.showModal}>
+        <Metro width="600" height="400"/>
+        <Modal isOpen={modalContent != null}>
           {modalContent}
           <button onClick={this.onModalClose.bind(this)}>Close Modal</button>
         </Modal>

@@ -1,7 +1,9 @@
 import React from 'react';
 import { css } from 'aphrodite';
+import { connect } from 'react-redux'
 //own imports
 import { Style } from './style.js';
+import { setActiveEntity } from 'actions'
 import { groupBy} from "util/utility.js"
 import CategoryLabel from "./CategoryLabel"
 
@@ -18,16 +20,15 @@ class CategoryBox extends React.Component {
   }
 
   onTitleClicked(evt) {
-		alert("category box title clicked")
+		this.props.dispatch(setActiveEntity(this.props.entity));
 	}
 
 	/**
    *
-   *
 	 */
   render() {
       var termEntity = this.props.entity;
-      var path = this.props.path;
+      var path = termEntity.path.join("-");
       //render term labels (children of category)
       var termLabels = (termEntity.children || []).map((subTerm, index) => {
         var toolsCnt = ((this.state.nrOfToolsPerCategory || {})[subTerm.id]) || 0
@@ -58,5 +59,7 @@ class CategoryBox extends React.Component {
       )
 	}
 }
+
+CategoryBox = connect()(CategoryBox)
 
 export default CategoryBox;
