@@ -9,7 +9,7 @@ ReactModal.setAppElement('body');
 
 const customStyles = {
   overlay: {
-    background : "#000e"
+    background : "#000c"
   },
   content : {
     background : "#e5e5e5",
