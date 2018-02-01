@@ -48,10 +48,21 @@ https://www.drupal.org/docs/8/modules/json-api/what-json-api-does-not-do
     Content-Type:application/vnd.api+json
 
 ## JSON API examples
+
     http://127.0.0.1/jsonapi/node/tool?filter[f1][path]=title&filter[f1][value]=knuff&filter[f1][operator]=CONTAINS
     http://127.0.0.1/jsonapi/node/tool?filter[f2][path]=field_category.name&filter[f2][value]=team&filter[f2][operator]=CONTAINS
     http://127.0.0.1/jsonapi/node/tool?filter[field_category.uuid][value]=ba361f0b-01af-4ce3-b039-253d03f0fcec
     http://127.0.0.1/jsonapi/user/user?filter[uid][value]=2
+    http://127.0.0.1/jsonapi/taxonomy_term/category?filter[parent.uuid][value]=6cec371d-6597-4332-a300-c6fed37b3ab0
+
+    include relationships like:
+    http://l2thel.local/jsonapi/node/tool?include=field_category
+    get only title field:
+    http://l2thel.local/jsonapi/node/tool?fields[node--tool]=title
+    get nodes by nid:
+    http://l2thel.local/jsonapi/node/tool?filter[nid][value]=2
+    multiple:
+    http://l2thel.local/jsonapi/node/tool?filter[nodes][condition][path]=nid&filter[nodes][condition][operator]=IN&filter[nodes][condition][value][]=1&filter[nodes][condition][value][]=2
 
 ## Using REST with views
     http://127.0.0.1/nl/[view-name]/feed
