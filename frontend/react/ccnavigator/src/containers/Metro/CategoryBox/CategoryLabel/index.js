@@ -4,7 +4,7 @@ import { css } from 'aphrodite';
 //own imports
 import { abbreviateString} from "util/utility.js"
 import { Style } from './style.js';
-import { setActiveEntity } from 'actions'
+import { Link } from 'react-router-dom'
 
 class CategoryLabel extends React.Component {
 
@@ -17,11 +17,6 @@ class CategoryLabel extends React.Component {
 			name: name,
 			shortName: shortName
     }
-	}
-
-  onLabelClicked(evt) {
-    //set active entity to show modal
-    this.props.dispatch(setActiveEntity(this.props.entity));
 	}
 
 	onLabelMouseEnter(evt) {
@@ -44,14 +39,14 @@ class CategoryLabel extends React.Component {
     var dots = new Array(this.props.entity.nodes.length || 0)
     dots.fill("•")
     return (
-      <div
-        className={css(Style["label"])}
-        data-entity-id={this.props.uuid}
-        onMouseEnter={this.onLabelMouseEnter.bind(this)}
-        onMouseLeave={this.onLabelMouseLeave.bind(this)}
-        onClick={this.onLabelClicked.bind(this)} >
-        <span data-entity-id={this.props.uuid}><span className={css(Style["dots"])}>{dots.join('')}</span>{displayName}</span>
-      </div>
+			<Link to={`/tool-list/${this.props.entity.id}`}>
+				<div
+        	className={css(Style["label"])}
+        	onMouseEnter={this.onLabelMouseEnter.bind(this)}
+        	onMouseLeave={this.onLabelMouseLeave.bind(this)} >
+        	<span><span className={css(Style["dots"])}>{dots.join('')}</span>{displayName}</span>
+      	</div>
+			</Link>
     );
 
 	}

@@ -1,6 +1,5 @@
 import React from 'react';
 import ApiClient from 'client/ApiClient'
-import { setActiveEntity } from 'actions'
 import { connect } from 'react-redux'
 
 class ToolListItem extends React.Component {
@@ -32,10 +31,6 @@ class ToolListItem extends React.Component {
 
   componentWillUnmount() {
 	}
-
-  onToolSelected() {
-		this.props.dispatch(setActiveEntity(this.props.entity));
-  }
 
   render() {
 		var image = null;

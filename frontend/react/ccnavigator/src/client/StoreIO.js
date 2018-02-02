@@ -11,7 +11,7 @@ class StoreIO {
       instance = new StoreIO(store);
       return instance;
     }
-    console.log("ERROR : cannot make instance of StoreIO without store")
+    console.error("cannot make instance of StoreIO without store")
     return null;
   }
 
@@ -46,7 +46,7 @@ class StoreIO {
   }
 
   onStoreChanged() {
-    console.log("store changed")
+    console.log("StoreIO: store changed")
   }
 
 }

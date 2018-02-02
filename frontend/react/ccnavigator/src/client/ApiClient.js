@@ -6,27 +6,18 @@ let instance = null;
 
 class ApiClient {
 
-  static instance(store) {
+  static instance() {
     if(instance) {
       return instance;
-    } else if(store) {
-      instance = new ApiClient(store);
+    } else {
+      instance = new ApiClient();
       return instance;
     }
-    console.log("ERROR : cannot make instance of StoreIO without store")
-    return null;
   }
 
-  constructor(store) {
-    this.store = store;
-    this.store.subscribe(function(a,b){
-      this.onStoreChanged();
-    }.bind(this));
-		this.cache = {};
-  }
-
-	onStoreChanged() {
-		console.log("ApiClient.onStoreChanged")
+  constructor() {
+    this.language = "en";
+    this.cache = {};
   }
 
 	//check a response for being valid
@@ -69,13 +60,12 @@ class ApiClient {
 	}
 
 	_localizePath(href) {
-		var lang = (this.store.getState() || {}).language;
-		if(lang === null || lang === "en") {
+		if(this.language === null || this.language === "en") {
 			return href;
 		}
 		var uri = new URI(href);
 		var dir = uri.directory();
-		uri.directory(`/${lang}${dir}`)
+		uri.directory(`/${this.language}${dir}`)
 		return uri.href();
 	}
 
@@ -126,7 +116,7 @@ class ApiClient {
 							resultHandler(true);
 						}
 						else {
-							console.log("ERROR : user is logged in remotely but has no tokens")
+							console.error("user is logged in remotely but has no tokens")
 							if(resultHandler) {
 								resultHandler(null);
 							}
@@ -174,7 +164,7 @@ class ApiClient {
 			}.bind(this), "POST", null, true); //WTF, moet het nu POST of GET zijn
 		} else {
 			//
-			console.log("ERROR : no logout_token found to do proper REST logout, try /user/logout")
+			console.error("no logout_token found to do proper REST logout, try /user/logout")
 			if(resultHandler) {
 				resultHandler(null);
 			}
@@ -207,6 +197,7 @@ class ApiClient {
 			opts["credentials"] = 'include';
 		}
 		//fetch
+    console.debug("fetch", localized);
 		fetch(localized, opts)
 		.then(this._checkStatus)
 		.then(function(response) {
@@ -229,7 +220,7 @@ class ApiClient {
 				error: exception,
 				result: null
 			}
-			console.log("ERROR: ", exception);
+			console.error(exception);
 			resultHandler(response);
 		})
 	}
@@ -249,7 +240,9 @@ class ApiClient {
 			opts["credentials"] = 'include';
 		}
 		//fetch
-		fetch(this._localizePath(uri), opts)
+    var localized = this._localizePath(uri);
+    console.debug("fetch", localized);
+		fetch(this._localizePath(localized), opts)
 		.then(this._checkStatus)
 		.then(function(data) {
 			var response = {
@@ -267,45 +260,57 @@ class ApiClient {
 				error: exception,
 				result: null
 			}
-			console.log("ERROR: ", exception);
+			console.error(exception);
 			resultHandler(response);
 		})
 	}
 
-	/**
-	  * request all data from drupal taxonomy vocabulary by name
-		* returns JSON data object
-		*/
-	fetchVocublary(name, resultHandler) {
-		//get a complete hierarchy of all terms
-		var uri = new URI({
-			hostname: Config.endPoint.host,
-			path: `/jsonapi/taxonomy_term/${name}`
-		});
-		//
-		this.fetchJSON(uri.href(), function(response){
-			if(response.success) {
-				var data = response.result.data || [];
-				if(resultHandler) {
-					resultHandler(data);
-				}
-			} else {
-				if(resultHandler) {
-					resultHandler(null);
-				}
-			}
-		}, "GET", null, null, true);
-	}
+  /**
+	 * fetch nodes/terms of a type/vocabulary
+   * get array of content with node type,
+   * - apply filter to
+   * - limit returned fields (if specified) to reduce data amount
+   * - include related items
+   * like : /jsonapi/taxonomy_term/category?filter[parent.uuid][value]=6cec371d-6597-4332-a300-c6fed37b3ab0&include=parent&fields[taxonomy_term--category]=name,parent
+   *
+   * filter can be entity id like "6cec371d-6597-4332-a30" or property like : {"parent.uuid":"6cec371d-6597-4332-a30"}
+   *
+   */
+	fetchContent(type, filter, fields, include, resultHandler) {
 
-	/**
-	 * fetch all tools
-	 */
-	fetchContent(type, resultHandler) {
-		//get a complete hierarchy of all terms
-		var uri = new URI({
+    //
+    var pathParts = type.split("--");
+    if(filter && typeof(filter) === "string") {
+      pathParts.push(filter);
+    }
+
+    //
+    var queryParts = [];
+    if(filter && typeof(filter) === "object") {
+      var prop = Object.keys(filter)[0];
+      var val = Object.values(filter)[0];
+      var filterQuery = `filter[${prop}][value]=${val}`;
+      queryParts.push(filterQuery);
+    }
+
+    if(fields && fields.length > 0) {
+      var fieldsQuery = `fields[${type}]=${fields.join(",")}`;
+      queryParts.push(fieldsQuery);
+    }
+
+    if(include && include.length > 0) {
+      var includeQuery = `include=${include.join(",")}`;
+      queryParts.push(includeQuery);
+    }
+
+    //combine all
+    var query = queryParts.length > 0 ? queryParts.join("&") : ""
+    var uri = new URI({
 			hostname: Config.endPoint.host,
-			path: `/jsonapi/node/${type}`
+			path: `/jsonapi/${pathParts.join("/")}`,
+      query: query
 		});
+
 		//
 		this.fetchJSON(uri.href(), function(response){
 			if(response.success) {
@@ -353,7 +358,7 @@ class ApiClient {
 				}
 			}, "GET", null, true);
 		} else {
-			console.log("ERROR : could not load info on user, there is no uuid known here");
+			console.error("could not load info on user, there is no uuid known here");
 			if(resultHandler) {
 				resultHandler(null);
 			}
@@ -390,51 +395,10 @@ class ApiClient {
 			}, "PATCH", data, true);
 		} else {
 			if(resultHandler) {
-				console.log("ERROR : need to have uuid to be able to save");
+				console.error("need to have uuid to be able to save");
 				resultHandler(null);
 			}
 		}
-	}
-
-	//get all content for a term like : http://127.0.0.1/jsonapi/node/tool_block?filter[field_cat.uuid][value]=ba6de7a6-b720-42a0-ae8a-737563f20398
-	fetchContentWithTerm(termId, resultHandler) {
-		var uri = new URI({
-		  hostname: Config.endPoint.host,
-		  path: `/jsonapi/node/tool`,
-		  query: `filter[field_category.uuid][value]=${termId}`
-		});
-    //
-		this.fetchJSON(uri.href(), function(response){
-			if(response.success) {
-				if(resultHandler) {
-					resultHandler(response.result);
-				}
-			} else {
-				if(resultHandler) {
-					resultHandler(null);
-				}
-			}
-		});
-	}
-
-	//
-	fetchEntity(entityId, type, resultHandler) {
-	  var uri = new URI({
-			hostname: Config.endPoint.host,
-			path: `/jsonapi/${type}/${entityId}`
-		});
-    //
-		this.fetchJSON(uri.href(), function(response){
-			if(response.success) {
-				if(resultHandler) {
-					resultHandler(response.result);
-				}
-			} else {
-				if(resultHandler) {
-					resultHandler(null);
-				}
-			}
-		});
 	}
 
 	getFullImageURL(url) {

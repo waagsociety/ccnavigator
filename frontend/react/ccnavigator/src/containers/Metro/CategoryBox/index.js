@@ -1,11 +1,10 @@
 import React from 'react';
 import { css } from 'aphrodite';
-import { connect } from 'react-redux'
 //own imports
 import { Style } from './style.js';
-import { setActiveEntity } from 'actions'
 import { groupBy} from "util/utility.js"
 import CategoryLabel from "./CategoryLabel"
+import { Link } from 'react-router-dom'
 
 class CategoryBox extends React.Component {
 
@@ -18,10 +17,6 @@ class CategoryBox extends React.Component {
 
   componentDidMount() {
   }
-
-  onTitleClicked(evt) {
-		this.props.dispatch(setActiveEntity(this.props.entity));
-	}
 
 	/**
    *
@@ -44,13 +39,12 @@ class CategoryBox extends React.Component {
       //return category box, max 3 labels on a line
       return (
         <foreignObject width="100%" height="100%" className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
-          <div className={css(Style["category-box"],Style["no-select"])}>
-            <span
-              key={termEntity.id}
-              data-entity-id={termEntity.id}
-              onClick={this.onTitleClicked.bind(this)} >
-              {termEntity.attributes.name}
-            </span>
+					<div className={css(Style["category-box"],Style["no-select"])}>
+						<Link to={`/multi-tool-list/${this.props.entity.id}`}>
+							<span>
+								{termEntity.attributes.name}
+	            </span>
+						</Link>
             <div>
               {groupedLabels}
             </div>
@@ -59,7 +53,5 @@ class CategoryBox extends React.Component {
       )
 	}
 }
-
-CategoryBox = connect()(CategoryBox)
 
 export default CategoryBox;

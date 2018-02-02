@@ -31,7 +31,20 @@ export const RawStyle = {
     },
     area: {
       fill:"#ccc",
-      stroke:"#none"
+      stroke:"none"
+    },
+    river: {
+      stroke: "#BBD5EA",
+      "stroke-width": "40px",
+      fill: "none"
+    },
+    "wide-area": {
+      fill:"#e5e5e5",
+      stroke:"none"
+    },
+    "inner-area": {
+      fill:"#dbdbdb",
+      stroke:"none"
     }
 };
 

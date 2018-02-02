@@ -2,8 +2,7 @@ import React from 'react';
 import { css } from 'aphrodite';
 //
 import ApiClient from 'client/ApiClient'
-import ToolListItem from "./ToolListItem"
-import {setActiveEntity} from "actions"
+import ApiHelper from 'client/ApiHelper'
 import { connect } from 'react-redux'
 import { Style } from './style.js';
 import Modal from "components/Modal.js"
@@ -12,7 +11,7 @@ import ModalHeader from 'components/ModalHeader'
 /**
  * Get a list of tools in this category
  */
-class ToolList extends React.Component {
+class MultiToolList extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -31,6 +30,13 @@ class ToolList extends React.Component {
 	}
 
 	componentDidMount() {
+		var entityId = this.props.match.params.id;
+		//
+		ApiHelper.instance().findInContentHierarchy("a5b8d8bc-de72-4dca-a285-a25cf75cbae3", function(term) {
+			console.log("h", term);
+		});
+
+
 
 		//get this entity
 		var entityId = this.props.match.params.id;
@@ -60,7 +66,6 @@ class ToolList extends React.Component {
   }
 
 	onClose() {
-		this.props.dispatch(setActiveEntity(null));
 	}
 
   render() {
@@ -77,7 +82,6 @@ class ToolList extends React.Component {
 				var	listItems = this.state.content.map((node) => {
 						return (
 							<li key={node.id}>
-								<ToolListItem entity={node} />
 							</li>
 						)
 				});
@@ -93,21 +97,8 @@ class ToolList extends React.Component {
 
 		return "";
 
-
-
-    return (
-			<div>
-				<ModalHeader onClose={this.onClose.bind(this)} label={label} title={this.props.entity.attributes.name} subTitle={subTitle}/>
-				<span>{this.props.entity.attributes.name}</span>
-	      <ul>
-	        {listItems}
-	      </ul>
-			</div>
-    );
 	}
 
 }
 
-ToolList = connect()(ToolList)
-
-export default ToolList;
+export default MultiToolList;

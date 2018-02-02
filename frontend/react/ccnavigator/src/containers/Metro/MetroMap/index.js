@@ -104,12 +104,22 @@ class MetroMap extends React.Component {
     var linesSW = endPointsSW.map((point, index) => {
       return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "w");
     });
+    //make the river
+    var river = <path d={CurvedPolyline.smoothPolyline(MetroLayout.river.points, 20)} className={css(Style["river"])}  />
+    //make the wide area
+    var closedWideArea = CurvedPolyline.closeLine(MetroLayout.wideArea.points)
+    var wideArea = <path d={CurvedPolyline.smoothPolyline(closedWideArea, 20)} className={css(Style["wide-area"])}  />
+    var closedInnerArea = CurvedPolyline.closeLine(MetroLayout.innerArea.points)
+    var innerArea = <path d={CurvedPolyline.smoothPolyline(closedInnerArea, 20)} className={css(Style["inner-area"])}  />
     //the composed metro map
     return (
       <g>
+        {wideArea}
+        {innerArea}
+        {centralArea}
+        {river}
         {mainLineIn}
         {mainLineOut}
-        {centralArea}
         <rect x={MetroLayout.centralArea.center[0] - 5 } y={MetroLayout.centralArea.center[1] - 15} width="10" height="30" rx="5" ry="5" fill={"#000"}/>
         {linesNE}
         {linesSE}

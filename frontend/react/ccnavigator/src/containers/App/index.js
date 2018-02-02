@@ -4,10 +4,13 @@ import Metro from "containers/Metro"
 import Login from "containers/Login"
 import Modal from "components/Modal.js"
 import ToolList from "containers/ToolList"
+import MultiToolList from "containers/MultiToolList"
 import ToolView from "containers/ToolView"
 import LanguageSelector from "containers/LanguageSelector"
-import { connect } from 'react-redux'
-import {setActiveEntity} from "actions"
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom'
 
 class App extends React.Component {
 
@@ -15,20 +18,40 @@ class App extends React.Component {
 		super(props);
     this.state = {
 			showModal : false,
-      entityId : null
+      entityId : null,
+			width: 1200,
+			height: 800
 		}
+		this.updateDimensions = this.updateDimensions.bind(this);
+		window.addEventListener("resize", this.updateDimensions.bind(this));
 	}
+
+	componentDidMount() {
+		this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions);
+	}
+
+	componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
 
 	componentWillReceiveProps(newProps) {
 		console.log("new entity", newProps.activeEntity)
 	}
 
-  onModalClose() {
-    this.props.dispatch(setActiveEntity(null));
+	/**
+   * calculate & Update state of new dimensions
+   */
+  updateDimensions() {
+  	let update_width  = window.innerWidth;
+    let update_height = window.innerHeight;
+    this.setState({ width: update_width, height: update_height });
   }
 
   render() {
-		var modalContent = null;
+		//define what to render based upon active entity, why not use link and router?
+    /*
+    var modalContent = null;
 		if(this.props.activeEntity) {
 			switch (this.props.activeEntity.type) {
 				case "taxonomy_term--category":
@@ -47,28 +70,27 @@ class App extends React.Component {
 				default:
 			}
 		}
+    */
+
+		var about = (<Modal isOpen={true}>about bla bla</Modal>)
 
     return (
-      <div>
-        <Login />
-        <Panel />
-				<LanguageSelector/>
-        <Metro width="600" height="400"/>
-        <Modal isOpen={modalContent != null}>
-          {modalContent}
-          <button onClick={this.onModalClose.bind(this)}>Close Modal</button>
-        </Modal>
-				<svg><ding/></svg>
-      </div>
+			<Router>
+				<div>
+	        <Login />
+	        <Panel />
+					<LanguageSelector/>
+	        <Metro width={this.state.width} height={this.state.width} />
+					<Route path="/about" render={() => about } />
+					<Route path="/tool-list/:id" component={ToolList} />
+					<Route path="/multi-tool-list/:id" component={MultiToolList} />
+          <Route path="/tool/:id" component={ToolView} />
+	      </div>
+			</Router>
     );
 	}
 
 }
 
-const mapStateToProps = (state, ownProps) => ({
-	activeEntity: state.activeEntity
-})
-
-App = connect(mapStateToProps)(App)
 
 export default App;

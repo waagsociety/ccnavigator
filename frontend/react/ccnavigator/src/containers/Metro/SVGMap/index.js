@@ -30,10 +30,10 @@ class SVGMap extends React.Component {
     return this.state.matrix[0];
   }
 
-	onZoomIn(s) {
+	onZoomIn() {
 		this.zoomWith(1.1);
 	}
-	onZoomOut(s) {
+	onZoomOut() {
 		this.zoomWith(0.909);
 	}
 
@@ -103,12 +103,12 @@ class SVGMap extends React.Component {
       if(currentZoom === targetZoom) {
         clearInterval(this.runningInterval);
       } else if(currentZoom < targetZoom) {
-        z = 1.05;
+        z = 1.1;
         if(z * currentZoom >= targetZoom) { //stop if interval if next zoom level reaches target
           clearInterval(this.runningInterval);
         }
       } else if(currentZoom > targetZoom) {
-        z = 0.95;
+        z = 0.90;
         if(z * currentZoom <= targetZoom) { //stop if interval if next zoom level reaches target
           clearInterval(this.runningInterval);
         }
@@ -121,23 +121,29 @@ class SVGMap extends React.Component {
 		//matrix zoom works in ie only if we edit the content of the svg when we modify the transform
 		//var matrix = `matrix(${this.state.matrix.join(' ')})`;
 		return (
-  		<svg version="1.1"
-  				 width={this.props.width + "px"}
-  				 height={this.props.height + "px"}
-  				 onMouseDown={this.onMousePressed.bind(this)}
-    			 onTouchStart={this.onMousePressed.bind(this)}
-    			 onMouseMove={this.onMouseMove.bind(this)}
-    			 onTouchMove={this.onMouseMove.bind(this)}
-    			 onMouseUp={this.onMouseReleased.bind(this)}
-    		   onTouchEnd={this.onMouseReleased.bind(this)}
-  				 onWheel={this.onWheel.bind(this)}
-           ref={(elem) => { this.svgElement = elem }}
-           cnt = {this.state.animate}
-           viewBox = {this.state.viewBox.join(" ")}
-					 className={css(Style.container)}
-  		>
-		    {this.props.children}
-  		</svg>
+			<div className={css(Style.container)}>
+				<svg version="1.1"
+	  				 width={this.props.width + "px"}
+	  				 height={this.props.height + "px"}
+	  				 onMouseDown={this.onMousePressed.bind(this)}
+	    			 onTouchStart={this.onMousePressed.bind(this)}
+	    			 onMouseMove={this.onMouseMove.bind(this)}
+	    			 onTouchMove={this.onMouseMove.bind(this)}
+	    			 onMouseUp={this.onMouseReleased.bind(this)}
+	    		   onTouchEnd={this.onMouseReleased.bind(this)}
+	  				 onWheel={this.onWheel.bind(this)}
+	           ref={(elem) => { this.svgElement = elem }}
+	           cnt = {this.state.animate}
+	           viewBox = {this.state.viewBox.join(" ")}
+						 className={css(Style.container)}
+	  		>
+			    {this.props.children}
+	  		</svg>
+				<div className={css(Style.buttons)}>
+					<button className={css(Style.button)} onClick={this.onZoomIn.bind(this)}> {"+"} </button>
+					<button className={css(Style.button)} onClick={this.onZoomOut.bind(this)}> {"-"} </button>
+				</div>
+			</div>
     );
 	}
 
@@ -182,6 +188,6 @@ class SVGMap extends React.Component {
 const mapStateToProps = (state, ownProps) => ({
   zoomLevelHigh: state.zoomLevelHigh
 })
-SVGMap = connect(mapStateToProps)(SVGMap)
+SVGMap = connect(mapStateToProps)(SVGMap, null, null, { withRef: true })
 
 export default SVGMap;

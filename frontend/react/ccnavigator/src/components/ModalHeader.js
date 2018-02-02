@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, css } from "aphrodite";
+import { Link } from 'react-router-dom'
 
 const style = StyleSheet.create({
   container: {
@@ -25,7 +26,7 @@ const style = StyleSheet.create({
     "font-size": "36px",
     "font-weight": "bold",
     display: "inline-block",
-    padding: "0% 10%",
+    padding: "0% 20%",
     "white-space": "nowrap"
   },
   subTitle:{
@@ -40,8 +41,10 @@ const style = StyleSheet.create({
 });
 
 const ModalHeader = (props) =>
-  <div className={css(style.container)} onClick={props.onClose}>
-    <span className={css(style.close)}>&times;</span>
+  <div className={css(style.container)}>
+    <Link to="/">
+      <span className={css(style.close)}>&times;</span>
+    </Link>
     <div className={css(style.inset)}>
       <table>
         <tbody>
