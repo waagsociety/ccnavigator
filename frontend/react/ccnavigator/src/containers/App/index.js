@@ -7,6 +7,8 @@ import ToolList from "containers/ToolList"
 import MultiToolList from "containers/MultiToolList"
 import ToolView from "containers/ToolView"
 import LanguageSelector from "containers/LanguageSelector"
+import GlossaryItem from "containers/GlossaryItem"
+
 import {
   BrowserRouter as Router,
   Route
@@ -85,6 +87,7 @@ class App extends React.Component {
 					<Route path="/tool-list/:id" component={ToolList} />
 					<Route path="/multi-tool-list/:id" component={MultiToolList} />
           <Route path="/tool/:id" component={ToolView} />
+          <Route path="/*/taxonomy/term/:id" component={GlossaryItem} />
 	      </div>
 			</Router>
     );

@@ -1,54 +1,118 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
+import { css } from 'aphrodite';
 import ApiClient from 'client/ApiClient'
 import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
+import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
+import { Style } from './style.js';
+import { buildJSXFromHTML} from "util/utility"
+
 
 class ToolView extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		//ApiClient.instance().fetchContent()
-
-		/*
-		http://l2thel.local/jsonapi/node/tool/73b148b4-03ce-4c20-ae76-c2f482d78e9a?include=field_image
-		http://l2thel.local/jsonapi/node/tool?include=field_image
-		*/
-
+		this.state = {
+			nodeEntity:null,
+			includedEntities:null,
+			newBody: null
+		};
 	}
 
 	componentDidMount() {
-
+		var entityId = this.props.match.params.id;
+		//full info on this node including relationships
+		ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image"], function(node, included) {
+			var body = (node.attributes.body || {}).value || "";
+			var newBody = buildJSXFromHTML(body);
+			this.setState({
+				nodeEntity: node,
+				includedEntities: included,
+				newBody: newBody
+			});
+		}.bind(this));
 	}
 
-	componentDidUpdate() {
-  }
 
-  componentWillUnmount() {
-	}
 
   onFlag() {
-    this.props.dispatch(setToolStatus(this.props.entity.id, "todo"));
+		var entityId = this.props.match.params.id;
+    this.props.dispatch(setToolStatus(entityId, "todo"));
   }
 
+	/**
+	 * render image or whatever
+	 */
+	renderInclude(item) {
+		switch(item.type) {
+			case "file--file":
+				var mime = (item.attributes || {}).filemime;
+				switch(mime) {
+					case "image/jpeg":
+						var filename = (item.attributes || {}).filename;
+						var url = (item.attributes || {}).url;
+						return <img className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
+						break;
+					default:
+						console.log("entity mime not supported:", mime);
+						break;
+				}
+				break;
+			default:
+				console.log("entity type not supported:", item.type);
+				break;
+		}
+		return null;
+	}
+
+	/**
+	 * render node
+	 */
   render() {
+		//show loading till we have fetched all
+		var header = <ModalHeader title={"loading"} />
+		var content = "loading";
+		//build content view when we have all data
+		if(this.state.nodeEntity) {
+			//make header
+			var title =  this.state.nodeEntity.attributes.title || "";
+			header = <ModalHeader title={title} />
+			//make content
+			var body = (this.state.nodeEntity.attributes.body || {}).value || "";
+			//includes
+			var includes = (this.state.includedEntities || []).map((item) => {
+				return this.renderInclude(item);
+			});
+			//content part
+			content = (
+				<div>
+					<div dangerouslySetInnerHTML={{__html: body}} />
+					{includes}
+					{this.state.newBody}
+				</div>
 
-		var label = "";
-		var title = this.props.entity.attributes.title;
-		var subTitle = "";
-		var status = (this.props.tool || {}).status;
-		var body = (this.props.entity.attributes.body || {}).value || "";
+			)
+		}
+		//return the content in a modal view
+		//linking with Link registers a link, which makes routing without page load possible
+		//normal links with <a> don't work
+		//https://www.npmjs.com/package/html-to-react
 
-    return (
-      <div>
-				<ModalHeader onClose={this.onClose.bind(this)} label={label} title={title} subTitle={subTitle}/>
-        <input type="submit" value="flag " onClick={this.onFlag.bind(this)}  />
-        <span>{status}</span>
-        <h3>{title}</h3>
-        <div dangerouslySetInnerHTML={{__html: body}}></div>
-      </div>
-    )
+		var b = [];
+		b.push("ablaba");
+		b.push(<Link to="/taxonomy/term/37">{"aaaa"}</Link>);
+		b.push("ablaba");
+		b.push(<Link to="/taxonomy/term/37">bbb</Link>);
+
+		return (
+			<Modal isOpen={true}>
+				{header}
+				<button onClick={this.onFlag.bind(this)}>flag</button>
+				{content}
+			</Modal>
+		)
 	}
 
 }

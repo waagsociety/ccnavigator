@@ -192,6 +192,10 @@ class ApiHelper {
     });
   }
 
+  nodeGetCategories(node) {
+    
+  }
+
 }
 
 export default ApiHelper;

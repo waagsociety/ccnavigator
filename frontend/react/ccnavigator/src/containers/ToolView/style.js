@@ -1,10 +1,11 @@
 import { StyleSheet } from "aphrodite";
 
 export const Style = StyleSheet.create({
-  container:{
-    "background":"#cea"
+  body: {
+    padding:"10px"
   },
-  tool:{
-    "margin":"10px"
+  image: {
+    width:"50%"
   }
+
 });

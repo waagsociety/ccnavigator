@@ -315,8 +315,9 @@ class ApiClient {
 		this.fetchJSON(uri.href(), function(response){
 			if(response.success) {
 				var data = response.result.data || [];
+        var included = response.result.included;
 				if(resultHandler) {
-					resultHandler(data);
+					resultHandler(data, included);
 				}
 			} else {
 				if(resultHandler) {
@@ -401,7 +402,7 @@ class ApiClient {
 		}
 	}
 
-	getFullImageURL(url) {
+	getFullURL(url) {
 		var uri = new URI({
   		hostname: Config.endPoint.host,
   		path: url

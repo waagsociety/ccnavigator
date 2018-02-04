@@ -3,8 +3,8 @@ import { css } from 'aphrodite';
 //
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
-import { connect } from 'react-redux'
 import { Style } from './style.js';
+import { Link } from 'react-router-dom'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 
@@ -15,87 +15,84 @@ class MultiToolList extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {"entity":null};
-
-		var entityId = this.props.match.params.id;
-		//get children
-
-
-
-		//does this cat have children / is this categorie the parent of other cats
-		//http://l2thel.local/jsonapi/taxonomy_term/category?filter[parent.uuid][value]=6cec371d-6597-4332-a300-c6fed37b3ab0
-
-		//http://l2thel.local/jsonapi/node/tool?filter[field_category.parent.uuid][value]=6cec371d-6597-4332-a300-c6fed37b3ab0
-
+		this.state = {
+			termHierachy:null,
+			termEntity:null,
+			nodeEntities:null
+		};
 	}
 
 	componentDidMount() {
 		var entityId = this.props.match.params.id;
-		//
-		ApiHelper.instance().findInContentHierarchy("a5b8d8bc-de72-4dca-a285-a25cf75cbae3", function(term) {
-			console.log("h", term);
-		});
-
-
-
-		//get this entity
-		var entityId = this.props.match.params.id;
-		ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, function(entity) {
-			console.log("this entity", entity);
-			this.setState({"entity": entity});
+		//get hierarchy path of this term
+		ApiHelper.instance().findInContentHierarchy(entityId, function(term) {
+			console.debug("hierarchical term data, concise info on terms and nodes", term)
+			this.setState({termHierachy: term});
 		}.bind(this));
-
-
-		//get all nodes that have this term
-		//ApiClient.instance().fetchContent("taxonomy_term--category", {"parent.uuid": entityId}, ["name", "parent"], null, function(terms) {
-		//	console.log("terms", terms);
-		//});
-
-		//get all nodes that have this term its children as term
-		ApiClient.instance().fetchContent("node--tool", {"field_category.parent.uuid" : entityId}, null, null, function(nodes) {
-			console.log("nodes", nodes);
-			this.setState({"content": nodes});
+		//full info on this entity
+		ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, function(termEntity) {
+			console.log("full term data", termEntity);
+			this.setState({termEntity: termEntity});
 		}.bind(this));
-
-	}
-
-  onToolSelected(item) {
-    if(this.props.onToolSelected) {
-      this.props.onToolSelected(item.props.data.id) //pass entity data obj
-    }
-  }
-
-	onClose() {
+		//full info on all nodes that have this term its child terms as term
+		ApiClient.instance().fetchContent("node--tool", {"field_category.parent.uuid" : entityId}, null, null, function(nodeEntities) {
+			console.log("node entities", nodeEntities);
+			this.setState({nodeEntities: nodeEntities});
+		}.bind(this));
 	}
 
   render() {
-
-		if(this.state.entity) {
-
-			var label = "zone ";
-			var subTitle = this.state.entity.attributes.field_subtitle || "";
-			var body = (this.state.entity.attributes.description || {}).value || "";
-
-			//
-			var listItems = null;
-			if(this.state.content) {
-				var	listItems = this.state.content.map((node) => {
+		//show loading till we have fetched all
+		var header = <ModalHeader title={"loading"} />
+		var content = "loading";
+		//build content view when we have all data
+		if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
+			//make header
+			var label = "zone " + this.state.termHierachy.path.join("-");
+			var title =  this.state.termEntity.attributes.name || "";
+			var subTitle = this.state.termEntity.attributes.field_subtitle || "";
+			header = <ModalHeader label={label} title={title} subTitle={subTitle} />
+			//make content
+			var termDescription = (this.state.termEntity.attributes.description || {}).value || "";
+			//use the concise term with hierarchy to build the term box
+			var	subcategories = this.state.termHierachy.children.map((term) => {
+					//list the tools in this subcategory
+					var tools = term.nodes.map((node) => {
+						var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0];
 						return (
 							<li key={node.id}>
+								<Link to={`/tool/${fullNode.id}`}>
+									<span>{fullNode.attributes.title}</span>
+								</Link>
+								<div>{fullNode.attributes.field_short_description || ""}</div>
 							</li>
 						)
-				});
-			}
-
-			return (
-				<Modal isOpen={true}>
-					<ModalHeader onClose={this.onClose.bind(this)} label={label} title={this.state.entity.attributes.name} subTitle={subTitle}/>
-					<ul>{listItems}</ul>
-				</Modal>
+					});
+					//return a box for this subcategory
+					return (
+						<div className={css(Style.box)} key={term.id}>
+							<span className={css(Style.term)}> {term.attributes.name} </span>
+							{tools}
+						</div>
+					)
+			});
+			//compose content of modal
+			content = (
+				<div className={css(Style.container)}>
+					<div dangerouslySetInnerHTML={{__html: termDescription}} />
+					{subcategories}
+				</div>
 			)
+
 		}
 
-		return "";
+		//return the content in a modal view
+		return (
+			<Modal isOpen={true}>
+				{header}
+				{content}
+			</Modal>
+		)
 
 	}
 
