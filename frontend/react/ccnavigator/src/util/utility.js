@@ -61,7 +61,6 @@ export const abbreviateString2 = function(string = "", transitionState) {
 /**
  * rebuild user formatted HTML string from CMS
  * convert simple html (replacing <a> with <link>), limit node types supported
- * func convertNode (node, childs) => switch node.nodeName case a: convertA
  */
 const parse5 = require('parse5');
 export const buildJSXFromHTML = function(htmlString) {
@@ -71,54 +70,51 @@ export const buildJSXFromHTML = function(htmlString) {
       switch(pair.name) {
         case "href":
           result["to"] = pair.value;
+          break;
         default:
           result[pair.name] = pair.value;
+          break;
       }
       return result;
     }, {});
   }
 
-  const convertNode = function(node, childs) {
+  const convertNode = function(node, childs, index) {
     var converted = null;
     switch(node.nodeName) {
       case "#text":
         converted = node.value
         break;
-      case "p":
-        converted = <p>{childs}</p>
-        break;
       case "a":
         var attrs = convertAttributes(node.attrs)
-        converted = <Link {...attrs}>{childs}</Link>
+        attrs["key"] = index;
+        converted = React.createElement(Link, attrs, childs);
         break;
       case "li":
-        converted = <li>{childs}</li>
-        break;
+      case "p":
       case "ul":
-        converted = <ul>{childs}</ul>
+      case "span":
+        converted = React.createElement(node.nodeName, {key:index}, childs);
         break;
       case "#document-fragment":
         converted = childs
         break;
-      case "span":
-        converted = <span>{childs}</span>
-        break;
       default:
-        converted = <div>{childs}</div>
+        converted = React.createElement("span", {key:index}, childs);
         break;
     }
     return converted;
   }
 
   var ast = parse5.parseFragment(htmlString)
-  var buildJSX = function(node) {
+  var buildJSX = function(node, index) {
     var childs = [];
     if(node.childNodes) {
-      childs = node.childNodes.map((child) => {
-        return buildJSX(child);
+      childs = node.childNodes.map((child, index) => {
+        return buildJSX(child, index);
       });
     }
-    return convertNode(node, childs)
+    return convertNode(node, childs, index)
   }
 
   return buildJSX(ast);

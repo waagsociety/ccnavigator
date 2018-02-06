@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 import { css } from 'aphrodite';
 import ApiClient from 'client/ApiClient'
+import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
 import Modal from "components/Modal.js"
@@ -17,26 +17,34 @@ class ToolView extends React.Component {
 		this.state = {
 			nodeEntity:null,
 			includedEntities:null,
-			newBody: null
+			termEntities:null
 		};
 	}
 
 	componentDidMount() {
 		var entityId = this.props.match.params.id;
 		//full info on this node including relationships
-		ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image"], function(node, included) {
-			var body = (node.attributes.body || {}).value || "";
-			var newBody = buildJSXFromHTML(body);
+		ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image", "field_download"], function(node, included) {
+			//set content
 			this.setState({
 				nodeEntity: node,
-				includedEntities: included,
-				newBody: newBody
+				includedEntities: included
 			});
+			//lookup the terms in the hierarchy to get pathnames
+			var categoryIds = (((node.relationships || {}).field_category || {}).data || []).map((cat) => {
+				return cat.id;
+			});
+			ApiHelper.instance().findInContentHierarchy(categoryIds, function(terms) {
+				this.setState({
+					termEntities: terms
+				});
+			}.bind(this));
 		}.bind(this));
 	}
 
-
-
+	/**
+	 * flag button hit
+	 */
   onFlag() {
 		var entityId = this.props.match.params.id;
     this.props.dispatch(setToolStatus(entityId, "todo"));
@@ -54,7 +62,10 @@ class ToolView extends React.Component {
 						var filename = (item.attributes || {}).filename;
 						var url = (item.attributes || {}).url;
 						return <img className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
-						break;
+					case "application/pdf":
+						var filename = (item.attributes || {}).filename;
+						var url = (item.attributes || {}).url;
+						return <a href={ApiClient.instance().getFullURL(url)} target="_blank"><button>DOWNLOAD</button></a>
 					default:
 						console.log("entity mime not supported:", mime);
 						break;
@@ -74,13 +85,23 @@ class ToolView extends React.Component {
 		//show loading till we have fetched all
 		var header = <ModalHeader title={"loading"} />
 		var content = "loading";
+
 		//build content view when we have all data
 		if(this.state.nodeEntity) {
 			//make header
 			var title =  this.state.nodeEntity.attributes.title || "";
-			header = <ModalHeader title={title} />
+			var label = "";
+			//display the caterories this tool falls under
+			if(this.state.termEntities) {
+				var labels = this.state.termEntities.map((term) => {
+					return term.path.join("-")
+				});
+				label = labels.join(" ");
+			}
+			header = <ModalHeader label={label} title={title} />
 			//make content
 			var body = (this.state.nodeEntity.attributes.body || {}).value || "";
+			var jsx = buildJSXFromHTML(body);
 			//includes
 			var includes = (this.state.includedEntities || []).map((item) => {
 				return this.renderInclude(item);
@@ -88,24 +109,13 @@ class ToolView extends React.Component {
 			//content part
 			content = (
 				<div>
-					<div dangerouslySetInnerHTML={{__html: body}} />
+					{jsx}
 					{includes}
-					{this.state.newBody}
 				</div>
-
 			)
 		}
+
 		//return the content in a modal view
-		//linking with Link registers a link, which makes routing without page load possible
-		//normal links with <a> don't work
-		//https://www.npmjs.com/package/html-to-react
-
-		var b = [];
-		b.push("ablaba");
-		b.push(<Link to="/taxonomy/term/37">{"aaaa"}</Link>);
-		b.push("ablaba");
-		b.push(<Link to="/taxonomy/term/37">bbb</Link>);
-
 		return (
 			<Modal isOpen={true}>
 				{header}

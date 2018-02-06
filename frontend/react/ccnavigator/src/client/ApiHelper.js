@@ -168,9 +168,9 @@ class ApiHelper {
   }
 
   /**
-   * find a term in the tree
+   * find a term or terms in the tree
    */
-  findInContentHierarchy(entityId, resultHandler) {
+  findInContentHierarchy(entityIds, resultHandler) {
     //recursively walkHierarchy
     var walkHierarchy = function(nodes, search) {
       var found = null;
@@ -187,14 +187,19 @@ class ApiHelper {
     }
     //
     this.buildContentHierarchy(function(hierarchy){
-      var term = walkHierarchy(hierarchy, entityId);
-      resultHandler(term);
+      var result = null;
+      if(Array.isArray(entityIds)) {
+        console.log('a','aaaa')
+        result = entityIds.map((id) => {
+          return walkHierarchy(hierarchy, id);
+        });
+      } else {
+        result = walkHierarchy(hierarchy, entityIds);
+      }
+      resultHandler(result);
     });
   }
 
-  nodeGetCategories(node) {
-    
-  }
 
 }
 

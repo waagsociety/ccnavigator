@@ -2,12 +2,13 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import reducer from './reducers'
-
+import { css } from 'aphrodite';
 //custom
+import reducer from './reducers'
 import App from 'containers/App'
 import StoreIO from 'client/StoreIO'
 import ApiHelper from 'client/ApiHelper'
+import { Style } from './style.js';
 
 //create redux store
 const store = createStore(reducer)
