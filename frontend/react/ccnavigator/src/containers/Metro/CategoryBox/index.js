@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 //own imports
 import { Style } from './style.js';
 import { groupBy} from "util/utility.js"

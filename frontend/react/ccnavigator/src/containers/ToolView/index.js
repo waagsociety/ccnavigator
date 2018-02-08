@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
@@ -48,6 +48,14 @@ class ToolView extends React.Component {
   onFlag() {
 		var entityId = this.props.match.params.id;
     this.props.dispatch(setToolStatus(entityId, "todo"));
+  }
+
+	/**
+	 * flag button hit
+	 */
+  onUnflag() {
+		var entityId = this.props.match.params.id;
+    this.props.dispatch(setToolStatus(entityId, null));
   }
 
 	/**
@@ -115,11 +123,19 @@ class ToolView extends React.Component {
 			)
 		}
 
+		let button = null;
+		console.log("f", this.props.flagged)
+		if(!this.props.flagged) {
+			button = <button onClick={this.onFlag.bind(this)}>flag</button>
+		} else {
+			button = <button onClick={this.onUnflag.bind(this)}>unflag</button>
+		}
+
 		//return the content in a modal view
 		return (
 			<Modal isOpen={true}>
 				{header}
-				<button onClick={this.onFlag.bind(this)}>flag</button>
+				{button}
 				{content}
 			</Modal>
 		)
@@ -129,7 +145,7 @@ class ToolView extends React.Component {
 
 //connect the status prop to the record for this tool in redux
 const mapStateToProps = (state, ownProps) => ({
-  tool: state.tools.find((item) => {return item.uuid === ownProps.entityId})
+  flagged: state.tools.find((item) => {return item.uuid === ownProps.match.params.id})
 })
 ToolView = connect(mapStateToProps)(ToolView)
 

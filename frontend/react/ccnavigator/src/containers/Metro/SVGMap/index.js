@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 import { Style } from './style.js';
 import { connect } from 'react-redux';
 import { setZoomLevelHigh} from 'actions'

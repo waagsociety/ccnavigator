@@ -53,7 +53,7 @@ class App extends React.Component {
 		var about = (<Modal isOpen={true}>about bla bla</Modal>)
     return (
 			<Router>
-				<div style={{width:"100%",height:"100%", overflow:"hidden"}}>
+				<div style={{width:"100%",height:"100vh", overflow:"hidden"}}>
           <MediaQuery minWidth={1224}>
             <Panel />
             <div style={{width:"80%",height:"100%",float:"left"}}>

@@ -5,11 +5,6 @@ export const setToolStatus = (uuid, status) => ({
   status: status
 })
 
-export const removeTool = (uuid) => ({
-  type: 'REMOVE_TOOL',
-  uuid: uuid
-})
-
 export const clearTools = () => ({
   type: 'CLEAR_TOOLS'
 })
@@ -24,12 +19,6 @@ export const setUser = (user) => ({
 export const setLanguage = (lang) => ({
   type: 'SET_LANGUAGE',
   language: lang
-})
-
-//regarding what to show in modal window
-export const setActiveEntity = (entity) => ({
-  type: 'SET_ACTIVE_ENTITY',
-  entity: entity
 })
 
 //regarding zoomlevel of the map

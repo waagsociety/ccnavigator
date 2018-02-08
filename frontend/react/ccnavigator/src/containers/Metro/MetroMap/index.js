@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 import { Style, RawStyle } from './style.js';
 import { Metro1 as MetroLayout } from "./layout.js"
 import CurvedPolyline from "util/curved_polyline.js"

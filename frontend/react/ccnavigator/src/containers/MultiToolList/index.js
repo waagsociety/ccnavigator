@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 //
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'

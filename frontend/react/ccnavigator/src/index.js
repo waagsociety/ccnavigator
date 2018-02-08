@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 //custom
 import reducer from './reducers'
 import App from 'containers/App'

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import ToolSelectedList from './ToolSelectedList'
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
 import Login from "containers/Login"
 import LanguageSelector from "containers/LanguageSelector"

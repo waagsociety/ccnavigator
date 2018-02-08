@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { css } from 'aphrodite';
-import { removeTool } from 'actions'
+import { css } from 'util/aphrodite-custom.js';
+import { setToolStatus } from 'actions'
 import Style from './style.js';
 
 class ToolSelectedListItem extends React.Component {
@@ -32,7 +32,7 @@ class ToolSelectedListItem extends React.Component {
 	}
 
 	onDelete(evt) {
-		this.props.dispatch(removeTool(this.props.entityId));
+		this.props.dispatch(setToolStatus(this.props.entityId, null));
 	}
 
   render() {

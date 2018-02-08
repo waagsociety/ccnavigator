@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+const parse5 = require('parse5');
 
 /**
   * groups the items in an array like [0,1,2,3,4] with len == 2 becomes [[0,1],[2,3],[4]]
@@ -62,7 +63,7 @@ export const abbreviateString2 = function(string = "", transitionState) {
  * rebuild user formatted HTML string from CMS
  * convert simple html (replacing <a> with <link>), limit node types supported
  */
-const parse5 = require('parse5');
+
 export const buildJSXFromHTML = function(htmlString) {
 
   const convertAttributes = function(attributes, mapping) {

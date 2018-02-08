@@ -40,9 +40,10 @@ const toolsReducer = (state = [], action) => {
   switch (action.type) {
     case 'CLEAR_TOOLS':
       return [];
-    case 'REMOVE_TOOL':
-      return state.filter((elem) => {return (elem.uuid !== action.uuid)})
     case 'SET_TOOL_STATUS':
+      if(action.status === null) {
+        return state.filter((elem) => {return (elem.uuid !== action.uuid)})
+      }
       var newState = []
       if(state.find( elem => elem.uuid === action.uuid )) {
         newState = state.map( (elem) => {

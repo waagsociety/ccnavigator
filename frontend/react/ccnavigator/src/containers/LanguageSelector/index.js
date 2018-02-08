@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
 import { setLanguage } from '../../actions'
 

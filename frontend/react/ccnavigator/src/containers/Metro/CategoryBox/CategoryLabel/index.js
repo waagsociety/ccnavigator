@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { css } from 'aphrodite';
+import { css } from 'util/aphrodite-custom.js';
 //own imports
 import { abbreviateString} from "util/utility.js"
 import { Style } from './style.js';

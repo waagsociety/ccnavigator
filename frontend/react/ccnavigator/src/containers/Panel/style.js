@@ -1,4 +1,4 @@
-import { StyleSheet } from 'aphrodite';
+import { StyleSheet } from 'util/aphrodite-custom.js';
 
 const Style = StyleSheet.create({
     container: {
