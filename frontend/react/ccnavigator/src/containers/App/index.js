@@ -44,20 +44,28 @@ class App extends React.Component {
    * calculate & Update state of new dimensions
    */
   updateDimensions() {
-  	let update_width  = window.innerWidth;
-    let update_height = window.innerHeight;
-    this.setState({ width: update_width, height: update_height });
+  	//let update_width  = window.innerWidth;
+    //let update_height = window.innerHeight;
+    //this.setState({ width: update_width, height: update_height });
   }
 
   render() {
 		var about = (<Modal isOpen={true}>about bla bla</Modal>)
     return (
 			<Router>
-				<div>
+				<div style={{width:"100%",height:"100%", overflow:"hidden"}}>
           <MediaQuery minWidth={1224}>
             <Panel />
+            <div style={{width:"80%",height:"100%",float:"left"}}>
+              <Metro />
+            </div>
           </MediaQuery>
-	        <Metro width={this.state.width} height={this.state.width} />
+          <MediaQuery maxWidth={1224}>
+            <div style={{width:"100%",height:"80%",float:"left"}}>
+              <Metro />
+            </div>
+          </MediaQuery>
+
 					<Route path="/about" render={() => about } />
 					<Route path="/tool-list/:id" component={ToolList} />
 					<Route path="/multi-tool-list/:id" component={MultiToolList} />

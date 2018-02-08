@@ -3,8 +3,9 @@ import { StyleSheet } from 'aphrodite';
 const Style = StyleSheet.create({
     container: {
       backgroundColor: 'white',
-      height: "100vh",
-      width: "20%"
+      height: "100%",
+      width: "20%",
+      float: "left"
     },
     hover: {
         ':hover': {

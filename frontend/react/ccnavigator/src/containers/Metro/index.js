@@ -4,12 +4,23 @@ import { connect } from 'react-redux'
 import SVGMap from "./SVGMap"
 import MetroMap from "./MetroMap"
 import CategoryBox from "./CategoryBox"
+import Style from './style.js';
+import { css } from 'aphrodite';
+import sizeMe from 'react-sizeme'
 
 class Metro extends React.Component {
 
-	/**
-	 *
-	 */
+	state = {
+    dimensions: {
+      width: -1,
+      height: -1
+    }
+  }
+
+	constructor(props) {
+		super(props);
+	}
+
 	componentDidMount() {
 		this.update();
 	}
@@ -63,17 +74,24 @@ class Metro extends React.Component {
 	 * mix the static map with rendered labels/category boxes
 	 */
 	render() {
+
+		//content boxes
 		if(this.state && this.state.data) {
 			var categoryBoxes = this.flattenTree(this.state.data).map((termEntity, index) => {
 				return <CategoryBox key={termEntity.path} entity={termEntity} />
 			});
 		}
+		//component rerenders on resize because of size me, could also be solved with react-measure
 		return (
-			<SVGMap ref={(elem) => { this.svgMap = elem }} width={this.props.width} height={this.props.height} >
-							<MetroMap/>
-							{categoryBoxes}
-			</SVGMap>
-    );
+			<div style={{width:"100%", height:"100%"}} >
+				<SVGMap width={this.props.size.width} height={this.props.size.height} >
+					<MetroMap/>
+					{categoryBoxes}
+				</SVGMap>
+			</div>
+		)
+
+
 	}
 }
 
@@ -84,6 +102,7 @@ const mapStateToProps = (state, ownProps) => ({
   language: state.language
 })
 
+Metro = sizeMe({ monitorHeight: true })(Metro)
 Metro = connect(mapStateToProps)(Metro)
 
 export default Metro;

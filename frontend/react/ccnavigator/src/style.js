@@ -16,10 +16,9 @@ const { StyleSheet: ExtendedStyleSheet, css: newCss } = StyleSheet.extend([exten
  */
 export const Style = ExtendedStyleSheet.create({
     globals: {
-        '*body': {
-            background: '#2ae',
-            margin: '0'
-        },
+      '*body': {
+        background: '#2ae'
+      }
     }
 });
 /*

@@ -10,7 +10,7 @@ class SVGMap extends React.Component {
 		super(props);
 		this.state = {
       matrix: [1, 0, 0, 1, 0, 0],
-      viewBox: [0, 0, this.props.width, this.props.height],
+      viewBox: [0, 0, this.props.width, this.props.height], /* default view box */
 			buttonHeld: false,
       dragging: false,
 			startX: 0,
@@ -135,7 +135,7 @@ class SVGMap extends React.Component {
 	           ref={(elem) => { this.svgElement = elem }}
 	           cnt = {this.state.animate}
 	           viewBox = {this.state.viewBox.join(" ")}
-						 className={css(Style.container)}
+						 className={css(Style.svg)}
 	  		>
 			    {this.props.children}
 	  		</svg>

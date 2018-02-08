@@ -1,7 +1,11 @@
 import { StyleSheet } from "aphrodite";
 
-export const Style = StyleSheet.create({
+const Style = StyleSheet.create({
   container: {
-    background:"#ddd"
+    background:"#ddd",
+    width:"100px",
+    height:"100px"
   }
 });
+
+export default Style;

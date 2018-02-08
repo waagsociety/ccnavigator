@@ -3,7 +3,10 @@ import { StyleSheet } from "aphrodite";
 export const Style = StyleSheet.create({
   container: {
     background:"#ccd",
-    position:"relative"
+    position:"relative",
+  },
+  svg: {
+    position:"absolute"
   },
   buttons: {
     "position": "absolute",
