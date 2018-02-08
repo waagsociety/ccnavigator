@@ -1,13 +1,12 @@
 import React from 'react';
 import Panel from "containers/Panel"
 import Metro from "containers/Metro"
-import Login from "containers/Login"
 import Modal from "components/Modal.js"
 import ToolList from "containers/ToolList"
 import MultiToolList from "containers/MultiToolList"
 import ToolView from "containers/ToolView"
-import LanguageSelector from "containers/LanguageSelector"
 import GlossaryItem from "containers/GlossaryItem"
+import MediaQuery from 'react-responsive';
 
 import {
   BrowserRouter as Router,
@@ -51,37 +50,13 @@ class App extends React.Component {
   }
 
   render() {
-		//define what to render based upon active entity, why not use link and router?
-    /*
-    var modalContent = null;
-		if(this.props.activeEntity) {
-			switch (this.props.activeEntity.type) {
-				case "taxonomy_term--category":
-					if(this.props.activeEntity.children.length > 0) {
-						//a term with subcategories require a different layout
-						modalContent = <ToolList entity={this.props.activeEntity} />
-					}
-					else {
-						//a term ??
-						modalContent = <ToolList entity={this.props.activeEntity} />
-					}
-					break;
-				case "node--tool":
-					modalContent = <ToolView entity={this.props.activeEntity} />
-					break;
-				default:
-			}
-		}
-    */
-
 		var about = (<Modal isOpen={true}>about bla bla</Modal>)
-
     return (
 			<Router>
 				<div>
-	        <Login />
-	        <Panel />
-					<LanguageSelector/>
+          <MediaQuery minWidth={1224}>
+            <Panel />
+          </MediaQuery>
 	        <Metro width={this.state.width} height={this.state.width} />
 					<Route path="/about" render={() => about } />
 					<Route path="/tool-list/:id" component={ToolList} />

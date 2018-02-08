@@ -1,22 +1,14 @@
 import { StyleSheet } from 'aphrodite';
 
 const Style = StyleSheet.create({
-    red: {
-        backgroundColor: 'yellow',
-        width:"600px"
-    },
-
-    blue: {
-        backgroundColor: 'blue'
+    container: {
+      backgroundColor: 'white',
+      height: "100vh",
+      width: "20%"
     },
     hover: {
         ':hover': {
             backgroundColor: 'red'
-        }
-    },
-    small: {
-        '@media (max-width: 600px)': {
-            backgroundColor: 'red',
         }
     }
 });

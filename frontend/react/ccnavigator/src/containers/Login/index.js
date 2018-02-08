@@ -79,7 +79,7 @@ class Login extends React.Component {
 	render() {
 		//make a ref to the div so we can use it for snap
 		return (
-			<div style={{width:"300px",background:"#ddd"}}>
+			<div style={{background:"#ddd"}}>
 				<input type="text" ref={(elem) => { this.userField = elem; }} />
         <input type="password" ref={(elem) => { this.passField = elem; }} />
         <input type="submit" onClick={ this.onLogin.bind(this)} />

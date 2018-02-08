@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import ToolSelectedList from './ToolSelectedList'
 import { css } from 'aphrodite';
 import Style from './style.js';
+import Login from "containers/Login"
+import LanguageSelector from "containers/LanguageSelector"
 
 class Panel extends React.Component {
 
@@ -26,10 +28,12 @@ class Panel extends React.Component {
 			user = <div>{name}</div>
 		}
 		return (
-			<div className={css(Style.red)} style={{display:"inline-block"}}>
-			{indicator}
-			{user}
-			<ToolSelectedList/>
+			<div className={css(Style.container)}>
+				<Login/>
+				<LanguageSelector/>
+				{indicator}
+				{user}
+				<ToolSelectedList/>
       </div>
     );
 	}
