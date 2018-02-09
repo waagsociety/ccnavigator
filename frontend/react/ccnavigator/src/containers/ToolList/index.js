@@ -27,7 +27,7 @@ class ToolList extends React.Component {
 	componentDidMount() {
 		var entityId = this.props.match.params.id;
 		//get hierarchy path of this term
-		ApiHelper.instance().findInContentHierarchy(entityId, function(term) {
+		ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
 			console.debug("hierarchical term data, concise info on terms and nodes", term)
 			this.setState({termHierachy: term});
 		}.bind(this));
@@ -64,7 +64,7 @@ class ToolList extends React.Component {
 			var termDescription = (this.state.termEntity.attributes.description || {}).value || "";
 			var tools = this.state.nodeEntities.map((node) => {
 				return (
-					<li className={css(Style.tool)}>
+					<li key={node.id} className={css(Style.tool)}>
 						<Link to={`/tool/${node.id}`}>
 							<span>{node.attributes.title}</span>
 						</Link>

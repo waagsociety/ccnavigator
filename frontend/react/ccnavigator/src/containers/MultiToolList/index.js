@@ -25,7 +25,7 @@ class MultiToolList extends React.Component {
 	componentDidMount() {
 		var entityId = this.props.match.params.id;
 		//get hierarchy path of this term
-		ApiHelper.instance().findInContentHierarchy(entityId, function(term) {
+		ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
 			console.debug("hierarchical term data, concise info on terms and nodes", term)
 			this.setState({termHierachy: term});
 		}.bind(this));

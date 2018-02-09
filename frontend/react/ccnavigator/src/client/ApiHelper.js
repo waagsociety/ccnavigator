@@ -145,7 +145,6 @@ class ApiHelper {
    */
   buildContentHierarchy(resultHandler) {
     //return cache if available
-    console.log("this", this)
     if(this.cache.contentHierarchy) {
       resultHandler(this.cache.contentHierarchy);
       return;
@@ -154,7 +153,7 @@ class ApiHelper {
     ApiClient.instance().fetchContent("taxonomy_term--category", null, ["name", "parent"], null, function(vocabulary) {
 			if(vocabulary) {
 				//get all tool nodes
-				ApiClient.instance().fetchContent("node--tool", null, ["field_category"], null, function(toolData) {
+				ApiClient.instance().fetchContent("node--tool", null, ["title", "field_category"], null, function(toolData) {
 					if(toolData) {
 						//restructure / extend the vocabulary data
 						var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
@@ -170,15 +169,17 @@ class ApiHelper {
   /**
    * find a term or terms in the tree
    */
-  findInContentHierarchy(entityIds, resultHandler) {
+  findTermInContentHierarchy(entityIds, resultHandler) {
     //recursively walkHierarchy
-    var walkHierarchy = function(nodes, search) {
+    var walkHierarchy = function(terms, search) {
       var found = null;
-      for(var i=0;i<nodes.length;i++) {
-        if(nodes[i].id === search) {
-          return nodes[i];
+      for(var i=0;i<terms.length;i++) {
+        //find here
+        if(terms[i].id === search) {
+          return terms[i];
         }
-        found = walkHierarchy(nodes[i].children, search);
+        //find deeper
+        found = walkHierarchy(terms[i].children, search);
         if(found) {
           return found;
         }
@@ -189,10 +190,10 @@ class ApiHelper {
     this.buildContentHierarchy(function(hierarchy){
       var result = null;
       if(Array.isArray(entityIds)) {
-        console.log('a','aaaa')
         result = entityIds.map((id) => {
           return walkHierarchy(hierarchy, id);
         });
+        result = result.filter(function(t){ return t !== null });
       } else {
         result = walkHierarchy(hierarchy, entityIds);
       }
@@ -200,6 +201,42 @@ class ApiHelper {
     });
   }
 
+  /**
+   * find a node in the content hierarchy
+   */
+  findNodeInContentHierarchy(entityIds, resultHandler) {
+    //recursively walkHierarchy
+    var walkHierarchy = function(terms, search) {
+      var found = null;
+      for(var i=0;i<terms.length;i++) {
+        var nodes = terms[i].nodes || []
+        //find here
+        found = nodes.filter((node) => { return (node.id === search) })[0]
+        if(found) {
+          return found;
+        }
+        //find deeper
+        found = walkHierarchy(terms[i].children, search);
+        if(found) {
+          return found;
+        }
+      }
+      return null;
+    }
+    //
+    this.buildContentHierarchy(function(hierarchy){
+      var result = null;
+      if(Array.isArray(entityIds)) {
+        result = entityIds.map((id) => {
+          return walkHierarchy(hierarchy, id);
+        });
+        result = result.filter(function(n){ return n !== null });
+      } else {
+        result = walkHierarchy(hierarchy, entityIds);
+      }
+      resultHandler(result);
+    });
+  }
 
 }
 

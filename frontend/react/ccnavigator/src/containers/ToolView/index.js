@@ -34,7 +34,7 @@ class ToolView extends React.Component {
 			var categoryIds = (((node.relationships || {}).field_category || {}).data || []).map((cat) => {
 				return cat.id;
 			});
-			ApiHelper.instance().findInContentHierarchy(categoryIds, function(terms) {
+			ApiHelper.instance().findTermInContentHierarchy(categoryIds, function(terms) {
 				this.setState({
 					termEntities: terms
 				});
@@ -62,6 +62,7 @@ class ToolView extends React.Component {
 	 * render image or whatever
 	 */
 	renderInclude(item) {
+		console.log("ite", item)
 		switch(item.type) {
 			case "file--file":
 				var mime = (item.attributes || {}).filemime;
@@ -69,11 +70,11 @@ class ToolView extends React.Component {
 					case "image/jpeg":
 						var filename = (item.attributes || {}).filename;
 						var url = (item.attributes || {}).url;
-						return <img className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
+						return <img key={item.id} className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
 					case "application/pdf":
 						var filename = (item.attributes || {}).filename;
 						var url = (item.attributes || {}).url;
-						return <a href={ApiClient.instance().getFullURL(url)} target="_blank"><button>DOWNLOAD</button></a>
+						return <a key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank"><button>DOWNLOAD</button></a>
 					default:
 						console.log("entity mime not supported:", mime);
 						break;
@@ -93,7 +94,6 @@ class ToolView extends React.Component {
 		//show loading till we have fetched all
 		var header = <ModalHeader title={"loading"} />
 		var content = "loading";
-
 		//build content view when we have all data
 		if(this.state.nodeEntity) {
 			//make header
@@ -122,15 +122,13 @@ class ToolView extends React.Component {
 				</div>
 			)
 		}
-
+		//make flag or unflag button
 		let button = null;
-		console.log("f", this.props.flagged)
 		if(!this.props.flagged) {
 			button = <button onClick={this.onFlag.bind(this)}>flag</button>
 		} else {
 			button = <button onClick={this.onUnflag.bind(this)}>unflag</button>
 		}
-
 		//return the content in a modal view
 		return (
 			<Modal isOpen={true}>
@@ -140,7 +138,6 @@ class ToolView extends React.Component {
 			</Modal>
 		)
 	}
-
 }
 
 //connect the status prop to the record for this tool in redux
