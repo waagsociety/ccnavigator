@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, css } from "aphrodite";
+import { StyleSheet, css } from 'util/aphrodite-custom.js';
 import { Link } from 'react-router-dom'
 
 const style = StyleSheet.create({
@@ -8,8 +8,16 @@ const style = StyleSheet.create({
   },
   close:{
     position:"absolute",
-    right:"1%",
-    top:"1%"
+    right:"10px",
+    top:"10px"
+  },
+  row:{
+    display:"flex",
+    "flex-flow":"row"
+  },
+  cell:{
+    display:"flex",
+    "align-items": "center"
   },
   label:{
     background:"black",
@@ -17,17 +25,15 @@ const style = StyleSheet.create({
     color: "white",
     "font-size": "16px",
     "text-transform": "uppercase",
-    display: "inline-block",
-    padding: "0% 20%",
+    padding: "0 8px",
     "white-space": "nowrap"
   },
   title:{
     color: "black",
     "font-size": "36px",
     "font-weight": "bold",
-    display: "inline-block",
-    padding: "0% 20%",
-    "white-space": "nowrap"
+    "white-space": "nowrap",
+    "padding": "0 18px"
   },
   subTitle:{
     color: "black",
@@ -46,14 +52,10 @@ const ModalHeader = (props) =>
       <span className={css(style.close)}>&times;</span>
     </Link>
     <div className={css(style.inset)}>
-      <table>
-        <tbody>
-          <tr>
-            <td><span className={css(style.label)}>{props.label}</span></td>
-            <td><span className={css(style.title)}>{props.title}</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <div className={css(style.row)}>
+        <div className={css(style.cell)}><div className={css(style.label)}>{props.label}</div></div>
+        <div className={css(style.cell)}><h3 className={css(style.title)}>{props.title}</h3></div>
+      </div>
       <div>
         <span className={css(style.subTitle)}>{props.subTitle}</span>
       </div>
