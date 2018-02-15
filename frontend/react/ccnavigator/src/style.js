@@ -1,42 +1,22 @@
 import {StyleSheet, css} from "util/aphrodite-custom.js"
+import { Constants } from 'config/Constants.js';
 
 /**
  * global styles
  */
-
-const MaaxRegular = {
-  fontFamily: "Maax",
-  fontStyle: "normal",
-  fontWeight: "400",
-  src: "url('/fonts/MaaxRegular.otf') format('opentype')"
-};
-const MaaxRegularItalic = {
-  fontFamily: "Maax",
-  fontStyle: "italic",
-  fontWeight: "400",
-  src: "url('/fonts/MaaxRegularItalic.otf') format('opentype')"
-};
-const MaaxMedium = {
-  fontFamily: "Maax",
-  fontStyle: "normal",
-  fontWeight: "700",
-  src: "url('/fonts/MaaxMedium.otf') format('opentype')"
-};
-
-
 const Style = StyleSheet.create({
     globals: {
       '*body': {
         margin: 0,
-        background: '#2ae',
-        fontFamily: [MaaxRegular],
+        background: [Constants.colors.background],
+        fontFamily: [Constants.font400],
         fontSize: 18
       },
       '*em': {
-        fontFamily: [MaaxRegularItalic],
+        fontFamily: [Constants.font400Italic],
       },
       '*h1, h2, h3, h4, h5, th, strong': {
-        fontFamily: [MaaxMedium],
+        fontFamily: [Constants.font700],
         fontWeight: '700'
       },
       '*a': {
@@ -50,6 +30,7 @@ const Style = StyleSheet.create({
       }
     }
 });
+
 /*
  * generate global css
  */
