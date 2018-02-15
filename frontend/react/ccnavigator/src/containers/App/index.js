@@ -61,7 +61,10 @@ class App extends React.Component {
             </div>
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
-            <div style={{width:"100%",height:"80%",float:"left"}}>
+            <div style={{width:"100%",height:"20%",background:"white"}}>
+              <Panel />
+            </div>
+            <div style={{width:"100%",height:"80%"}}>
               <Metro />
             </div>
           </MediaQuery>
