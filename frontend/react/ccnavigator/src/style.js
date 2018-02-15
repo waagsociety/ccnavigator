@@ -9,15 +9,20 @@ const Style = StyleSheet.create({
       '*body': {
         margin: 0,
         background: [Constants.colors.background],
-        fontFamily: [Constants.font400],
+        fontFamily: [Constants.fonts.default],
         fontSize: 18
       },
       '*em': {
-        fontFamily: [Constants.font400Italic],
+        fontFamily: [Constants.fonts.defaultItalic],
       },
-      '*h1, h2, h3, h4, h5, th, strong': {
-        fontFamily: [Constants.font700],
+      '*strong, th': {
+        fontFamily: [Constants.fonts.defaultBold],
         fontWeight: '700'
+      },
+      '*h1, h2, h3, h4, h5': {
+        fontFamily: [Constants.fonts.headings],
+        fontWeight: '700',
+        margin: '0'
       },
       '*a': {
         transition: 'color 200ms ease'
@@ -25,8 +30,8 @@ const Style = StyleSheet.create({
       '*div': {
         boxSizing: 'border-box'
       },
-      ':focus': {
-        outline: 'none'
+      '*:focus': {
+        outline: '0'
       }
     }
 });

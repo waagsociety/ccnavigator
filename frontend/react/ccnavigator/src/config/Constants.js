@@ -1,22 +1,30 @@
 
 export const Constants = {
-  'font400' : {
-    fontFamily: "Maax",
-    fontStyle: "normal",
-    fontWeight: "400",
-    src: "url('/fonts/MaaxRegular.otf') format('opentype')"
-  },
-  'font400Italic' : {
-    fontFamily: "Maax",
-    fontStyle: "italic",
-    fontWeight: "400",
-    src: "url('/fonts/MaaxRegularItalic.otf') format('opentype')"
-  },
-  'font700' : {
-    fontFamily: "Maax",
-    fontStyle: "normal",
-    fontWeight: "700",
-    src: "url('/fonts/MaaxMedium.otf') format('opentype')"
+  'fonts' : {
+    'default' : {
+      fontFamily: 'Maax',
+      fontStyle: 'normal',
+      fontWeight: '400',
+      src: 'url("/fonts/MaaxRegular.otf") format("opentype")'
+    },
+    'defaultItalic' : {
+      fontFamily: 'Maax',
+      fontStyle: 'italic',
+      fontWeight: '400',
+      src: 'url("/fonts/MaaxRegularItalic.otf") format("opentype")'
+    },
+    'defaultBold' : {
+      fontFamily: 'Maax',
+      fontStyle: 'normal',
+      fontWeight: '700',
+      src: 'url("/fonts/MaaxMedium.otf") format("opentype")'
+    },
+    'headings' : {
+      fontFamily: 'Maax',
+      fontStyle: 'normal',
+      fontWeight: '700',
+      src: 'url("/fonts/MaaxMedium.otf") format("opentype")'
+    },
   },
   'colors' : {
     'text': '#000',

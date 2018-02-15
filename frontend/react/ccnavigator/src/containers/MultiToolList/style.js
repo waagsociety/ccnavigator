@@ -1,15 +1,16 @@
 import { StyleSheet } from "aphrodite";
+import { Constants } from "config/Constants";
 
 export const Style = StyleSheet.create({
   container: {
-    background: "#cce",
+    padding: '2rem'
   },
   box: {
-    margin:"5px",
-    background:"#ddd"
+    marginBottom: '1rem',
+    padding: '1rem',
+    background: '#fff'
   },
   term: {
-    background: "#ddd",
-    "font-weight": "bold"
+    fontWeight: '700'
   }
 });
