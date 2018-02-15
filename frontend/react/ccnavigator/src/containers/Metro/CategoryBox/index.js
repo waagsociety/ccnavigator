@@ -8,19 +8,19 @@ import { Link } from 'react-router-dom'
 
 class CategoryBox extends React.Component {
 
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
     this.state = {
       shortLabels: true
     }
-	}
+  }
 
   componentDidMount() {
   }
 
-	/**
+  /**
    *
-	 */
+   */
   render() {
       var termEntity = this.props.entity;
       var path = termEntity.path.join("-");
@@ -39,19 +39,19 @@ class CategoryBox extends React.Component {
       //return category box, max 3 labels on a line
       return (
         <foreignObject width="100%" height="100%" className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
-					<div className={css(Style["category-box"],Style["no-select"])}>
-						<Link to={`/multi-tool-list/${this.props.entity.id}`}>
-							<span>
-								{termEntity.attributes.name}
-	            </span>
-						</Link>
+          <div className={css(Style["category-box"],Style["no-select"])}>
+            <h3>
+              <Link to={`/multi-tool-list/${this.props.entity.id}`} className={css(Style["category-title"])}>
+                {termEntity.attributes.name}
+              </Link>
+            </h3>
             <div>
               {groupedLabels}
             </div>
           </div>
         </foreignObject>
       )
-	}
+  }
 }
 
 export default CategoryBox;

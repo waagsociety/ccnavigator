@@ -1,26 +1,24 @@
 import { StyleSheet } from "aphrodite";
 
 export const RawStyle = {
-    "label": {
-      background: "white",
-      color: "black",
-      "margin-left": "20px",
-      "margin-top": "20px",
-      display: "inline-block",
-      padding: "5px",
-      transition: "width 2s",
-      "font-family": "Monaco", /* monospaced font */
-      "white-space": "pre",
-      ":hover": {
-      },
-      "text-transform": "capitalize",
-      "border-radius": "5px",
-      "font-size" : "8pt",
-      "font-weight": "bold",
-      "user-select": "none"
+    'label': {
+      background: 'white',
+      color: 'black',
+      marginRight: '0.5rem',
+      marginTop: '0.5rem',
+      display: 'inline-block',
+      padding: '3px 6px',
+      transition: 'width 2s',
+      fontFamily: 'Monaco', /* monospaced font */
+      whiteSpace: 'pre',
+      textTransform: 'capitalize',
+      borderRadius: '5px',
+      fontSize: '8pt',
+      FontWeight: 'bold',
+      userSelect: 'none'
     },
-    "dots": {
-      color: "#27BDBE"
+    'dots': {
+      color: '#27BDBE'
     }
 };
 

@@ -8,7 +8,7 @@ const Style = StyleSheet.create({
     globals: {
       '*body': {
         margin: 0,
-        background: [Constants.colors.background],
+        backgroundColor: [Constants.colors.background],
         fontFamily: [Constants.fonts.default],
         fontSize: 18
       },
@@ -25,10 +25,14 @@ const Style = StyleSheet.create({
         margin: '0'
       },
       '*a': {
+        color: [Constants.colors.text],
         transition: 'color 200ms ease'
       },
       '*div': {
         boxSizing: 'border-box'
+      },
+      '*button': {
+        cursor: 'pointer'
       },
       '*:focus': {
         outline: '0'

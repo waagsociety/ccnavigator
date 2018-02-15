@@ -121,7 +121,7 @@ class SVGMap extends React.Component {
     //matrix zoom works in ie only if we edit the content of the svg when we modify the transform
     //var matrix = `matrix(${this.state.matrix.join(' ')})`;
     return (
-      <div className={css(Style.container)}>
+      <div>
         <svg version="1.1"
             width={this.props.width + "px"}
             height={this.props.height + "px"}

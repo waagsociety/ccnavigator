@@ -1,5 +1,4 @@
 import { StyleSheet } from "aphrodite";
-import { Constants } from "config/Constants";
 
 export const Style = StyleSheet.create({
   container: {
