@@ -1,6 +1,6 @@
 const Config = {
 	endPoint : {
-		host: "l2thel.local",
+		host: "ccn.localhost",
     port: "80",
     protocol: "http"
   },

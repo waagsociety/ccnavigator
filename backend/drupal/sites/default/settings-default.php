@@ -764,9 +764,9 @@ $settings['file_scan_ignore_directories'] = [
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array (
-  'database' => 'ccnavigator',
-  'username' => 'drupal',
-  'password' => 'drupal',
+  'database' => 'ccn',
+  'username' => 'ccn',
+  'password' => 'CYWcOZzpMFgsX9ER',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',
