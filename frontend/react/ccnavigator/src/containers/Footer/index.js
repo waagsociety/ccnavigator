@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
 import Login from "containers/Login"
+import LanguageSelector from "containers/LanguageSelector"
 
 class Footer extends React.Component {
 
@@ -18,8 +19,10 @@ class Footer extends React.Component {
     return (
       <div>
         <Login/>
+        <LanguageSelector/>
         {indicator}
         {user}
+        <p>koek</p>
       </div>
     );
   }

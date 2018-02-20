@@ -4,11 +4,12 @@ const Style = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    height: '1.5rem',
+    alignItems: 'center'
   },
   title: {
-    fontSize: '18px',
-    lineHeight: '1.5rem'
+    fontSize: '1.1em',
   }
 });
 

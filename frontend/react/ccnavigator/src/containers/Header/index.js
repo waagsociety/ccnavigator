@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ToolSelectedList from './ToolSelectedList'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
-import LanguageSelector from "containers/LanguageSelector"
+
 
 class Header extends React.Component {
 
@@ -20,11 +20,8 @@ class Header extends React.Component {
   render() {
     return (
       <div className={css(Style.container)}>
-        <h1 className={css(Style.title)}>Co-Creation Navigator</h1>
-        <div>
-          <LanguageSelector/>
-          <ToolSelectedList/>
-        </div>
+        <h1 className={css(Style.title)}>Co-creation Navigator</h1>
+        <ToolSelectedList/>
       </div>
     );
   }
