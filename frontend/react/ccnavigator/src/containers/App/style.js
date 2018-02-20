@@ -15,6 +15,7 @@ const Style = StyleSheet.create({
   },
   map_container: {
     flexGrow: '1',
+    overflow: 'auto',
   },
   panel: {
     flexGrow: '0',

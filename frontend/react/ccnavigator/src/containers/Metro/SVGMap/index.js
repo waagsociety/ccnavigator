@@ -10,11 +10,22 @@ class SVGMap extends React.Component {
     super(props);
     this.state = {
       matrix: [1, 0, 0, 1, 0, 0],
-      viewBox: [0, 0, this.props.width, this.props.height], /* default view box */
+      viewBox: [180, -80, 900, 900], /* default view box */
       buttonHeld: false,
       dragging: false,
       startX: 0,
       starty: 0
+    }
+
+    console.log("svg map next props a", this.props)
+  }
+
+  //adapt the initial viewBox bigger screens zoom out a bit to show more of the map 
+  componentDidMount() {
+    if((this.props.width > 900) && (this.props.height > 900)) {
+      var s = Math.min(this.props.width,this.props.height);
+      var z = 900 / s;
+      this.zoomWith(z);
     }
   }
 
@@ -117,14 +128,16 @@ class SVGMap extends React.Component {
     }.bind(this), 50);
   }
 
+  /**
+   * the svg will have the full size of its container, view box determines crop
+   */
   render() {
     //matrix zoom works in ie only if we edit the content of the svg when we modify the transform
-    //var matrix = `matrix(${this.state.matrix.join(' ')})`;
     return (
       <div>
         <svg version="1.1"
-            width={this.props.width + "px"}
-            height={this.props.height + "px"}
+            width={this.props.width}
+            height={this.props.height}
             onMouseDown={this.onMousePressed.bind(this)}
             onTouchStart={this.onMousePressed.bind(this)}
             onMouseMove={this.onMouseMove.bind(this)}
