@@ -1,15 +1,22 @@
 import { StyleSheet } from 'util/aphrodite-custom.js';
 
 const Style = StyleSheet.create({
-  container: {
+  header_container: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    height: '1.5rem',
-    alignItems: 'center'
+    alignItems: 'center',
+
+    '@media (orientation: landscape)': {
+      flexDirection: 'column',
+    },
+    '@media (orientation: portrait)': {
+      flexDirection: 'row',
+      height: '1.5em',
+    }
+
   },
   title: {
-    fontSize: '1.1em',
+    fontSize: '1.2em',
   }
 });
 

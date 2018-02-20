@@ -16,6 +16,11 @@ const Style = StyleSheet.create({
   map_container: {
     flexGrow: '1',
   },
+  left_panel: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
   panel: {
     flexGrow: '0',
     backgroundColor: 'white',

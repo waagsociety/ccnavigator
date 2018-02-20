@@ -3,26 +3,23 @@ import { connect } from 'react-redux'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
 import Login from "containers/Login"
+import Logout from "containers/Logout"
 import LanguageSelector from "containers/LanguageSelector"
 
 class Footer extends React.Component {
 
   render() {
-    //set indicator for user logged in
-    var indicator = <div style={{width:"10px",height:"10px",background:(this.props.user ? "green" : "red")}}></div>
-    //
-    var user = null;
+    var userform = null;
     if (this.props.user) {
-      var name = ((this.props.user.data || {}).attributes || {}).name;
-      user = <div>{name}</div>
+      userform = <Logout/>
+    } else {
+      userform = <Login/>
     }
+
     return (
       <div>
-        <Login/>
+        {userform}
         <LanguageSelector/>
-        {indicator}
-        {user}
-        <p>koek</p>
       </div>
     );
   }
