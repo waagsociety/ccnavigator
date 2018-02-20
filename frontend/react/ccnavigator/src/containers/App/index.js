@@ -56,25 +56,25 @@ class App extends React.Component {
     var about = (<Modal isOpen={true}>about bla bla</Modal>)
     return (
       <Router>
-        <div style={{width:"100%", height:"100vh", overflow:"hidden"}}>
+        <div className={css(Style.app_container)}>
           <MediaQuery orientation="landscape">
-            <div className={css(Style.panel)} style={{width:"20%", height:"100%", float:"left"}}>
+            <div className={css([Style.left_panel, Style.panel])} style={{width:'14rem'}}>
               <Header />
               <Footer />
             </div>
-            <div style={{width:"80%", height:"100%", float:"left"}}>
+            <div className={css(Style.map_container)}>
               <Metro />
             </div>
           </MediaQuery>
           <MediaQuery orientation="portrait">
-            <div className={css(Style.panel)} style={{width:"100%", height:"2.5rem", float:"left"}}>
+            <div className={css(Style.panel)} style={{height:'2.5rem'}}>
               <Header />
             </div>
-            <div style={{width:"100%", height:"calc(100% - 10rem)", float:"left"}}>
+            <div className={css(Style.map_container)} style={{height:'1px'}}>
               <Metro />
             </div>
-            <div className={css(Style.panel)} style={{width:"100%", height:"7.5rem", float:"left"}}>
-            <Footer />
+            <div className={css(Style.panel)}>
+              <Footer />
             </div>
           </MediaQuery>
 

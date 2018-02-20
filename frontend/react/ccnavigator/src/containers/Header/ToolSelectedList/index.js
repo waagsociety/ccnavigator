@@ -52,7 +52,7 @@ class ToolSelectedList extends React.Component {
     }
 
     return (
-      <div style={{width:"100%"}}>
+      <div>
         {list}
       </div>
     );
