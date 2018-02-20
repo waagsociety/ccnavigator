@@ -19,7 +19,7 @@ class Header extends React.Component {
 
   render() {
     return (
-      <div className={css(Style.container)}>
+      <div className={css(Style.header_container)}>
         <h1 className={css(Style.title)}>Co-creation Navigator</h1>
         <ToolSelectedList/>
       </div>

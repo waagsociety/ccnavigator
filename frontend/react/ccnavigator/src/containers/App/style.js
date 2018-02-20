@@ -17,6 +17,11 @@ const Style = StyleSheet.create({
     flexGrow: '1',
     overflow: 'auto',
   },
+  left_panel: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
   panel: {
     flexGrow: '0',
     backgroundColor: 'white',
