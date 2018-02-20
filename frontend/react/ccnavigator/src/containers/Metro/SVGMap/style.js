@@ -1,23 +1,27 @@
 import { StyleSheet } from "aphrodite";
 
 export const Style = StyleSheet.create({
-  container: {
-    background:"#ccd",
-    position:"relative",
-  },
   svg: {
-    position:"absolute"
+    position: 'absolute',
   },
   buttons: {
-    "position": "absolute",
-    "font-size": "20px",
-    "right": "0px",
-    "top": "0px",
-    "background": "white",
-    "display": "flex",
-    "flex-direction": "column"
+    position: 'absolute',
+    fontSize: '20px',
+    right: '10px',
+    top: '10px',
+    display: 'flex',
+    flexDirection: 'column'
   },
   button: {
-    "font-size": "20px"
+    marginBottom: '10px',
+    fontSize: '20px',
+    color: '#444',
+    backgroundColor: 'white',
+    border: 'none',
+    borderRadius: '2px',
+
+    ':hover': {
+      color: '#000'
+    }
   }
 });

@@ -1,55 +1,45 @@
 import {StyleSheet, css} from "util/aphrodite-custom.js"
+import { Constants } from 'config/Constants.js';
 
 /**
  * global styles
  */
-
-const MaaxRegular = {
-  fontFamily: "Maax",
-  fontStyle: "normal",
-  fontWeight: "400",
-  src: "url('/fonts/MaaxRegular.otf') format('opentype')"
-};
-const MaaxRegularItalic = {
-  fontFamily: "Maax",
-  fontStyle: "italic",
-  fontWeight: "400",
-  src: "url('/fonts/MaaxRegularItalic.otf') format('opentype')"
-};
-const MaaxMedium = {
-  fontFamily: "Maax",
-  fontStyle: "normal",
-  fontWeight: "700",
-  src: "url('/fonts/MaaxMedium.otf') format('opentype')"
-};
-
-
 const Style = StyleSheet.create({
     globals: {
       '*body': {
         margin: 0,
-        background: '#2ae',
-        fontFamily: [MaaxRegular],
+        backgroundColor: [Constants.colors.background],
+        fontFamily: [Constants.fonts.default],
         fontSize: 18
       },
       '*em': {
-        fontFamily: [MaaxRegularItalic],
+        fontFamily: [Constants.fonts.defaultItalic],
       },
-      '*h1, h2, h3, h4, h5, th, strong': {
-        fontFamily: [MaaxMedium],
+      '*strong, th': {
+        fontFamily: [Constants.fonts.defaultBold],
         fontWeight: '700'
       },
+      '*h1, h2, h3, h4, h5': {
+        fontFamily: [Constants.fonts.headings],
+        fontWeight: '700',
+        margin: '0'
+      },
       '*a': {
+        color: [Constants.colors.text],
         transition: 'color 200ms ease'
       },
       '*div': {
         boxSizing: 'border-box'
       },
-      ':focus': {
-        outline: 'none'
+      '*button': {
+        cursor: 'pointer'
+      },
+      '*:focus': {
+        outline: '0'
       }
     }
 });
+
 /*
  * generate global css
  */

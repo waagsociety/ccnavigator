@@ -1,5 +1,6 @@
 import React from 'react';
-import Panel from "containers/Panel"
+import Header from "containers/Header"
+import Footer from "containers/Footer"
 import Metro from "containers/Metro"
 import Modal from "components/Modal.js"
 import ToolList from "containers/ToolList"
@@ -7,6 +8,8 @@ import MultiToolList from "containers/MultiToolList"
 import ToolView from "containers/ToolView"
 import GlossaryItem from "containers/GlossaryItem"
 import MediaQuery from 'react-responsive';
+import { css } from 'util/aphrodite-custom.js';
+import Style from './style.js';
 
 import {
   BrowserRouter as Router,
@@ -53,19 +56,25 @@ class App extends React.Component {
     var about = (<Modal isOpen={true}>about bla bla</Modal>)
     return (
       <Router>
-        <div style={{width:"100%",height:"100vh", overflow:"hidden"}}>
-          <MediaQuery minWidth={1224}>
-            <Panel />
-            <div style={{width:"80%",height:"100%",float:"left"}}>
+        <div style={{width:"100%", height:"100vh", overflow:"hidden"}}>
+          <MediaQuery orientation="landscape">
+            <div className={css(Style.panel)} style={{width:"20%", height:"100%", float:"left"}}>
+              <Header />
+              <Footer />
+            </div>
+            <div style={{width:"80%", height:"100%", float:"left"}}>
               <Metro />
             </div>
           </MediaQuery>
-          <MediaQuery maxWidth={1224}>
-            <div style={{width:"100%",height:"20%",background:"white"}}>
-              <Panel />
+          <MediaQuery orientation="portrait">
+            <div className={css(Style.panel)} style={{width:"100%", height:"2.5rem", float:"left"}}>
+              <Header />
             </div>
-            <div style={{width:"100%",height:"80%"}}>
+            <div style={{width:"100%", height:"calc(100% - 10rem)", float:"left"}}>
               <Metro />
+            </div>
+            <div className={css(Style.panel)} style={{width:"100%", height:"7.5rem", float:"left"}}>
+            <Footer />
             </div>
           </MediaQuery>
 

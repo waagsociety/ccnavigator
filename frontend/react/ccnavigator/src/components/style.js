@@ -1,14 +1,15 @@
 import { StyleSheet } from 'util/aphrodite-custom.js';
+import { Constants } from 'config/Constants.js';
 
-const labelHeight = 24;
+const labelHeight = 20;
 
 const Style = StyleSheet.create({
   modalOverlay: {
     position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
     background: '#000c',
 
     '@media (min-width: 1224px)': {
@@ -21,12 +22,9 @@ const Style = StyleSheet.create({
     left: '10%',
     right: '10%',
     bottom: '0%',
-    background: '#e5e5e5',
+    background: [Constants.colors.background],
     border: 'none',
-    borderRadius: 0,
-  },
-  container: {
-    background: '#fff'
+    borderRadius: '0',
   },
   close: {
     position: 'absolute',
@@ -36,41 +34,40 @@ const Style = StyleSheet.create({
     color: '#000',
     fontSize: '1.5rem',
     lineHeight: '1.25rem',
+
     ':hover': {
-        color: 'red'
+      color: [Constants.colors.red]
     }
   },
-  row: {
-    display: 'flex',
-    flexFlow: 'row'
+  container: {
+    background: '#fff',
+    padding: '2rem'
   },
-  cell: {
+  titleRow: {
     display: 'flex',
+    flexFlow: 'row',
     alignItems: 'center'
   },
   label: {
-    'background': 'black',
-    'border-radius': labelHeight/2,
-    'color': 'white',
-    'font-size': '14px',
-    'line-height': labelHeight-4,
-    'text-transform': 'uppercase',
-    'padding': '4px 12px 0',
-    'white-space': 'nowrap'
+    margin: '0 1rem 3px 0',
+    padding: '3px 10px 0',
+    background: 'black',
+    borderRadius: labelHeight/2 + 'px',
+    color: 'white',
+    fontSize: '13px',
+    lineHeight: labelHeight-3 + 'px',
+    textTransform: 'uppercase',
+    whiteSpace: 'nowrap'
   },
   title: {
-    'font-size': '34px',
-    'margin': '0',
-    'padding': '0 18px'
+    fontSize: '35px',
+    margin: '0',
+    textTransform: 'lowercase'
   },
   subTitle: {
-    'color': 'black',
-    'font-size': '24px',
-  },
-  inset: {
-    'padding': '2rem'
+    fontSize: '24px',
+    fontWeight: '400'
   }
-
 });
 
 export default Style;
