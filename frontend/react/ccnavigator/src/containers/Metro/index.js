@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import SVGMap from "./SVGMap"
 import MetroMap from "./MetroMap"
 import CategoryBox from "./CategoryBox"
-import Style from './style.js';
-import { css } from 'util/aphrodite-custom.js';
+//import Style from './style.js';
+//import { css } from 'util/aphrodite-custom.js';
 import sizeMe from 'react-sizeme'
 
 class Metro extends React.Component {
@@ -15,10 +15,6 @@ class Metro extends React.Component {
       width: -1,
       height: -1
     }
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   componentDidMount() {

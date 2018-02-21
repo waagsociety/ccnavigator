@@ -66,14 +66,15 @@ class ToolView extends React.Component {
     switch(item.type) {
       case "file--file":
         var mime = (item.attributes || {}).filemime;
+        var filename, url;
         switch(mime) {
           case "image/jpeg":
-            var filename = (item.attributes || {}).filename;
-            var url = (item.attributes || {}).url;
+            filename = (item.attributes || {}).filename;
+            url = (item.attributes || {}).url;
             return <img key={item.id} className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
           case "application/pdf":
-            var filename = (item.attributes || {}).filename;
-            var url = (item.attributes || {}).url;
+            filename = (item.attributes || {}).filename;
+            url = (item.attributes || {}).url;
             return <a key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank"><button>DOWNLOAD</button></a>
           default:
             console.log("entity mime not supported:", mime);

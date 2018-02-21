@@ -1,6 +1,7 @@
 import React from 'react';
 import ApiClient from 'client/ApiClient'
-import { setToolStatus, clearTools, setUser } from 'actions'
+//import { setToolStatus, clearTools, setUser } from 'actions'
+import { setUser } from 'actions'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import StoreIO from 'client/StoreIO.js'

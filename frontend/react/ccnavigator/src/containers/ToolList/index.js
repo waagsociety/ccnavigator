@@ -1,11 +1,11 @@
 import React from 'react';
 import { css } from 'util/aphrodite-custom.js';
+import { Style } from './style.js';
 //
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
-import ToolListItem from "./ToolListItem"
+//import ToolListItem from "./ToolListItem"
 import { connect } from 'react-redux'
-import { Style } from './style.js';
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import { Link } from 'react-router-dom'
