@@ -106,7 +106,7 @@ class ToolView extends React.Component {
       //display the caterories this tool falls under
       if(this.state.termEntities) {
         var labels = this.state.termEntities.map((term) => {
-          return term.path.join("-")
+          return term.path.map(x => x + 1).join("-")
         });
         label = labels.join(" ");
       }

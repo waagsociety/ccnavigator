@@ -29,17 +29,17 @@ class ToolList extends React.Component {
     var entityId = this.props.match.params.id;
     //get hierarchy path of this term
     ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
-      console.debug("hierarchical term data, concise info on terms and nodes", term)
+      //console.log(term)
       this.setState({termHierachy: term});
     }.bind(this));
     //full info on this entity
     ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, function(termEntity) {
-      console.log("full term data", termEntity);
+      //console.log("full term data", termEntity);
       this.setState({termEntity: termEntity});
     }.bind(this));
     //full info on all nodes that have this term
     ApiClient.instance().fetchContent("node--tool", {"field_category.uuid" : entityId}, null, null, function(nodeEntities) {
-      console.log("node entities", nodeEntities);
+      //console.log("node entities", nodeEntities);
       this.setState({nodeEntities: nodeEntities});
     }.bind(this));
   }
@@ -54,13 +54,16 @@ class ToolList extends React.Component {
     //show loading till we have fetched all
     var header = <ModalHeader title={"loading"} />
     var content = "loading";
+
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
+
       //make header
-      var label = "zone " + this.state.termHierachy.path.join("-");
+      var label = "zone " + this.state.termHierachy.path.map(x => x + 1).join("-");
       var title =  this.state.termEntity.attributes.name || "";
       var subTitle = this.state.termEntity.attributes.field_subtitle || "";
       header = <ModalHeader label={label} title={title} subTitle={subTitle} />
+
       //make content
       var termDescription = (this.state.termEntity.attributes.description || {}).value || "";
       var tools = this.state.nodeEntities.map((node) => {
@@ -73,6 +76,7 @@ class ToolList extends React.Component {
           </li>
         )
       });
+
       //compose content of modal
       content = (
         <div className={css(Style.modalBody)}>
@@ -81,6 +85,7 @@ class ToolList extends React.Component {
         </div>
       )
     }
+
     //return the content in a modal view
     return (
       <Modal isOpen={true}>
