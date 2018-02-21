@@ -15,7 +15,7 @@ const Style = StyleSheet.create({
   },
   map_container: {
     flexGrow: '1',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
   left_panel: {
     display: 'flex',
@@ -23,10 +23,13 @@ const Style = StyleSheet.create({
     justifyContent: 'space-between'
   },
   panel: {
+    position: 'relative',
+    zIndex: '100',
     flexGrow: '0',
     backgroundColor: 'white',
     padding: '0.5rem',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    boxShadow: '0 0 0.75rem 0 rgba(0,0,0,0.1)'
   }
 });
 

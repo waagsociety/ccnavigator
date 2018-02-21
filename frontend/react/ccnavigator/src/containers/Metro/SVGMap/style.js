@@ -19,6 +19,7 @@ export const Style = StyleSheet.create({
     backgroundColor: 'white',
     border: 'none',
     borderRadius: '2px',
+    boxShadow: '0 0 0.5rem 0 rgba(0,0,0,0.1)',
 
     ':hover': {
       color: '#000'

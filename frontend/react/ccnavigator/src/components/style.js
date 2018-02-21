@@ -11,20 +11,25 @@ const Style = StyleSheet.create({
     right: '0',
     bottom: '0',
     background: '#000c',
+    overflow: 'auto',
+    padding: '1rem',
+    zIndex: '200',
 
-    '@media (min-width: 1224px)': {
-      left: '20%'
+    '@media (orientation: landscape)': {
+      left: '14rem'
     }
   },
   modalContent: {
-    position: 'absolute',
-    top: '10%',
-    left: '10%',
-    right: '10%',
-    bottom: '0%',
+    position: 'relative',
+    maxWidth: '46rem',
+    margin: '0 auto',
+    //top: '10%',
+    //left: '10%',
+    //right: '10%',
+    //bottom: '0%',
     background: [Constants.colors.background],
-    border: 'none',
-    borderRadius: '0',
+    //border: 'none',
+    //borderRadius: '0',
   },
   close: {
     position: 'absolute',
