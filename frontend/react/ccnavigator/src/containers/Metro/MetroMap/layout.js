@@ -1,15 +1,13 @@
 export const Metro1 = {
   /* corners for the main line */
-  mainLineIn: {
-    points: [[200,350],[450,100],[600,100],[650,150]]
-  },
-  mainLineOut: {
-    points: [[500,700],[450,750],[250,750],[200,700]]
+  mainLine: {
+    points: [[200,350],[400,150],[650,150],[760,260],[760,440],[450,750],[350,750],[200,600]]
   },
   /* corners for the area of the centralArea label positions and lines get generated */
   centralArea: {
-    points: [[650,150],[950,150],[1050,250],[1050,550],[900,700],[500,700],[500,550],[500,300]],
-    center: [800,400]
+    points: [[650,150],[950,150],[1050,250],[1050,550],[900,700],[500,700],[500,300]],
+    endPoints: [[950,150],[1050,250],[1050,550],[900,700],[500,550],[500,300]],
+    center: [763.5,400]
   },
   river: {
     points: [[570,-500],[610,-500],[610,170],[485,295],[485,700],[560,775],[560,1700],[520,1700],[520,792.5],[445,717.5],[445,277.5],[570,152.5]]
@@ -24,11 +22,8 @@ export const Metro1 = {
 
 export const Metro2 = {
   /* corners for the main line */
-  mainLineIn: {
+  mainLine: {
     points: [[90,48],[140,98],[463,98],[513,148]]
-  },
-  mainLineOut: {
-    points: [[414,627],[300,741],[100,741],[50,691]]
   },
   /* corners for the area of the centralArea label positions and lines get generated */
   centralArea: {

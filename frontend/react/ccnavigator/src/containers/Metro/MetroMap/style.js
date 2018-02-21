@@ -10,25 +10,24 @@ export const RawStyle = {
     stroke: '#27BDBE'
   },
   'sub-line-e-0': {
-    stroke: '#27BDBE'
-  },
-  'sub-line-e-1': {
     stroke: '#FAA619'
   },
+  'sub-line-e-1': {
+    stroke: '#522E90'
+  },
   'sub-line-e-2': {
-    stroke:'none',
-    fill:'#00F'
+    stroke: '#F00',
   },
   'sub-line-w-0': {
-    stroke: '#522E90'
+    stroke: '#27BDBE'
   },
   'sub-line-w-1': {
     stroke: '#FF1B22'
   },
   'sub-line-w-2': {
-    stroke: 'none',
-    fill: '#00F'
+    stroke: '#00F'
   },
+
   'area': {
     fill: '#ccc',
     stroke: 'none'
@@ -44,6 +43,11 @@ export const RawStyle = {
   'inner-area': {
     fill: '#dbdbdb',
     stroke: 'none'
+  },
+  'station': {
+    fill: 'white',
+    stroke: 'black',
+    strokeWidth: '3px'
   }
 };
 

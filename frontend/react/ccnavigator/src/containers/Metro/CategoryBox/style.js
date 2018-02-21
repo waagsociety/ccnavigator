@@ -5,13 +5,13 @@ export const RawStyle = {
       transformOrigin: 'top-left'
     },
     'category-anchor-0' : { /*position top left corner of the boxes*/
-      transform: 'translate(200px, 320px) rotate(-45deg)'
+      transform: 'translate(200px, 375px) rotate(-45deg)'
     },
     'category-anchor-1' : { /*position top left corner of the boxes*/
-      transform: 'translate(370px, 100px) rotate(-45deg)'
+      transform: 'translate(300px, 75px) rotate(-45deg)'
     },
     'category-anchor-2' : { /*position top left corner of the boxes*/
-      transform: 'translate(670px, 100px) rotate(-45deg)'
+      transform: 'translate(625px, 100px) rotate(-45deg)'
     },
     'category-anchor-3' : { /*position top left corner of the boxes*/
       transform: 'translate(690px, 440px) rotate(-45deg)'
@@ -23,7 +23,7 @@ export const RawStyle = {
       transform: 'translate(958px, 450px) rotate(-45deg) scale(0.7, 0.7)'
     },
     'category-anchor-4' : { /*position top left corner of the boxes*/
-      transform: 'translate(230px, 700px) rotate(-45deg)'
+      transform: 'translate(275px, 650px) rotate(-45deg)'
     },
     'category-box' : {
       display: 'inline-block',
