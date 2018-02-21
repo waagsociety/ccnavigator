@@ -12,29 +12,32 @@ const Style = StyleSheet.create({
     bottom: '0',
     background: '#000c',
     overflow: 'auto',
-    padding: '1rem',
+    textAlign: 'center',
     zIndex: '200',
 
+    ':before': {
+      content: '""',
+      display: 'inline-block',
+      height: '100%',
+      verticalAlign: 'middle',
+    },
     '@media (orientation: landscape)': {
       left: '14rem'
     }
   },
   modalContent: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
     position: 'relative',
-    maxWidth: '46rem',
-    margin: '0 auto',
-    //top: '10%',
-    //left: '10%',
-    //right: '10%',
-    //bottom: '0%',
-    background: [Constants.colors.background],
-    //border: 'none',
-    //borderRadius: '0',
+    width: '46rem',
+    maxWidth: '100%',
+    padding: '1.25rem',
+    textAlign: 'left'
   },
   close: {
     position: 'absolute',
-    right: '10px',
-    top: '10px',
+    right: '0.5rem',
+    top: '0.5rem',
     textDecoration: 'none',
     color: '#000',
     fontSize: '1.5rem',
@@ -44,7 +47,8 @@ const Style = StyleSheet.create({
       color: [Constants.colors.red]
     }
   },
-  container: {
+  modalHeader: {
+    position: 'relative',
     background: '#fff',
     padding: '2rem'
   },
@@ -70,8 +74,24 @@ const Style = StyleSheet.create({
     textTransform: 'lowercase'
   },
   subTitle: {
-    fontSize: '24px',
+    fontSize: '23px',
     fontWeight: '400'
+  },
+  modalBody: {
+    background: [Constants.colors.background],
+    padding: '2rem',
+    minHeight: '20rem'
+  },
+  box: {
+    marginBottom: '1rem',
+    padding: '1rem',
+    background: '#fff'
+  },
+  term: {
+    fontWeight: '700'
+  },
+  image: {
+    width:"50%"
   }
 });
 

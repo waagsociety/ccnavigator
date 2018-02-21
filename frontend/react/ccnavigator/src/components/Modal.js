@@ -1,12 +1,7 @@
 import ReactModal from 'react-modal'
 import React from 'react';
-import { Link } from 'react-router-dom'
 import { css } from 'util/aphrodite-custom.js';
-import Style from './style.js';
-
-/**
-wraps ReactModal with some defaults
-*/
+import Style from './ModalStyle.js';
 
 ReactModal.setAppElement('body');
 
@@ -19,7 +14,7 @@ const Modal = (props) =>
     closeTimeoutMS={0}
     className={css(Style.modalContent)}
     overlayClassName={css(Style.modalOverlay)}
-    contentLabel="Example Modal"
+    contentLabel="..."
     ariaHideApp={true}
     shouldFocusAfterRender={true}
     shouldCloseOnOverlayClick={true}
@@ -32,7 +27,6 @@ const Modal = (props) =>
       describedby: "full_description"
     }}
   >
-    <Link to="/" className={css(Style.close)}>&times;</Link>
     {props.children}
   </ReactModal>
 

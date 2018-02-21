@@ -6,7 +6,7 @@ import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
-import { Style } from './style.js';
+import Style from 'components/ModalStyle.js';
 import { buildJSXFromHTML} from "util/utility"
 
 
@@ -95,11 +95,14 @@ class ToolView extends React.Component {
     //show loading till we have fetched all
     var header = <ModalHeader title={"loading"} />
     var content = "loading";
+
     //build content view when we have all data
     if(this.state.nodeEntity) {
+
       //make header
       var title =  this.state.nodeEntity.attributes.title || "";
       var label = "";
+
       //display the caterories this tool falls under
       if(this.state.termEntities) {
         var labels = this.state.termEntities.map((term) => {
@@ -108,6 +111,7 @@ class ToolView extends React.Component {
         label = labels.join(" ");
       }
       header = <ModalHeader label={label} title={title} />
+
       //make content
       var body = (this.state.nodeEntity.attributes.body || {}).value || "";
       var jsx = buildJSXFromHTML(body);
@@ -115,26 +119,30 @@ class ToolView extends React.Component {
       var includes = (this.state.includedEntities || []).map((item) => {
         return this.renderInclude(item);
       });
+
+      //make flag or unflag button
+      let button = null;
+      if(!this.props.flagged) {
+        button = <button onClick={this.onFlag.bind(this)}>flag</button>
+      } else {
+        button = <button onClick={this.onUnflag.bind(this)}>unflag</button>
+      }
+
       //content part
       content = (
-        <div>
+        <div className={css(Style.modalBody)}>
+          {button}
           {jsx}
           {includes}
         </div>
       )
     }
-    //make flag or unflag button
-    let button = null;
-    if(!this.props.flagged) {
-      button = <button onClick={this.onFlag.bind(this)}>flag</button>
-    } else {
-      button = <button onClick={this.onUnflag.bind(this)}>unflag</button>
-    }
+
     //return the content in a modal view
     return (
       <Modal isOpen={true}>
         {header}
-        {button}
+        
         {content}
       </Modal>
     )

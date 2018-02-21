@@ -1,14 +1,15 @@
 import React from 'react';
 import { css } from 'util/aphrodite-custom.js';
-import { Style } from './style.js';
 //
+import { Link } from 'react-router-dom'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 //import ToolListItem from "./ToolListItem"
 import { connect } from 'react-redux'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
-import { Link } from 'react-router-dom'
+import Style from 'components/ModalStyle.js';
+
 
 /**
  * Get a list of tools in this category
@@ -64,7 +65,7 @@ class ToolList extends React.Component {
       var termDescription = (this.state.termEntity.attributes.description || {}).value || "";
       var tools = this.state.nodeEntities.map((node) => {
         return (
-          <li key={node.id} className={css(Style.tool)}>
+          <li key={node.id} className={css(Style.box)}>
             <Link to={`/tool/${node.id}`}>
               <span>{node.attributes.title}</span>
             </Link>
@@ -74,7 +75,7 @@ class ToolList extends React.Component {
       });
       //compose content of modal
       content = (
-        <div className={css(Style.container)}>
+        <div className={css(Style.modalBody)}>
           <div dangerouslySetInnerHTML={{__html: termDescription}} />
           {tools}
         </div>
