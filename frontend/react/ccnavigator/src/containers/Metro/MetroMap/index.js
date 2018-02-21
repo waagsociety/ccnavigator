@@ -91,7 +91,7 @@ class MetroMap extends React.Component {
       return point1[0] - point2[0];
     });
     //make the svg paths
-    var strokeWidth = parseFloat(RawStyle.line["stroke-width"]);
+    var strokeWidth = parseFloat(RawStyle.line["strokeWidth"]);
     var linesNE = endPointsNE.map((point, index) => {
       return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "e");
     });
@@ -105,7 +105,8 @@ class MetroMap extends React.Component {
       return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "w");
     });
     //make the river
-    var river = <path d={CurvedPolyline.smoothPolyline(MetroLayout.river.points, 20)} className={css(Style["river"])}  />
+    var closedRiver = CurvedPolyline.closeLine(MetroLayout.river.points)
+    var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className={css(Style["river"])}  />
     //make the wide area
     var closedWideArea = CurvedPolyline.closeLine(MetroLayout.wideArea.points)
     var wideArea = <path d={CurvedPolyline.smoothPolyline(closedWideArea, 20)} className={css(Style["wide-area"])}  />
