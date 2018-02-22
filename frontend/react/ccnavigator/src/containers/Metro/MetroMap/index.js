@@ -57,9 +57,28 @@ class MetroMap extends React.Component {
    * return a SVG structure representing a metro map using a layout to generate it
    */
   render() {
-    //generate the central area
+
+    //make land
+    var teamAreaClosed = CurvedPolyline.closeLine(MetroLayout.teamArea.points)
+    var teamArea = <path d={CurvedPolyline.smoothPolyline(teamAreaClosed, 20)} className={css(Style["area"])} />
+    var communityAreaClosed = CurvedPolyline.closeLine(MetroLayout.communityArea.points)
+    var communityArea = <path d={CurvedPolyline.smoothPolyline(communityAreaClosed, 20)} className={css(Style["area"])} />
+
+    var wideAreaClosed = CurvedPolyline.closeLine(MetroLayout.wideArea.points)
+    var wideArea = <path d={CurvedPolyline.smoothPolyline(wideAreaClosed, 20)} className={css(Style["wide-area"])} />
+    var innerAreaClosed = CurvedPolyline.closeLine(MetroLayout.innerArea.points)
+    var innerArea = <path d={CurvedPolyline.smoothPolyline(innerAreaClosed, 20)} className={css(Style["inner-area"])} />
+
     var centralAreaClosed = CurvedPolyline.closeLine(MetroLayout.centralArea.points)
-    var centralArea = <path d={CurvedPolyline.smoothPolyline(centralAreaClosed, 20)} className={css(Style["area"])} />
+    var centralArea = <path d={CurvedPolyline.smoothPolyline(centralAreaClosed, 20)} className={css(Style["central-area"])} />
+
+    var islandClosed = CurvedPolyline.closeLine(MetroLayout.island.points)
+    var island = <path d={CurvedPolyline.smoothPolyline(islandClosed, 20)} className={css(Style["area"])} />
+
+    //make river
+    var closedRiver = CurvedPolyline.closeLine(MetroLayout.river.points)
+    var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className={css(Style["river"])} />
+
 
     //generate the main line
     var mainLine = <path d={CurvedPolyline.smoothPolyline(MetroLayout.mainLine.points, 20)} className={css(Style.line, Style["main-line"])} />
@@ -116,22 +135,16 @@ class MetroMap extends React.Component {
       return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "w");
     });
 
-    //make the river
-    var closedRiver = CurvedPolyline.closeLine(MetroLayout.river.points)
-    var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className={css(Style["river"])} />
-
-    //make the wide area
-    var closedWideArea = CurvedPolyline.closeLine(MetroLayout.wideArea.points)
-    var wideArea = <path d={CurvedPolyline.smoothPolyline(closedWideArea, 20)} className={css(Style["wide-area"])} />
-    var closedInnerArea = CurvedPolyline.closeLine(MetroLayout.innerArea.points)
-    var innerArea = <path d={CurvedPolyline.smoothPolyline(closedInnerArea, 20)} className={css(Style["inner-area"])} />
-
     //stations
     var centralStation = <rect x={MetroLayout.centralArea.center[0] - 15 } y={MetroLayout.centralArea.center[1] - 5} width="30" height="10" rx="5" ry="5"  className={css(Style["station"])} />
+
 
     //the composed metro map
     return (
       <g>
+        {island}
+        {teamArea}
+        {communityArea}
         {wideArea}
         {innerArea}
         {centralArea}

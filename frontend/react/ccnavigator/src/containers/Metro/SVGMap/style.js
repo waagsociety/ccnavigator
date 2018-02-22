@@ -3,6 +3,7 @@ import { StyleSheet } from "aphrodite";
 export const Style = StyleSheet.create({
   svg: {
     position: 'absolute',
+    backgroundColor: '#BBD5EA'
   },
   buttons: {
     position: 'absolute',

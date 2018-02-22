@@ -28,13 +28,13 @@ export const RawStyle = {
     stroke: '#00F'
   },
 
-  'area': {
-    fill: '#ccc',
-    stroke: 'none'
-  },
   'river': {
     stroke: 'none',
     fill: '#BBD5EA'
+  },
+  'area': {
+    fill: '#F2F2F2',
+    stroke: 'none'
   },
   'wide-area': {
     fill: '#e5e5e5',
@@ -44,6 +44,11 @@ export const RawStyle = {
     fill: '#dbdbdb',
     stroke: 'none'
   },
+  'central-area': {
+    fill: '#ccc',
+    stroke: 'none'
+  },
+
   'station': {
     fill: 'white',
     stroke: 'black',
