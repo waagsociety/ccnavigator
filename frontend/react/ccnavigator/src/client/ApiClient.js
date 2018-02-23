@@ -65,7 +65,8 @@ class ApiClient {
 		}
 		var uri = new URI(href);
 		var dir = uri.directory();
-		uri.directory(`/${this.language}${dir}`)
+		uri.directory(`/${this.language}${dir}`);
+    uri.port(Config.endPoint.port);
 		return uri.href();
 	}
 
@@ -75,7 +76,8 @@ class ApiClient {
 		var uri = new URI({
   		hostname: Config.endPoint.host,
   		path: `/user/login`,
-  		query: `_format=json`
+  		query: `_format=json`,
+      port: Config.endPoint.port
 		});
     //post body
 		var creds = {};
@@ -103,7 +105,8 @@ class ApiClient {
 		var uri = new URI({
 			hostname: Config.endPoint.host,
 			path: `/user/login_status`,
-			query: `_format=json`
+			query: `_format=json`,
+      port: Config.endPoint.port
 		});
 
   	this.fetchJSON(uri.href(), function(response){
@@ -146,7 +149,8 @@ class ApiClient {
 			var uri = new URI({
 				hostname: Config.endPoint.host,
 				path: `/user/logout`,
-				query: `_format=json&token=${token}`
+				query: `_format=json&token=${token}`,
+        port: Config.endPoint.port
 			});
 
 			//fetch
@@ -308,7 +312,8 @@ class ApiClient {
     var uri = new URI({
 			hostname: Config.endPoint.host,
 			path: `/jsonapi/${pathParts.join("/")}`,
-      query: query
+      query: query,
+      port: Config.endPoint.port
 		});
 
 		//
@@ -336,7 +341,8 @@ class ApiClient {
 		if(uuid) {
 			var uri = new URI({
 				hostname: Config.endPoint.host,
-				path: `/jsonapi/user/user/${uuid}`
+				path: `/jsonapi/user/user/${uuid}`,
+        port: Config.endPoint.port
 			});
 
 			this.fetchJSON(uri.href(), function(response){
@@ -381,7 +387,8 @@ class ApiClient {
 			//store it
 			var uri = new URI({
 				hostname: Config.endPoint.host,
-				path: `/jsonapi/user/user/${uuid}`
+				path: `/jsonapi/user/user/${uuid}`,
+        port: Config.endPoint.port
 			});
 			this.fetchJSON(uri.href(), function(response){
 				if(response.success) {
@@ -405,7 +412,8 @@ class ApiClient {
 	getFullURL(url) {
 		var uri = new URI({
   		hostname: Config.endPoint.host,
-  		path: url
+  		path: url,
+      port: Config.endPoint.port
 		});
 		return uri.href();
 	}

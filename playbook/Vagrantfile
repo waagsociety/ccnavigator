@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+
+  # Debian 9.3
+  config.vm.box = "debian/contrib-stretch64"
+
+  config.vm.network "forwarded_port", guest: 80, host: 4040
+  config.vm.network "forwarded_port", guest: 3000, host: 3030
+  config.vm.hostname = "vagrant.local"
+
+  config.vm.provision "ansible" do |ansible|
+    # ansible.verbose = "v"
+    ansible.playbook = "playbook.yml"
+    ansible.extra_vars = {
+      drupal_database: "ccnavigator",
+      drupal_database_user: "drupal",
+      drupal_database_pass: "drupal"
+    }
+  end
+
+  # run this with: "vagrant provision --provision-with snippet"
+  config.vm.provision "snippet", type: "ansible" do |ansible|
+    ansible.playbook = "snippet.yml"
+    ansible.extra_vars = {
+      drupal_database: "ccnavigator",
+      drupal_database_user: "drupal",
+      drupal_database_pass: "drupal"
+    }
+  end
+
+end

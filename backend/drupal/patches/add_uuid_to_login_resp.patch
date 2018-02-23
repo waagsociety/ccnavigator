@@ -1,0 +1,12 @@
+--- a/core/modules/user/src/Controller/UserAuthenticationController.php	2017-10-04 21:25:32.000000000 +0200
++++ b/core/modules/user/src/Controller/UserAuthenticationController.php	2017-12-20 09:08:10.000000000 +0100
+@@ -199,6 +199,9 @@
+       if ($user->get('name')->access('view', $user)) {
+         $response_data['current_user']['name'] = $user->getAccountName();
+       }
++      if ($user->get('uuid')->access('view', $user)) { //HACK: LL
++        $response_data['current_user']['uuid'] = $user->get('uuid')->value;
++      }
+       $response_data['csrf_token'] = $this->csrfToken->get('rest');
+
+       $logout_route = $this->routeProvider->getRouteByName('user.logout.http');

@@ -1,7 +1,7 @@
 # some patches are required to fix Drupal 8.4.0
 
 Generally patching goes like this.
-While being in the Drupal root dir do: `patch -p1 < /[pathto]/[file].patch`
+patch -d /var/www/mydrupaldir -p1 < mypatchfile.patch 
 
 ## 2543726-216.patch : make JSON api include hierarchy in taxonomy_term vocabularies
 

@@ -1,0 +1,61 @@
+- hosts: all
+  gather_facts: yes #retrieves some variables like ansible_hostname, this fails on first provision, but works when we skip it and install some things and try again...a
+  become: true
+  tasks:
+  - name: install curl
+    apt:
+      name=curl
+  - name: add nodejs repository for install node v9
+    shell:
+      curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+  - name: install node
+    apt:
+      name=nodejs
+  - name: sync application files dir
+    synchronize:
+      src=../frontend/react/ccnavigator/public
+      dest=/var/www/react/
+  - name: sync more application files dir
+    synchronize:
+      src=../frontend/react/ccnavigator/src
+      dest=/var/www/react/
+  - name: copy react environment config
+    copy:
+      src={{ playbook_dir }}/../frontend/react/ccnavigator/.env
+      dest=/var/www/react/
+  - name: copy node app endpoint config
+    copy:
+      src=config/Config.js
+      dest=/var/www/react/src/config/
+  - name: npm pacakage files
+    copy:
+      src={{ playbook_dir }}/../frontend/react/ccnavigator/package.json
+      dest=/var/www/react/
+  - name: npm pacakage files
+    copy:
+      src={{ playbook_dir }}/../frontend/react/ccnavigator/package-lock.json
+      dest=/var/www/react/
+  - name: install npm packages
+    shell: npm install
+    args:
+      chdir: /var/www/react
+
+  # - name: install node js
+  #   apt: name=nodejs
+  # - name: install npm
+  #   apt: name=build-essential
+  # #sync react app
+  # - name: sync the modules dir
+  #   synchronize:
+  #     src=../frontend/react/ccnavigator/public
+  #     dest=/var/www/react/
+  # - name: patch for getting jsonapi to return term its parent as relationship
+  #   patch:
+  #     src={{ playbook_dir }}/../backend/drupal/patches/2543726-216.patch
+  #     basedir=/var/www/drupal-8.4.0
+  #     strip=1
+  # - name: patch for making login response include uuid
+  #   patch:
+  #     src={{ playbook_dir }}/../backend/drupal/patches/add_uuid_to_login_resp.patch
+  #     basedir=/var/www/drupal-8.4.0
+  #     strip=1
