@@ -60,14 +60,26 @@ class ApiClient {
 	}
 
 	_localizePath(uri) {
-    uri.port(Config.endPoint.port);
-    uri.host(Config.endPoint.host);
+    // current host if host not configured
+    if(Config.endPoint.host === null || Config.endPoint.host === "") {
+      var host = window.location.hostname;
+      uri.host(host);
+    } else {
+      uri.host(Config.endPoint.host);
+    }
+    // set port if configured
+    if(Config.endPoint.port !== null && Config.endPoint.port !== "") {
+      uri.port(Config.endPoint.port);
+    }
+    // localize the path if not default lang
     var dir = uri.directory();
-		if(this.language === null || this.language === "en") {
+		if(this.language !== null || this.language !== "en") {
+      uri.directory(`/${this.language}${dir}`);
+    }
+    // set path to api end point if configured
+    dir = uri.directory();
+    if(Config.endPoint.path !== null || Config.endPoint.path !== "") {
       uri.directory(`/${Config.endPoint.path}${dir}`);
-      return uri.href();
-		} else {
-      uri.directory(`/${Config.endPoint.path}/${this.language}${dir}`);
     }
     return uri.href();
 	}

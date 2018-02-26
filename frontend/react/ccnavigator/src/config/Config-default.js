@@ -1,10 +1,11 @@
 const Config = {
 	endPoint : {
-		host: "ccn.localhost",
-    port: "80",
+		host: "", //endpoint on same host
+    port: "80", //
+		path: "drupal", //is endpoint (drupal) in subpath
     protocol: "http"
-  },
-  bla: "nla"
+  }
 }
+
 
 export default Config;
