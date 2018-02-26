@@ -1,12 +1,10 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js';
-//
-import { Link } from 'react-router-dom'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
+import { buildJSXFromHTML } from 'util/utility.js';
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
-import Style from 'components/ModalStyle.js';
+import ModalBody from 'components/ModalBody'
 
 
 /**
@@ -44,61 +42,71 @@ class MultiToolList extends React.Component {
 
   render() {
     //show loading till we have fetched all
-    var header = <ModalHeader title={"loading"} />
-    var content = "loading";
+    var modalHeader = <ModalHeader title={"loading"} />
+    var modalBody = "loading";
 
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
       //make header
-      var label = "zone " + this.state.termHierachy.path.map(x => x + 1).join("-");
-      var title =  this.state.termEntity.attributes.name || "";
-      var subTitle = this.state.termEntity.attributes.field_subtitle || "";
-      header = <ModalHeader label={label} title={title} subTitle={subTitle} />
+      var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var title =  this.state.termEntity.attributes.name || ""
+      var subTitle = this.state.termEntity.attributes.field_subtitle || ""
+      modalHeader = <ModalHeader labels={labels} title={title} subTitle={subTitle} />
 
       //make content
-      var termDescription = (this.state.termEntity.attributes.description || {}).value || "";
+      var description = (this.state.termEntity.attributes.description || {}).value || ""
+      description = buildJSXFromHTML(description)
 
       //use the concise term with hierarchy to build the term box
-      var	subcategories = this.state.termHierachy.children.map((term) => {
+      var	boxesTitle = 'themes:' // todo: make translatable
+      var	boxes = this.state.termHierachy.children.map((term) => {
+
+        var themeDescription,
+            themeTools
+
+        themeDescription = '[themeDescription]'
+
+        if (term.nodes.length > 0) {
+          themeTools = term.nodes.map((node) => {
+            var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
+            return (
+              <span key={node.id}>
+                {fullNode.attributes.title}
+              </span>
+            )
+          })
+        } else {
+          themeTools = 'no tools yet...' // todo: make translatable
+        }
 
         //list the tools in this subcategory
-          var tools = term.nodes.map((node) => {
-            var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0];
-            return (
-              <li key={node.id}>
-                <Link to={`/tool/${fullNode.id}`}>
-                  <span>{fullNode.attributes.title}</span>
-                </Link>
-                <div>{fullNode.attributes.field_short_description || ""}</div>
-              </li>
-            )
-          });
+        var content = (
+          <div>
+            <p>{themeDescription}</p>
+            <h4>tools</h4>
+            {themeTools}
+          </div>
+        ) // todo: make translatable
 
-          //return a box for this subcategory
-          return (
-            <div className={css(Style.box)} key={term.id}>
-              <span className={css(Style.term)}> {term.attributes.name} </span>
-              {tools}
-            </div>
-          )
+        return {
+          link: `/tool-list/${term.id}`,
+          title: term.attributes.name,
+          content: content
+        }
+
       });
 
-      //compose content of modal
-      content = (
-        <div className={css(Style.modalBody)}>
-          <div dangerouslySetInnerHTML={{__html: termDescription}} />
-          {subcategories}
-        </div>
-      )
+      //compose body of modal
+      modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
 
     }
 
     //return the content in a modal view
     return (
       <Modal isOpen={true}>
-        {header}
-        {content}
+        {modalHeader}
+        {modalBody}
       </Modal>
     )
 

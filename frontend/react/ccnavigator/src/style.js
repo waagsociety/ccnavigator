@@ -25,12 +25,23 @@ const Style = StyleSheet.create({
       },
       '*h1, h2, h3, h4, h5': {
         fontFamily: [Constants.fonts.headings],
-        fontSize: '1rem',
+        fontSize: '1em',
         fontWeight: '700',
         margin: '0'
       },
       '*h1, h2': {
         lineHeight: '1.2em'
+      },
+      '*h3, h4': {
+        lineHeight: '1.5em'
+      },
+      '*p': {
+        margin: '0 0 1.5em',
+        lineHeight: '1.5em',
+
+        ':last-child' : {
+          marginBottom: '0'
+        }
       },
       '*a': {
         color: [Constants.colors.text],

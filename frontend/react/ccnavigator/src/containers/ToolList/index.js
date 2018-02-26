@@ -1,14 +1,12 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js';
-//
-import { Link } from 'react-router-dom'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 //import ToolListItem from "./ToolListItem"
 import { connect } from 'react-redux'
+import { buildJSXFromHTML } from 'util/utility.js';
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
-import Style from 'components/ModalStyle.js';
+import ModalBody from 'components/ModalBody'
 
 
 /**
@@ -52,45 +50,40 @@ class ToolList extends React.Component {
 
   render() {
     //show loading till we have fetched all
-    var header = <ModalHeader title={"loading"} />
-    var content = "loading";
+    var modalHeader = <ModalHeader title={"loading"} />
+    var modalBody = "loading"; // todo: make translatable
 
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
       //make header
-      var label = "zone " + this.state.termHierachy.path.map(x => x + 1).join("-");
-      var title =  this.state.termEntity.attributes.name || "";
-      var subTitle = this.state.termEntity.attributes.field_subtitle || "";
-      header = <ModalHeader label={label} title={title} subTitle={subTitle} />
+      var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var title =  this.state.termEntity.attributes.name || ""
+      var subTitle = this.state.termEntity.attributes.field_subtitle || ""
+      modalHeader = <ModalHeader labels={labels} title={title} subTitle={subTitle} />
 
-      //make content
-      var termDescription = (this.state.termEntity.attributes.description || {}).value || "";
-      var tools = this.state.nodeEntities.map((node) => {
-        return (
-          <li key={node.id} className={css(Style.box)}>
-            <Link to={`/tool/${node.id}`}>
-              <span>{node.attributes.title}</span>
-            </Link>
-            <div>{node.attributes.field_short_description}</div>
-          </li>
-        )
+      //make body
+      var description = (this.state.termEntity.attributes.description || {}).value || ""
+      description = buildJSXFromHTML(description)
+
+      var boxesTitle = 'tools:' // todo: make translatable
+      var boxes = this.state.nodeEntities.map((node) => {
+
+        return {
+          link: `/tool/${node.id}`,
+          title: node.attributes.title,
+          content: node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
+        }
       });
 
-      //compose content of modal
-      content = (
-        <div className={css(Style.modalBody)}>
-          <div dangerouslySetInnerHTML={{__html: termDescription}} />
-          {tools}
-        </div>
-      )
+      modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
     }
 
     //return the content in a modal view
     return (
       <Modal isOpen={true}>
-        {header}
-        {content}
+        {modalHeader}
+        {modalBody}
       </Modal>
     )
 

@@ -6,6 +6,7 @@ import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
+import ModalBody from 'components/ModalBody'
 import Style from 'components/ModalStyle.js';
 import { buildJSXFromHTML} from "util/utility"
 
@@ -93,26 +94,25 @@ class ToolView extends React.Component {
    */
   render() {
     //show loading till we have fetched all
-    var header = <ModalHeader title={"loading"} />
-    var content = "loading";
+    var modalHeader = <ModalHeader title={"loading"} />
+    var modalBody = "loading";
 
     //build content view when we have all data
     if(this.state.nodeEntity) {
 
       //make header
       var title =  this.state.nodeEntity.attributes.title || "";
-      var label = "";
+      var labels = [];
 
       //display the caterories this tool falls under
       if(this.state.termEntities) {
-        var labels = this.state.termEntities.map((term) => {
+        labels = this.state.termEntities.map((term) => {
           return term.path.map(x => x + 1).join("-")
         });
-        label = labels.join(" ");
       }
-      header = <ModalHeader label={label} title={title} />
+      modalHeader = <ModalHeader labels={labels} title={title} />
 
-      //make content
+      //make tool description
       var body = (this.state.nodeEntity.attributes.body || {}).value || "";
       var jsx = buildJSXFromHTML(body);
       //includes
@@ -128,22 +128,22 @@ class ToolView extends React.Component {
         button = <button onClick={this.onUnflag.bind(this)}>unflag</button>
       }
 
-      //content part
-      content = (
-        <div className={css(Style.modalBody)}>
+      //body part
+      var description = (
+        <div>
           {button}
           {jsx}
           {includes}
         </div>
       )
+      modalBody = <ModalBody description={description} />
     }
 
     //return the content in a modal view
     return (
       <Modal isOpen={true}>
-        {header}
-        
-        {content}
+        {modalHeader}
+        {modalBody}
       </Modal>
     )
   }

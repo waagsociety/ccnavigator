@@ -36,8 +36,8 @@ const Style = StyleSheet.create({
   },
   close: {
     position: 'absolute',
-    right: '0.5rem',
-    top: '0.5rem',
+    right: '0.75rem',
+    top: '0.75rem',
     textDecoration: 'none',
     color: '#000',
     fontSize: '1.5rem',
@@ -52,13 +52,21 @@ const Style = StyleSheet.create({
     background: '#fff',
     padding: '2rem'
   },
-  titleRow: {
+  titleContainer: {
     display: 'flex',
-    flexFlow: 'row',
-    alignItems: 'center'
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    '@media (max-width: 600px)': {
+      flexDirection: 'column',
+      alignItems: 'flex-start'
+    }
+  },
+  labels: {
+    marginRight: '1rem',
   },
   label: {
-    margin: '0 1rem 3px 0',
+    margin: '0 0.5rem 3px 0',
     padding: '3px 10px 0',
     background: 'black',
     borderRadius: labelHeight/2 + 'px',
@@ -82,10 +90,21 @@ const Style = StyleSheet.create({
     padding: '2rem',
     minHeight: '20rem'
   },
+  description: {
+    marginBottom: '3em'
+  },
   box: {
     marginBottom: '1rem',
     padding: '1rem',
-    background: '#fff'
+    backgroundColor: '#fff'
+  },
+  boxLink: {
+    display: 'block',
+    textDecoration: 'none',
+
+    ':hover': {
+      boxShadow: '0 0 0.75rem 0 rgba(0,0,0,0.1)'
+    }
   },
   term: {
     fontWeight: '700'
