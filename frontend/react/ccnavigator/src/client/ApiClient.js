@@ -59,32 +59,32 @@ class ApiClient {
 		localStorage.removeItem('drupal.user.logout_token');
 	}
 
-	_localizePath(href) {
-		if(this.language === null || this.language === "en") {
-			return href;
-		}
-		var uri = new URI(href);
-		var dir = uri.directory();
-		uri.directory(`/${this.language}${dir}`);
+	_localizePath(uri) {
     uri.port(Config.endPoint.port);
-		return uri.href();
+    uri.host(Config.endPoint.host);
+    var dir = uri.directory();
+		if(this.language === null || this.language === "en") {
+      uri.directory(`/${Config.endPoint.path}${dir}`);
+      return uri.href();
+		} else {
+      uri.directory(`/${Config.endPoint.path}/${this.language}${dir}`);
+    }
+    return uri.href();
 	}
 
 	//login
 	login(user, pass, resultHandler) {
 		//compose url
 		var uri = new URI({
-  		hostname: Config.endPoint.host,
   		path: `/user/login`,
   		query: `_format=json`,
-      port: Config.endPoint.port
 		});
     //post body
 		var creds = {};
 		creds["name"] = user;
 		creds["pass"] = pass;
 		//login
-		this.fetchJSON(uri.href(), function(response){
+		this.fetchJSON(uri, function(response){
 			if(response.success) {
 				var user = response.result;
 				this._persistUser(user);
@@ -103,13 +103,11 @@ class ApiClient {
 	loginStatus(resultHandler) {
 		//compose url
 		var uri = new URI({
-			hostname: Config.endPoint.host,
 			path: `/user/login_status`,
 			query: `_format=json`,
-      port: Config.endPoint.port
 		});
 
-  	this.fetchJSON(uri.href(), function(response){
+  	this.fetchJSON(uri, function(response){
 			if(response.success) {
 				//if the server says we are logged in we should have user data
 				if((JSON.parse(response.result) === 1)) {
@@ -147,14 +145,12 @@ class ApiClient {
 		if(token) {
 			//compose url
 			var uri = new URI({
-				hostname: Config.endPoint.host,
 				path: `/user/logout`,
 				query: `_format=json&token=${token}`,
-        port: Config.endPoint.port
 			});
 
 			//fetch
-			this.fetchPlain(uri.href(), function(response){
+			this.fetchPlain(uri, function(response){
 				if(response.success) {
 					this._cleanUser();
 					if(resultHandler) {
@@ -209,7 +205,7 @@ class ApiClient {
 		})
 		.then(function(json) {
 			var response = {
-				uri: uri,
+				uri: localized,
 				success: true,
 				error: "",
 				result: json,
@@ -246,11 +242,11 @@ class ApiClient {
 		//fetch
     var localized = this._localizePath(uri);
     console.debug("fetch", localized);
-		fetch(this._localizePath(localized), opts)
+		fetch(localized, opts)
 		.then(this._checkStatus)
 		.then(function(data) {
 			var response = {
-				uri: uri,
+				uri: localized,
 				success: true,
 				error: "",
 				result: data,
@@ -310,14 +306,12 @@ class ApiClient {
     //combine all
     var query = queryParts.length > 0 ? queryParts.join("&") : ""
     var uri = new URI({
-			hostname: Config.endPoint.host,
 			path: `/jsonapi/${pathParts.join("/")}`,
-      query: query,
-      port: Config.endPoint.port
+      query: query
 		});
 
 		//
-		this.fetchJSON(uri.href(), function(response){
+		this.fetchJSON(uri, function(response){
 			if(response.success) {
 				var data = response.result.data || [];
         var included = response.result.included;
@@ -340,12 +334,10 @@ class ApiClient {
 		var uuid = (user || {}).uuid;
 		if(uuid) {
 			var uri = new URI({
-				hostname: Config.endPoint.host,
-				path: `/jsonapi/user/user/${uuid}`,
-        port: Config.endPoint.port
+				path: `/jsonapi/user/user/${uuid}`
 			});
 
-			this.fetchJSON(uri.href(), function(response){
+			this.fetchJSON(uri, function(response){
 				if(response.success) {
 					if(resultHandler) {
 						var userData = response.result.data || {};
@@ -386,11 +378,9 @@ class ApiClient {
 			((data.data || {}).attributes || {}).field_data = JSON.stringify(obj)
 			//store it
 			var uri = new URI({
-				hostname: Config.endPoint.host,
 				path: `/jsonapi/user/user/${uuid}`,
-        port: Config.endPoint.port
 			});
-			this.fetchJSON(uri.href(), function(response){
+			this.fetchJSON(uri, function(response){
 				if(response.success) {
 					if(resultHandler) {
 						resultHandler(true);
@@ -411,9 +401,7 @@ class ApiClient {
 
 	getFullURL(url) {
 		var uri = new URI({
-  		hostname: Config.endPoint.host,
   		path: url,
-      port: Config.endPoint.port
 		});
 		return uri.href();
 	}

@@ -39,23 +39,7 @@
     shell: npm install
     args:
       chdir: /var/www/react
-
-  # - name: install node js
-  #   apt: name=nodejs
-  # - name: install npm
-  #   apt: name=build-essential
-  # #sync react app
-  # - name: sync the modules dir
-  #   synchronize:
-  #     src=../frontend/react/ccnavigator/public
-  #     dest=/var/www/react/
-  # - name: patch for getting jsonapi to return term its parent as relationship
-  #   patch:
-  #     src={{ playbook_dir }}/../backend/drupal/patches/2543726-216.patch
-  #     basedir=/var/www/drupal-8.4.0
-  #     strip=1
-  # - name: patch for making login response include uuid
-  #   patch:
-  #     src={{ playbook_dir }}/../backend/drupal/patches/add_uuid_to_login_resp.patch
-  #     basedir=/var/www/drupal-8.4.0
-  #     strip=1
+  - name: make build react app
+    shell: npm run build
+    args:
+      chdir: /var/www/react

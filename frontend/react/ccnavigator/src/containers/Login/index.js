@@ -14,6 +14,17 @@ class Login extends React.Component {
     dispatch: PropTypes.func.isRequired
   }
 
+  /*
+   * get the user status, if the user is logged in this component will be unmount by parent
+   */
+  componentDidMount() {
+		ApiClient.instance().loginStatus(function(status){
+			if(status === true) {
+				this.getUser();
+			}
+		}.bind(this));
+	}
+
   onLogin(evt) {
     var user = this.userField.value;
     var pass = this.passField.value;
