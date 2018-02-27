@@ -1,0 +1,87 @@
+- hosts: all
+  gather_facts: yes
+  #do not become root to be able to get ansible_user_id
+  #also don't become root for drush which is run from home dir
+  become: false
+  vars:
+    drupal_database: "ccnavigator"
+    drupal_database_user: "drupal"
+    drupal_database_pass: "drupal"
+  tasks:
+    - debug: msg='ansible user => {{ ansible_user_id }}'
+    #also list sudo to remain sudo
+    - name: add ansible user to www-data group
+      become: true
+      user:
+        name: '{{ ansible_user_id }}'
+        groups: www-data, sudo
+    #deploy files dir
+    - name: copy the files dir (takes while)
+      copy:
+        src={{ playbook_dir }}/../backend/drupal/sites/default/files
+        dest=/var/www/drupal/sites/default/
+        mode=0440
+        directory_mode=0550
+        owner=www-data
+        group=www-data
+      become: true
+    #deploy modules dir
+    - name: copy the modules dir (takes while)
+      copy:
+        src={{ playbook_dir }}/../backend/drupal/sites/default/modules
+        dest=/var/www/drupal/sites/default/
+        mode=0440
+        directory_mode=0550
+        owner=www-data
+        group=www-data
+      become: true
+    # fill in the drupal settings from template and deploy
+    - name: template drupal conf
+      template:
+        src=templates/settings.php
+        dest=/var/www/drupal/sites/default/settings.php
+        owner=www-data
+        group=www-data
+        mode=0444
+      become: true
+    # copy database over to tmp
+    - name: copy database
+      copy: src={{ playbook_dir }}/../backend/drupal/db/db.sql
+            dest=/tmp/db.sql
+    # import the database using drush, requires: database, db user created, drupal conf in place
+    - name: drush import db using drush
+      shell: '~/.config/composer/vendor/bin/drush --root=/var/www/drupal sql-cli < /tmp/db.sql'
+    # now deploy react application
+    - name: place react app (takes while)
+      copy:
+        src={{ playbook_dir }}/../frontend/react/ccnavigator/build/
+        dest=/var/www/
+        mode=0440
+        directory_mode=0550
+        owner=www-data
+        group=www-data
+      become: true
+    # fix permissions
+    - name: fix permissions on synced dirs
+      file:
+        dest: /var/www
+        owner: www-data
+        group: www-data
+        mode: 0444
+        recurse: yes
+      become: true
+    - name: make directories accessible
+      file:
+        dest: /var/www
+        mode: 'u+X,g+X'
+        recurse: yes
+      become: true
+    - name: make files writable
+      file:
+        dest: /var/www/drupal/sites/default/files
+        mode: 'u+w,g+w'
+        recurse: yes
+      become: true
+    # rebuild drush cache
+    - name: drush rebuild cache
+      shell: '~/.config/composer/vendor/bin/drush cr --root=/var/www/drupal'

@@ -1,48 +1,54 @@
 - hosts: all
+  vars:
+    drupal_database: "ccnavigator"
+    drupal_database_user: "drupal"
+    drupal_database_pass: "drupal"
   gather_facts: no #retrieves some variables like ansible_hostname, this fails on first provision, but works when we skip it and install some things and try again...a
   become: true
   pre_tasks:
-    - name: 'Install Python for Ansible'
+    - name: Install Python for Ansible
       raw: apt-get update && apt-get -y install python-simplejson
     - setup: # aka gather_facts, now we have pythin we can gather facts
     - debug: msg='ansible_hostname {{ ansible_hostname }}'
   # install: apache, php, mariadb, bindings, composer, drush, drupal
   # configure: apache, mariadb, drupal
   tasks:
-    - name: 'Install git'
+    - name: Install git
       apt: name=git-all
-    - name: apt-get update the server
+    - name: Update the server
       apt: update_cache=yes
-    - name: 'Install Apache'
+    - name: Install Apache
       apt: name=apache2 state=present update_cache=yes
-    - name: 'Install PHP 7.0'
+    - name: Install PHP 7.0
       apt: name=php7.0
-    - name: 'Install php mbstring extension'
+    - name: Install php mbstring extension
       apt: name=php7.0-mbstring
-    - name: 'Install mod_rewrite for PHP'
+    - name: Install mod_rewrite for PHP
       apt: name=libapache2-mod-php7.0
-    - name: 'enable mod_rewrite'
+    - name: Enable mod_rewrite
       apache2_module:
         state: present
         name: rewrite
-    - name: 'enable mod_headers'
+    - name: Enable mod_headers
       apache2_module:
         state: present
         name: headers
     - name: Install php-xml required for drupal
       apt: name=php-xml
-    - name: 'Install MariaDB server'
+    - name: Install php-gd required for drupal
+      apt: name=php-gd
+    - name: Install MariaDB server
       apt: name=mariadb-server
-    - name: 'Install MariaDB client'
+    - name: Install MariaDB client
       apt: name=mariadb-client
-    - name: 2. Start Mysql Service
+    - name: Start Mysql Service
       service: name=mysql state=started enabled=true
-    - name: 'Install PHP MySQL binding'
+    - name: Install PHP MySQL binding
       apt: name=php-mysql
     - name: Install python Mysql package #required for mysql_db tasks
       apt: name=python-mysqldb state=present
     # like mysql_secure_installation, root can access without pw (requires sudo anyway), remove anonymous accounts
-    - name: delete anonymous MySQL server user
+    - name: Delete anonymous MySQL server user
       mysql_user:
         user=""
         host="{{ item }}"
@@ -52,22 +58,22 @@
         - "{{ ansible_hostname }}"
         - localhost
     # remove test db
-    - name: remove the MySQL test database
+    - name: Remove the MySQL test database
       mysql_db:
         db=test
         state=absent
     # mysql default only listens at localhost (which is good), but we should find a way to check that, maybe using sudo /usr/sbin/mysqld --verbose --help
-    - name: show mysql maria db conf
+    - name: Show mysql maria db conf
       shell: /usr/sbin/mysqld --verbose --help | grep bind-address
       register: conf
     - debug: var=conf.stdout_lines
     # create db
-    - name: 'Create database : {{ drupal_database }}'
+    - name: Create database
       mysql_db: name={{ drupal_database }}
                 state=present
                 collation=utf8_general_ci
     # create user and grant user on newly created db
-    - name: create db user
+    - name: Create db user
       mysql_user: name={{ drupal_database_user }}
                   password={{ drupal_database_pass }}
                   host=localhost
@@ -75,13 +81,13 @@
                   host='localhost'
                   state=present
     # composer download
-    - name: download composer
+    - name: Download composer
       get_url:
         url: https://getcomposer.org/installer
         dest: /tmp/installer
       tags: composer
     # composer install
-    - name: install composer
+    - name: Install composer
       shell: cat /tmp/installer | php -- --install-dir=/usr/local/bin
       args:
         creates: /usr/local/bin/composer
@@ -91,33 +97,31 @@
       args:
         creates: /usr/local/bin/composer
       tags: composer
-    - name: make composer executable
+    - name: Make composer executable
       file:
         path: /usr/local/bin/composer
         mode: a+x
         state: file
       tags: composer
     #drush will be installed here /home/vagrant/.config/composer/vendor/bin/ (composer -g config bin-dir)
-    - name: make composer install drush
+    - name: Make composer install drush
       become: no
       composer:
         command: require
         global_command: yes
         arguments: drush/drush:8.*
     #add the composer bin path to env for this task
-    - name: test drush
-      become: no
-      command: drush
+    - name: Test drush
+      become: false
+      command: ~/.config/composer/vendor/bin/drush
       register: out
-      environment:
-        PATH: "{{ ansible_env.PATH }}:/home/vagrant/.config/composer/vendor/bin"
     - debug: var=out.stdout_lines
     #download drupal
-    - name: download drupal
+    - name: Download drupal
       get_url:
         url: https://ftp.drupal.org/files/projects/drupal-8.4.0.tar.gz
         dest: /tmp/drupal-8.4.0.zip
-    - name: place code
+    - name: Place code
       unarchive: src=/tmp/drupal-8.4.0.zip dest=/var/www/ copy=no owner=www-data group=www-data
     - name: link web dir
       file: path=/var/www/drupal
@@ -127,56 +131,19 @@
             owner=www-data
             group=www-data
     # patch drupal
-    - name: patch for getting jsonapi to return term its parent as relationship
+    - name: Patch for getting jsonapi to return term its parent as relationship
       patch:
         src={{ playbook_dir }}/../backend/drupal/patches/2543726-216.patch
         basedir=/var/www/drupal-8.4.0
         strip=1
     # patch drupal
-    - name: patch for making login response include uuid
+    - name: Patch for making login response include uuid
       patch:
         src={{ playbook_dir }}/../backend/drupal/patches/add_uuid_to_login_resp.patch
         basedir=/var/www/drupal-8.4.0
         strip=1
     #copy the apache config
-    - name: apache config
+    - name: Apache config
       copy: src=config/apache2.conf dest=/etc/apache2/apache2.conf
-    - name: 'Restart apache'
+    - name: Restart apache
       service: name=apache2 state=restarted
-
-    #
-    # this was more of a setup phase (do it once), now deploy local stuff
-    #
-
-    #deploy modules dir
-    - name: sync the modules dir
-      synchronize:
-        src=../backend/drupal/sites/default/modules
-        dest=/var/www/drupal/sites/default/
-        owner=no
-        group=no
-    #deploy files dir
-    - name: sync the files dir
-      synchronize:
-        src=../backend/drupal/sites/default/files
-        dest=/var/www/drupal/sites/default/
-        owner=no
-        group=no
-    # fill in the drupal settings from template and deploy
-    - name: template drupal conf
-      template:
-        src=templates/settings.php
-        dest=/var/www/drupal/sites/default/settings.php
-        owner=www-data
-        group=www-data
-        mode=0644
-    # copy database over to tmp
-    - name: 'copy database'
-      copy: src={{ playbook_dir }}/../backend/drupal/db/db.sql
-            dest=/tmp/db.sql
-    # import the database using drush, requires: database, db user created, drupal conf in place
-    - name: drush import db using drush
-      become: no
-      shell: 'drush --root=/var/www/drupal sql-cli < /tmp/db.sql'
-      environment:
-        PATH: "{{ ansible_env.PATH }}:/home/vagrant/.config/composer/vendor/bin"
