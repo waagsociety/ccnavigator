@@ -58,7 +58,7 @@ class MetroMap extends React.Component {
    */
   render() {
 
-    //make land
+    // make land
     var teamAreaClosed = CurvedPolyline.closeLine(MetroLayout.teamArea.points)
     var teamArea = <path d={CurvedPolyline.smoothPolyline(teamAreaClosed, 20)} className={css(Style["area"])} />
     var communityAreaClosed = CurvedPolyline.closeLine(MetroLayout.communityArea.points)
@@ -75,52 +75,56 @@ class MetroMap extends React.Component {
     var islandClosed = CurvedPolyline.closeLine(MetroLayout.island.points)
     var island = <path d={CurvedPolyline.smoothPolyline(islandClosed, 20)} className={css(Style["area"])} />
 
-    //make river
+    // make river
     var closedRiver = CurvedPolyline.closeLine(MetroLayout.river.points)
     var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className={css(Style["river"])} />
 
 
-    //generate the main line
+    // generate the main line
     var mainLine = <path d={CurvedPolyline.smoothPolyline(MetroLayout.mainLine.points, 20)} className={css(Style.line, Style["main-line"])} />
+    var mainLineArrows = MetroLayout.mainLine.points
+      .map((point, index) => {
+        var next = index + 1
+        var size = 3.5
 
-    //filter end point lies north east
-    var endPointsNE = MetroLayout.centralArea.endPoints.filter((point) => {
-      return ((point[0] > MetroLayout.centralArea.center[0]) && (point[1] < MetroLayout.centralArea.center[1]));
-    });
-    //sort by eastness
-    endPointsNE = endPointsNE.sort((point1, point2) => {
-      return point1[0] - point2[0];
-    });
+        if(next < MetroLayout.mainLine.points.length) {
+          var x = (MetroLayout.mainLine.points[index][0] + MetroLayout.mainLine.points[next][0]) / 2
+          var y = (MetroLayout.mainLine.points[index][1] + MetroLayout.mainLine.points[next][1]) / 2
 
-    //filter end point lies south east
-    var endPointsSE = MetroLayout.centralArea.endPoints.filter((point) => {
-      return ((point[0] > MetroLayout.centralArea.center[0]) && (point[1] > MetroLayout.centralArea.center[1]));
-    });
-    //sort by eastness
-    endPointsSE = endPointsSE.sort((point1, point2) => {
-      return point1[0] - point2[0];
-      
-    });
+          var dx = MetroLayout.mainLine.points[next][0] - MetroLayout.mainLine.points[index][0];
+          var dy = MetroLayout.mainLine.points[next][1] - MetroLayout.mainLine.points[index][1];
+          var theta = Math.atan2(dy, dx); // range (-PI, PI]
+          theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
 
-    //filter end point lies north west
-    var endPointsNW = MetroLayout.centralArea.endPoints.filter((point) => {
-      return ((point[0] < MetroLayout.centralArea.center[0]) && (point[1] < MetroLayout.centralArea.center[1]));
-    });
-    //sort by westness
-    endPointsNW = endPointsNW.sort((point1, point2) => {
-      return point2[0] - point1[0];
-    });
+          return <path key={index} d={`M${x} ${y} l-${size/2} 0 l0 -${size} l${size} ${size} l-${size} ${size} l0 -${size*2}`} transform={`rotate(${theta} ${x} ${y} )`} />
+        } else {
+          return false
+        }
+      })
+      .filter(value => value !== false)
 
-    //filter end point lies south west
-    var endPointsSW = MetroLayout.centralArea.endPoints.filter((point) => {
-      return ((point[0] < MetroLayout.centralArea.center[0]) && (point[1] > MetroLayout.centralArea.center[1]));
-    });
-    //sort by westness
-    endPointsSW = endPointsSW.sort((point1, point2) => {
-      return point2[0] - point1[0];
-    });
+    // generate sub lines
+    // filter NE end points and sort by eastness
+    var endPointsNE = MetroLayout.centralArea.endPoints
+      .filter((point) => { return ((point[0] > MetroLayout.centralArea.center[0]) && (point[1] < MetroLayout.centralArea.center[1])) })
+      .sort((point1, point2) => { return point1[0] - point2[0] });
 
-    //make the svg paths
+    // filter SE end points and sort by eastness
+    var endPointsSE = MetroLayout.centralArea.endPoints
+      .filter((point) => { return ((point[0] > MetroLayout.centralArea.center[0]) && (point[1] > MetroLayout.centralArea.center[1])) })
+      .sort((point1, point2) => { return point1[0] - point2[0] });
+
+    // filter NW end points and sort by westness
+    var endPointsNW = MetroLayout.centralArea.endPoints
+      .filter((point) => { return ((point[0] < MetroLayout.centralArea.center[0]) && (point[1] < MetroLayout.centralArea.center[1])) })
+      .sort((point1, point2) => { return point2[0] - point1[0] });
+
+    // filter SW end points and sort by westness
+    var endPointsSW = MetroLayout.centralArea.endPoints
+      .filter((point) => { return ((point[0] < MetroLayout.centralArea.center[0]) && (point[1] > MetroLayout.centralArea.center[1])) })
+      .sort((point1, point2) => { return point2[0] - point1[0] });
+
+    // make the svg paths
     var strokeWidth = parseFloat(RawStyle.line["strokeWidth"]);
     var linesNE = endPointsNE.map((point, index) => {
       return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "e");
@@ -135,8 +139,20 @@ class MetroMap extends React.Component {
       return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "w");
     });
 
-    //stations
-    var centralStation = <rect x={MetroLayout.centralArea.center[0] - 15 } y={MetroLayout.centralArea.center[1] - 5} width="30" height="10" rx="5" ry="5"  className={css(Style["station"])} />
+    // stations
+    var startStation = (
+      <g>
+        <rect x="195" y="345" width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
+        <text x="155" y="315" className={css(Style["mapText"])} transform="rotate(45 155 315)">start</text>
+      </g>
+    )
+    var endStation = (
+      <g>
+        <rect x="195" y="595" width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
+        <text x="170" y="635" className={css(Style["mapText"])} transform="rotate(-45 170 635)">end</text>
+      </g>
+    )
+    var centralStation = <rect x={MetroLayout.centralArea.center[0] - 15 } y={MetroLayout.centralArea.center[1] - 5} width="30" height="10" rx="5" ry="5" className={css(Style["station"])} />
 
 
     //the composed metro map
@@ -150,10 +166,13 @@ class MetroMap extends React.Component {
         {centralArea}
         {river}
         {mainLine}
+        {mainLineArrows}
         {linesNE}
         {linesSE}
         {linesNW}
         {linesSW}
+        {endStation}
+        {startStation}
         {centralStation}
       </g>
     )

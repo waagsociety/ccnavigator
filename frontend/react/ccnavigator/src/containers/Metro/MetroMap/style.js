@@ -1,6 +1,14 @@
 import { StyleSheet } from "aphrodite";
+import { Constants } from 'config/Constants.js';
 
 export const RawStyle = {
+  'mapText': {
+    fontFamily: [Constants.fonts.defaultBold],
+    fontSize: '20px',
+    fontWeight: '700',
+    //transformOrigin: 'center center',
+    //transform: 'rotate(-45deg) translate(0,0)'
+  },
   'line': {
     fill:'none',
     stroke: '#000',
