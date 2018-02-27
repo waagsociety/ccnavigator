@@ -48,6 +48,10 @@ class ToolList extends React.Component {
     }
   }
 
+  closeModal() {
+    this.props.history.push('/')
+  }
+
   render() {
     //show loading till we have fetched all
     var modalHeader = <ModalHeader title={"loading"} />
@@ -81,7 +85,7 @@ class ToolList extends React.Component {
 
     //return the content in a modal view
     return (
-      <Modal isOpen={true}>
+      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
         {modalHeader}
         {modalBody}
       </Modal>

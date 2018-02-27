@@ -1,16 +1,20 @@
-import ReactModal from 'react-modal'
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js';
-import Style from './ModalStyle.js';
+import ReactModal from 'react-modal'
+import { css } from 'util/aphrodite-custom.js'
+import Style from './ModalStyle.js'
+
+
 
 ReactModal.setAppElement('body');
+
 
 const Modal = (props) =>
 
   <ReactModal
     isOpen={props.isOpen}
     onAfterOpen={() => {}}
-    onRequestClose={() => {}}
+    onRequestClose={props.onRequestClose}
+    //onRequestClose={() => {}}
     closeTimeoutMS={0}
     className={css(Style.modalContent)}
     overlayClassName={css(Style.modalOverlay)}
