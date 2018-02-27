@@ -1,0 +1,2 @@
+[testing]
+94.130.78.148 ansible_ssh_user=deploy ansible_ssh_port=2234
