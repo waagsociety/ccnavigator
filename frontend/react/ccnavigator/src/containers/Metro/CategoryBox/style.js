@@ -8,7 +8,7 @@ export const RawStyle = {
       transform: 'translate(200px, 375px) rotate(-45deg)'
     },
     'category-anchor-1' : { /*position top left corner of the boxes*/
-      transform: 'translate(300px, 75px) rotate(-45deg)'
+      transform: 'translate(280px, 75px) rotate(-45deg)'
     },
     'category-anchor-2' : { /*position top left corner of the boxes*/
       transform: 'translate(625px, 100px) rotate(-45deg)'
@@ -17,10 +17,10 @@ export const RawStyle = {
       transform: 'translate(690px, 440px) rotate(-45deg)'
     },
     'category-anchor-3-0' : { /*position top left corner of the boxes*/
-      transform: 'translate(515px, 450px) rotate(-45deg) scale(0.7, 0.7)'
+      transform: 'translate(515px, 450px) rotate(-45deg) scale(0.8)'
     },
     'category-anchor-3-1' : { /*position top left corner of the boxes*/
-      transform: 'translate(958px, 450px) rotate(-45deg) scale(0.7, 0.7)'
+      transform: 'translate(958px, 450px) rotate(-45deg) scale(0.8)'
     },
     'category-anchor-4' : { /*position top left corner of the boxes*/
       transform: 'translate(275px, 650px) rotate(-45deg)'

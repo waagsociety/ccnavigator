@@ -102,6 +102,21 @@ class MetroMap extends React.Component {
         }
       })
       .filter(value => value !== false)
+      var startStationPoint = MetroLayout.mainLine.points[0]
+      var startStation = (
+        <g>
+          <rect x={startStationPoint[0] - 5} y={startStationPoint[1] - 5} width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
+          <text x={startStationPoint[0] - 42} y={startStationPoint[1] - 35} className={css(Style["mapText"])} transform={`rotate(45 ${startStationPoint[0] - 42} ${startStationPoint[1] - 35})`}>start</text>
+        </g>
+      )
+      var endStationPoint = MetroLayout.mainLine.points[MetroLayout.mainLine.points.length - 1]
+      var endStation = (
+        <g>
+          <rect x={endStationPoint[0] - 5} y={endStationPoint[1] - 5} width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
+          <text x={endStationPoint[0] - 30} y={endStationPoint[1] + 37} className={css(Style["mapText"])} transform={`rotate(-45 ${endStationPoint[0] - 30} ${endStationPoint[1] + 37})`}>end</text>
+        </g>
+      )
+
 
     // generate sub lines
     // filter NE end points and sort by eastness
@@ -140,19 +155,8 @@ class MetroMap extends React.Component {
     });
 
     // stations
-    var startStation = (
-      <g>
-        <rect x="195" y="345" width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
-        <text x="155" y="315" className={css(Style["mapText"])} transform="rotate(45 155 315)">start</text>
-      </g>
-    )
-    var endStation = (
-      <g>
-        <rect x="195" y="595" width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
-        <text x="170" y="635" className={css(Style["mapText"])} transform="rotate(-45 170 635)">end</text>
-      </g>
-    )
-    var centralStation = <rect x={MetroLayout.centralArea.center[0] - 15 } y={MetroLayout.centralArea.center[1] - 5} width="30" height="10" rx="5" ry="5" className={css(Style["station"])} />
+    var centralStationWidth = (Math.max(endPointsNE.length, endPointsSE.length) + Math.max(endPointsNW.length, endPointsSW.length) + 1) * 10;
+    var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1]} width={centralStationWidth} height="10" rx="5" ry="5" className={css(Style["station"])} />
 
 
     //the composed metro map
@@ -167,12 +171,12 @@ class MetroMap extends React.Component {
         {river}
         {mainLine}
         {mainLineArrows}
+        {startStation}
+        {endStation}
         {linesNE}
         {linesSE}
         {linesNW}
         {linesSW}
-        {endStation}
-        {startStation}
         {centralStation}
       </g>
     )
