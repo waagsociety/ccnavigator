@@ -94,7 +94,7 @@ class MultiToolList extends React.Component {
         ) // todo: make translatable
 
         return {
-          link: `/tool-list/${term.id}`,
+          link: `/theme/${term.id}`,
           title: term.attributes.name,
           content: content
         }

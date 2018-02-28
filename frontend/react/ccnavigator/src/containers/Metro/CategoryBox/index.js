@@ -41,7 +41,7 @@ class CategoryBox extends React.Component {
         <foreignObject width="100%" height="100%" className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
           <div className={css(Style["category-box"],Style["no-select"])}>
             <h3>
-              <Link to={`/multi-tool-list/${this.props.entity.id}`} className={css(Style["category-title"])}>
+              <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title"])}>
                 {termEntity.attributes.name}
               </Link>
             </h3>

@@ -79,8 +79,8 @@ class App extends React.Component {
           </MediaQuery>
 
           <Route path="/about" render={() => about } />
-          <Route path="/tool-list/:id" component={ToolList} />
-          <Route path="/multi-tool-list/:id" component={MultiToolList} />
+          <Route path="/theme/:id" component={ToolList} />
+          <Route path="/zone/:id" component={MultiToolList} />
           <Route path="/tool/:id" component={ToolView} />
           <Route path="/*/taxonomy/term/:id" component={GlossaryItem} />
         </div>
