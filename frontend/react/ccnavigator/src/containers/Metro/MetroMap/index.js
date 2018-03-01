@@ -21,7 +21,15 @@ const generateLineArrows = (points, direction) => {
         var theta = Math.atan2(dy, dx); // range (-PI, PI]
         theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
 
-        return <path key={index} d={`M${x} ${y} l-${size/2} 0 l0 -${size} l${size} ${size} l-${size} ${size} l0 -${size*2}`} transform={`rotate(${theta} ${x} ${y} )`} />
+        const arrowFW = <path d={`M${x} ${y} m${size} 0 l-${size/2} 0 l0 -${size} l${size} ${size} l-${size} ${size} l0 -${size*2}`} transform={`rotate(${theta} ${x} ${y} )`} />
+        const arrowBW = <path d={`M${x} ${y} m-${size} 0 l${size/2} 0 l0 ${size} l-${size} -${size} l${size} -${size} l0 ${size*2}`} transform={`rotate(${theta} ${x} ${y} )`} />
+
+        return (
+          <g key={index}>
+            { direction.indexOf('>') !== -1 ? arrowFW : '' }
+            { direction.indexOf('<') !== -1 ? arrowBW : '' }
+          </g>
+        )
       } else {
         return false
       }
@@ -65,7 +73,7 @@ const generateSubline = (center, point, index, strokeWidth, side) => {
   var name = `sub-line-${side}-${index}`
   var linePoints = generateSublinePoints(center, point, index, strokeWidth)
   var line = <path d={CurvedPolyline.smoothPolyline(linePoints, 10)} className={css(Style["line"], Style[name])} />
-  var arrows = generateLineArrows(linePoints)
+  var arrows = generateLineArrows(linePoints, '<>')
 
   return (
     <g key={name}>
@@ -136,7 +144,7 @@ class MetroMap extends React.Component {
 
     // generate the main line and start/end stations
     var mainLine = <path d={CurvedPolyline.smoothPolyline(MetroLayout.mainLine.points, 20)} className={css(Style.line, Style["main-line"])} />
-    var mainLineArrows = generateLineArrows(MetroLayout.mainLine.points)
+    var mainLineArrows = generateLineArrows(MetroLayout.mainLine.points, '>')
 
     var startStationPoint = MetroLayout.mainLine.points[0]
     var startStation = generateStation(startStationPoint[0], startStationPoint[1], 'start', '45')
