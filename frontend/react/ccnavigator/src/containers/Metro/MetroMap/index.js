@@ -39,6 +39,7 @@ const subLine = (center, point, index, strokeWidth, side) => {
   if(side === 'w') index++;
 
   var l = generateLine(center, point, index, strokeWidth);
+  console.log(l)
   var name = `sub-line-${side}-${index}`;
   return <path key={name} d={CurvedPolyline.smoothPolyline(l, 10)} className={css(Style["line"], Style[name])} />
 };

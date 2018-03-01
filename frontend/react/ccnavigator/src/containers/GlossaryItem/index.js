@@ -5,6 +5,7 @@ import React from 'react';
 import ApiClient from 'client/ApiClient'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
+import ModalBody from 'components/ModalBody'
 import { buildJSXFromHTML} from "util/utility"
 
 
@@ -34,28 +35,35 @@ class GlossaryItem extends React.Component {
    */
   render() {
     //show loading till we have fetched all
-    var header = <ModalHeader title={"loading"} />
-    var content = "loading";
+    var modalHeader = <ModalHeader title={"loading"} />
+    var modalBody = "loading";
+
     //build content view when we have all data
     if(this.state.termEntity) {
+
       //make header
-      var title =  this.state.termEntity.attributes.name || "";
-      header = <ModalHeader title={title} />
+      var title =  this.state.termEntity.attributes.name || ""
+      modalHeader = <ModalHeader title={title} />
+
       //make content
       var body = (this.state.termEntity.attributes.description || {}).value || "";
-      var jsx = buildJSXFromHTML(body);
+      var description = buildJSXFromHTML(body);
+
       //compose content of modal
-      content = (
-        <div>
-          {jsx}
-        </div>
-      )
+      // description = (
+      //   <div>
+      //     {jsx}
+      //   </div>
+      // )
+
+      modalBody = <ModalBody description={description} />
     }
+
     //return the content in a modal view
     return (
-      <Modal isOpen={true}>
-        {header}
-        {content}
+      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
+        {modalHeader}
+        {modalBody}
       </Modal>
     )
   }
