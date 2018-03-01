@@ -17,6 +17,7 @@ const Style = StyleSheet.create({
   },
   title: {
     fontSize: '1.2em',
+    marginBottom: '2rem'
   }
 });
 

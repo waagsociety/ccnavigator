@@ -69,7 +69,7 @@ class MultiToolList extends React.Component {
         var themeDescription,
             themeTools
 
-        themeDescription = '[themeDescription]'
+        //themeDescription = subTitle
 
         if (term.nodes.length > 0) {
           themeTools = term.nodes.map((node) => {
@@ -87,7 +87,7 @@ class MultiToolList extends React.Component {
         //list the tools in this subcategory
         var content = (
           <div>
-            <p>{themeDescription}</p>
+            <p>{term.attributes.field_subtitle}</p>
             <h4>tools</h4>
             {themeTools}
           </div>
