@@ -1,4 +1,8 @@
-export const Metro1 = {
+const Metro1 = {
+  constants: {
+    lineWidth: 6,
+    stationSize: 10
+  },
   teamArea: {
     points: [[570,-1000],[200,-1000],[100,-900],[-100,-900],[-200,-1000],[-800,-1000],[-1000,-800],[-1000,1200],[-400,1800],[0,1800],[50,1750],[200,1750],[250,1800],[420,1800],[520,1700],[520,792.5],[445,717.5],[445,277.5],[570,152.5]]
   },
@@ -28,7 +32,7 @@ export const Metro1 = {
   }
 }
 
-export const Metro2 = {
+const Metro2 = {
   /* corners for the main line */
   mainLine: {
     points: [[90,48],[140,98],[463,98],[513,148]]
@@ -39,3 +43,5 @@ export const Metro2 = {
     center: [646,400]
   }
 }
+
+export const MetroLayout = Metro1

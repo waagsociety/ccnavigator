@@ -1,14 +1,38 @@
 import React from 'react';
 import { css } from 'util/aphrodite-custom.js';
 import { Style, RawStyle } from './style.js';
-import { Metro1 as MetroLayout } from "./layout.js"
+import { MetroLayout } from "./layout.js"
 import CurvedPolyline from "util/curved_polyline.js"
 
+
+
+const generateLineArrows = (points, direction) => {
+  return points
+    .map((point, index) => {
+      var next = index + 1
+      var size = 3.5
+
+      if(next < points.length) {
+        var x = (points[index][0] + points[next][0]) / 2
+        var y = (points[index][1] + points[next][1]) / 2
+
+        var dx = points[next][0] - points[index][0];
+        var dy = points[next][1] - points[index][1];
+        var theta = Math.atan2(dy, dx); // range (-PI, PI]
+        theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+
+        return <path key={index} d={`M${x} ${y} l-${size/2} 0 l0 -${size} l${size} ${size} l-${size} ${size} l0 -${size*2}`} transform={`rotate(${theta} ${x} ${y} )`} />
+      } else {
+        return false
+      }
+    })
+    .filter(value => value !== false)
+}
 
 /**
  * generate a metro line from the one point to the other, respecting some rules
  */
-const generateLine = (start, end, index, strokeWidth) => {
+const generateSublinePoints = (start, end, index, strokeWidth) => {
   //determine direction NE,SE,NW,SW
   var xSign = (end[0] - start[0]) > 0 ? 1 : -1;
   var ySign = (end[1] - start[1]) > 0 ? 1 : -1;
@@ -34,15 +58,44 @@ const generateLine = (start, end, index, strokeWidth) => {
 /**
  * return a path from center to point, index and side are user for composing css class
  */
-const subLine = (center, point, index, strokeWidth, side) => {
+const generateSubline = (center, point, index, strokeWidth, side) => {
   // reserve space for main line
-  if(side === 'w') index++;
+  if(side === 'w') index++
 
-  var l = generateLine(center, point, index, strokeWidth);
-  console.log(l)
-  var name = `sub-line-${side}-${index}`;
-  return <path key={name} d={CurvedPolyline.smoothPolyline(l, 10)} className={css(Style["line"], Style[name])} />
-};
+  var name = `sub-line-${side}-${index}`
+  var linePoints = generateSublinePoints(center, point, index, strokeWidth)
+  var line = <path d={CurvedPolyline.smoothPolyline(linePoints, 10)} className={css(Style["line"], Style[name])} />
+  var arrows = generateLineArrows(linePoints)
+
+  return (
+    <g key={name}>
+      {line}
+      {arrows}
+    </g>
+  )
+}
+
+/**
+ * generate a station
+ */
+const generateStation = (x, y, label, labelAngle) => {
+  x = x - MetroLayout.constants.lineWidth
+  y = y - MetroLayout.constants.lineWidth
+
+  return (
+    <g>
+      <rect className={css(Style["station"])}
+        x={x}
+        y={y}
+        width={MetroLayout.constants.stationSize}
+        height={MetroLayout.constants.stationSize}
+        rx={MetroLayout.constants.stationSize / 2}
+        ry={MetroLayout.constants.stationSize / 2}
+      />
+      <text className={css(Style["mapText"])} x={x} y={y} transform={`rotate(${labelAngle} ${x} ${y+5}) translate(-${label.length * 11} 10)`}>{label}</text>
+    </g>
+  )
+}
 
 
 class MetroMap extends React.Component {
@@ -81,82 +134,44 @@ class MetroMap extends React.Component {
     var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className={css(Style["river"])} />
 
 
-    // generate the main line
+    // generate the main line and start/end stations
     var mainLine = <path d={CurvedPolyline.smoothPolyline(MetroLayout.mainLine.points, 20)} className={css(Style.line, Style["main-line"])} />
-    var mainLineArrows = MetroLayout.mainLine.points
-      .map((point, index) => {
-        var next = index + 1
-        var size = 3.5
+    var mainLineArrows = generateLineArrows(MetroLayout.mainLine.points)
 
-        if(next < MetroLayout.mainLine.points.length) {
-          var x = (MetroLayout.mainLine.points[index][0] + MetroLayout.mainLine.points[next][0]) / 2
-          var y = (MetroLayout.mainLine.points[index][1] + MetroLayout.mainLine.points[next][1]) / 2
+    var startStationPoint = MetroLayout.mainLine.points[0]
+    var startStation = generateStation(startStationPoint[0], startStationPoint[1], 'start', '45')
 
-          var dx = MetroLayout.mainLine.points[next][0] - MetroLayout.mainLine.points[index][0];
-          var dy = MetroLayout.mainLine.points[next][1] - MetroLayout.mainLine.points[index][1];
-          var theta = Math.atan2(dy, dx); // range (-PI, PI]
-          theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
-
-          return <path key={index} d={`M${x} ${y} l-${size/2} 0 l0 -${size} l${size} ${size} l-${size} ${size} l0 -${size*2}`} transform={`rotate(${theta} ${x} ${y} )`} />
-        } else {
-          return false
-        }
-      })
-      .filter(value => value !== false)
-      var startStationPoint = MetroLayout.mainLine.points[0]
-      var startStation = (
-        <g>
-          <rect x={startStationPoint[0] - 5} y={startStationPoint[1] - 5} width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
-          <text x={startStationPoint[0] - 42} y={startStationPoint[1] - 35} className={css(Style["mapText"])} transform={`rotate(45 ${startStationPoint[0] - 42} ${startStationPoint[1] - 35})`}>start</text>
-        </g>
-      )
-      var endStationPoint = MetroLayout.mainLine.points[MetroLayout.mainLine.points.length - 1]
-      var endStation = (
-        <g>
-          <rect x={endStationPoint[0] - 5} y={endStationPoint[1] - 5} width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
-          <text x={endStationPoint[0] - 30} y={endStationPoint[1] + 37} className={css(Style["mapText"])} transform={`rotate(-45 ${endStationPoint[0] - 30} ${endStationPoint[1] + 37})`}>end</text>
-        </g>
-      )
-
+    var endStationPoint = MetroLayout.mainLine.points[MetroLayout.mainLine.points.length - 1]
+    var endStation = generateStation(endStationPoint[0], endStationPoint[1], ' end', '-45')
 
     // generate sub lines
-    // filter NE end points and sort by eastness
-    var endPointsNE = MetroLayout.centralArea.endPoints
+    // filter NE end points, sort by eastness and make svg paths
+    var linesNE = MetroLayout.centralArea.endPoints
       .filter((point) => { return ((point[0] > MetroLayout.centralArea.center[0]) && (point[1] < MetroLayout.centralArea.center[1])) })
-      .sort((point1, point2) => { return point1[0] - point2[0] });
+      .sort((point1, point2) => { return point1[0] - point2[0] })
+      .map((point, index) => { return generateSubline(MetroLayout.centralArea.center, point, index, MetroLayout.constants.lineWidth, "e") })
 
-    // filter SE end points and sort by eastness
-    var endPointsSE = MetroLayout.centralArea.endPoints
+    // filter SE end points, sort by eastness and make svg paths
+    var linesSE = MetroLayout.centralArea.endPoints
       .filter((point) => { return ((point[0] > MetroLayout.centralArea.center[0]) && (point[1] > MetroLayout.centralArea.center[1])) })
-      .sort((point1, point2) => { return point1[0] - point2[0] });
+      .sort((point1, point2) => { return point1[0] - point2[0] })
+      .map((point, index) => { return generateSubline(MetroLayout.centralArea.center, point, index, MetroLayout.constants.lineWidth, "e") })
 
-    // filter NW end points and sort by westness
-    var endPointsNW = MetroLayout.centralArea.endPoints
+    // filter NW end points, sort by westness and make svg paths
+    var linesNW = MetroLayout.centralArea.endPoints
       .filter((point) => { return ((point[0] < MetroLayout.centralArea.center[0]) && (point[1] < MetroLayout.centralArea.center[1])) })
-      .sort((point1, point2) => { return point2[0] - point1[0] });
+      .sort((point1, point2) => { return point2[0] - point1[0] })
+      .map((point, index) => { return generateSubline(MetroLayout.centralArea.center, point, index, MetroLayout.constants.lineWidth, "w") })
 
-    // filter SW end points and sort by westness
-    var endPointsSW = MetroLayout.centralArea.endPoints
+    // filter SW end points, sort by westness and make svg paths
+    var linesSW = MetroLayout.centralArea.endPoints
       .filter((point) => { return ((point[0] < MetroLayout.centralArea.center[0]) && (point[1] > MetroLayout.centralArea.center[1])) })
-      .sort((point1, point2) => { return point2[0] - point1[0] });
+      .sort((point1, point2) => { return point2[0] - point1[0] })
+      .map((point, index) => { return generateSubline(MetroLayout.centralArea.center, point, index, MetroLayout.constants.lineWidth, "w") })
 
-    // make the svg paths
-    var strokeWidth = parseFloat(RawStyle.line["strokeWidth"]);
-    var linesNE = endPointsNE.map((point, index) => {
-      return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "e");
-    });
-    var linesSE = endPointsSE.map((point, index) => {
-      return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "e");
-    });
-    var linesNW = endPointsNW.map((point, index) => {
-      return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "w");
-    });
-    var linesSW = endPointsSW.map((point, index) => {
-      return subLine(MetroLayout.centralArea.center, point, index, strokeWidth, "w");
-    });
 
-    // stations
-    var centralStationWidth = (Math.max(endPointsNE.length, endPointsSE.length) + Math.max(endPointsNW.length, endPointsSW.length) + 1) * 10;
+    // make stations
+    var centralStationWidth = (Math.max(linesNE.length, linesSE.length) + Math.max(linesNW.length, linesSW.length) + 1) * 10;
     var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1]} width={centralStationWidth} height="10" rx="5" ry="5" className={css(Style["station"])} />
 
 
