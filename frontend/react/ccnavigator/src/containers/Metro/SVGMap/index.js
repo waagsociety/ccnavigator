@@ -22,10 +22,10 @@ class SVGMap extends React.Component {
 
   //adapt the initial viewBox bigger screens zoom out a bit to show more of the map 
   componentDidMount() {
-    if((this.props.width > 900) && (this.props.height > 900)) {
+    if((this.props.width > 800) && (this.props.height > 800)) {
       var s = Math.min(this.props.width,this.props.height);
-      //var z = 900 / s;
       var z = 800 / s;
+      //var z = 200 / s;
       this.zoomWith(z);
     }
   }
@@ -175,7 +175,7 @@ class SVGMap extends React.Component {
     if(scale <= 0) return;
 
     // todo better
-    if(scale < 1 && this.state.viewBox[2] > 3600) return;
+    if(scale < 1 && this.state.viewBox[2] > 1600) return;
     if(scale > 1 && this.state.viewBox[2] < 300) return;
 
     const nw = this.state.viewBox[2] / scale;
