@@ -5,6 +5,7 @@ const Style = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexGrow: "1",
 
     '@media (orientation: landscape)': {
       flexDirection: 'column',
