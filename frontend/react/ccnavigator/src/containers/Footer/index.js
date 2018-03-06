@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 //import Style from './style.js';
 import Login from "containers/Login"
 import Logout from "containers/Logout"
-import LanguageSelector from "containers/LanguageSelector"
+//import LanguageSelector from "containers/LanguageSelector"
 
 class Footer extends React.Component {
 
@@ -16,10 +16,11 @@ class Footer extends React.Component {
       userform = <Login/>
     }
 
+    //<LanguageSelector/>
     return (
       <div>
         {userform}
-        <LanguageSelector/>
+        
       </div>
     );
   }
