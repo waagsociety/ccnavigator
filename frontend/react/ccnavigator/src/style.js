@@ -1,6 +1,8 @@
 import {StyleSheet, css} from "util/aphrodite-custom.js"
 import { Constants } from 'config/Constants.js';
 
+const labelHeight = 20;
+
 /**
  * global styles
  */
