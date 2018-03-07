@@ -58,7 +58,7 @@ class App extends React.Component {
       <Router>
         <div className={css(Style.app_container)}>
           <MediaQuery orientation="landscape">
-            <div className={css([Style.left_panel, Style.panel])} style={{width:'14rem'}}>
+            <div className={css([Style.panel, Style.left_panel])} style={{width:'14rem'}}>
               <Header />
               <Footer />
             </div>
@@ -67,7 +67,7 @@ class App extends React.Component {
             </div>
           </MediaQuery>
           <MediaQuery orientation="portrait">
-            <div className={css(Style.panel)} style={{height:'2.5rem'}}>
+            <div className={css([Style.panel, Style.header_panel])}>
               <Header />
             </div>
             <div className={css(Style.map_container)} style={{height:'1px'}}>

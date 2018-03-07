@@ -20,7 +20,6 @@ class Footer extends React.Component {
     return (
       <div>
         {userform}
-        
       </div>
     );
   }

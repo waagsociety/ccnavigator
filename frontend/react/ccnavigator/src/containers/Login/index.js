@@ -15,15 +15,15 @@ class Login extends React.Component {
   }
 
   /*
-   * get the user status, if the user is logged in this component will be unmount by parent
-   */
+  * get the user status, if the user is logged in this component will be unmount by parent
+  */
   componentDidMount() {
-		ApiClient.instance().loginStatus(function(status){
-			if(status === true) {
-				this.getUser();
-			}
-		}.bind(this));
-	}
+    ApiClient.instance().loginStatus(function(status){
+      if(status === true) {
+        this.getUser();
+      }
+    }.bind(this));
+  }
 
   onLogin(evt) {
     var user = this.userField.value;
@@ -48,13 +48,12 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div>
         <div className={css(Style.login_form)}>
-          <input type="text" ref={(elem) => { this.userField = elem; }} />
-          <input type="password" ref={(elem) => { this.passField = elem; }} />
-          <input type="submit" value="login" onClick={ this.onLogin.bind(this)} />
+          <h3>Log in to the navigator</h3>
+          <input placeholder="username" className={css(Style.input)} type="text" ref={(elem) => { this.userField = elem; }} />
+          <input placeholder="password" className={css(Style.input)} type="password" ref={(elem) => { this.passField = elem; }} />
+          <button className={css(Style.button)} onClick={ this.onLogin.bind(this) }>login</button>
         </div>
-      </div>
     );
   }
 

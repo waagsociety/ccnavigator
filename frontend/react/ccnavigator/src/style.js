@@ -37,6 +37,9 @@ const Style = StyleSheet.create({
       '*h3, h4': {
         lineHeight: '1.5em'
       },
+      '*h3, h4': {
+        marginBottom: '0.75em'
+      },
       '*p': {
         margin: '0 0 1.5em',
         lineHeight: '1.5em',
