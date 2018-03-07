@@ -40,15 +40,17 @@ class Metro extends React.Component {
     }
     var goDeeper = function(node, res) {
       if(isGrandParent(node)) {
-        for(var i=0;i<node.children.length;i++) {
+        for(var i=0; i<node.children.length; i++) {
           goDeeper(node.children[i], res);
         }
+        node.grandparent = true
       } else {
-        res.push(node);
+        node.grandparent = false
       }
+      res.push(node);
     }
     var result = [];
-    for(var i=0;i<tree.length;i++) {
+    for(var i=0; i<tree.length; i++) {
       goDeeper(tree[i], result);
     }
     return result;
