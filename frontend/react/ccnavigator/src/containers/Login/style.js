@@ -4,14 +4,10 @@ import { Constants } from 'config/Constants.js';
 const Style = StyleSheet.create({
   login_form: {
     display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '14rem',
     marginTop: '2rem',
 
-    '@media (orientation: landscape)': {
-      flexDirection: 'column',
-    },
-    '@media (orientation: portrait)': {
-      flexDirection: 'row',
-    }
   },
   input: {
     fontFamily: [Constants.fonts.default],

@@ -8,12 +8,15 @@ import MultiToolList from "containers/MultiToolList"
 import ToolView from "containers/ToolView"
 import GlossaryItem from "containers/GlossaryItem"
 import MediaQuery from 'react-responsive';
+import ModalHeader from 'components/ModalHeader'
+import ModalBody from 'components/ModalBody'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
 
 import {
   BrowserRouter as Router,
-  Route
+  Route,
+  Switch
 } from 'react-router-dom'
 
 class App extends React.Component {
@@ -53,7 +56,27 @@ class App extends React.Component {
   }
 
   render() {
-    var about = (<Modal isOpen={true}>about bla bla</Modal>)
+    var about = (
+      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
+        <ModalHeader title="About" />
+        <ModalBody description="About the Co-Creation Navigator" />
+      </Modal>
+    )
+
+    var introduction = (
+      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
+        <ModalHeader title="The Co-creation Navigator" />
+        <ModalBody description="Ahoy!" />
+      </Modal>
+    )
+
+    var notFound = (
+      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
+        <ModalHeader title="Not found 404" />
+        <ModalBody description="Could not navigate to what you were looking for..." />
+      </Modal>
+    )
+
     return (
       <Router>
         <div className={css(Style.app_container)}>
@@ -78,17 +101,21 @@ class App extends React.Component {
             </div>
           </MediaQuery>
 
-          <Route path="/about" render={() => about } />
-          <Route path="/theme/:id" component={ToolList} />
-          <Route path="/zone/:id" component={MultiToolList} />
-          <Route path="/tool/:id" component={ToolView} />
-          <Route path="/*/taxonomy/term/:id" component={GlossaryItem} />
+          <Switch>
+            <Route exact path="/" />
+            <Route path="/introduction" render={() => introduction } />
+            <Route path="/about" render={() => about } />
+            <Route path="/theme/:id" component={ToolList} />
+            <Route path="/zone/:id" component={MultiToolList} />
+            <Route path="/tool/:id" component={ToolView} />
+            <Route path="/*/taxonomy/term/:id" component={GlossaryItem} />
+            <Route path="*" render={() => notFound } status={404}/>
+          </Switch>
         </div>
       </Router>
     );
   }
 
 }
-
 
 export default App;
