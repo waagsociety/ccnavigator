@@ -1,4 +1,6 @@
 - hosts: all
+  gather_facts: yes
+  become: false
   tasks:
     # now deploy react application
     - name: place react app (takes while)
@@ -10,27 +12,3 @@
         owner=www-data
         group=www-data
       become: true
-    # fix permissions
-    - name: fix permissions on synced dirs
-      file:
-        dest: /var/www
-        owner: www-data
-        group: www-data
-        mode: 0444
-        recurse: yes
-      become: true
-    - name: make directories accessible
-      file:
-        dest: /var/www
-        mode: 'u+X,g+X'
-        recurse: yes
-      become: true
-    - name: make files writable
-      file:
-        dest: /var/www/drupal/sites/default/files
-        mode: 'u+w,g+w'
-        recurse: yes
-      become: true
-    # rebuild drush cache
-    - name: drush rebuild cache
-      shell: '~/.config/composer/vendor/bin/drush cr --root=/var/www/drupal'
