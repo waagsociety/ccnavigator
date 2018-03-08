@@ -13,7 +13,7 @@ export const RawStyle = {
       whiteSpace: 'pre',
       textTransform: 'capitalize',
       borderRadius: '5px',
-      fontSize: '8pt',
+      fontSize: '7pt',
       FontWeight: 'bold',
       userSelect: 'none'
     },

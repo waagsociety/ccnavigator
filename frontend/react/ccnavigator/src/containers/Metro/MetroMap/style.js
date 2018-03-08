@@ -5,7 +5,8 @@ export const RawStyle = {
   'mapText': {
     fontFamily: [Constants.fonts.defaultBold],
     fontSize: '20px',
-    fontWeight: '700'
+    fontWeight: '700',
+    userSelect: 'none'
   },
   'line': {
     fill:'none',

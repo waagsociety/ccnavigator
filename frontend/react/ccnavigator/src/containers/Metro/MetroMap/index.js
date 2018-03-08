@@ -141,10 +141,15 @@ class MetroMap extends React.Component {
     var navigatorAreaClosed = CurvedPolyline.closeLine(MetroLayout.navigatorArea.points)
     var navigatorArea = <path d={CurvedPolyline.smoothPolyline(navigatorAreaClosed, 20)} className={css(Style["area"])} />
 
-    var wideAreaClosed = CurvedPolyline.closeLine(MetroLayout.wideArea.points)
-    var wideArea = <path d={CurvedPolyline.smoothPolyline(wideAreaClosed, 20)} className={css(Style["wide-area"])} />
-    var innerAreaClosed = CurvedPolyline.closeLine(MetroLayout.innerArea.points)
-    var innerArea = <path d={CurvedPolyline.smoothPolyline(innerAreaClosed, 20)} className={css(Style["inner-area"])} />
+    var cityAreaClosed = CurvedPolyline.closeLine(MetroLayout.cityArea.points)
+    var cityArea = <path d={CurvedPolyline.smoothPolyline(cityAreaClosed, 20)} className={css(Style["wide-area"])} />
+
+    var zone2Closed = CurvedPolyline.closeLine(MetroLayout.zone2.points)
+    var zone2 = <path d={CurvedPolyline.smoothPolyline(zone2Closed, 20)} className={css(Style["inner-area"])} />
+
+
+    //var innerAreaClosed = CurvedPolyline.closeLine(MetroLayout.innerArea.points)
+    //var innerArea = <path d={CurvedPolyline.smoothPolyline(innerAreaClosed, 20)} className={css(Style["inner-area"])} />
 
     var centralAreaClosed = CurvedPolyline.closeLine(MetroLayout.centralArea.points)
     var centralArea = <path d={CurvedPolyline.smoothPolyline(centralAreaClosed, 20)} className={css(Style["central-area"])} />
@@ -197,10 +202,7 @@ class MetroMap extends React.Component {
     var centralStationWidth = (Math.max(linesNE.length, linesSE.length) + Math.max(linesNW.length, linesSW.length) + 1) * 10;
     var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1]- 5} width={centralStationWidth} height="10" rx="5" ry="5" className={css(Style["station"])} />
 
-    //{wideArea}
     //{innerArea}
-
-    //{river}
     //the composed metro map
     return (
       <g>
@@ -208,8 +210,8 @@ class MetroMap extends React.Component {
         {teamArea}
         {communityArea}
         {navigatorArea}
-        {wideArea}
-        {innerArea}
+        {cityArea}
+        {zone2}
         {centralArea}
         {river}
         {mainLine}

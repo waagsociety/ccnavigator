@@ -6,13 +6,13 @@ export const RawStyle = {
     transformOrigin: 'top-left'
   },
   'category-anchor-1' : {
-    transform: 'translate(200px, 375px) rotate(-45deg)'
+    transform: 'translate(175px, 375px) rotate(-45deg)'
   },
   'category-anchor-2' : {
-    transform: 'translate(270px, 75px) rotate(-45deg)'
+    transform: 'translate(260px, 50px) rotate(-45deg)'
   },
   'category-anchor-3' : {
-    transform: 'translate(625px, 100px) rotate(-45deg)'
+    transform: 'translate(625px, 75px) rotate(-45deg)'
   },
   'category-anchor-4' : {
     transform: 'translate(570px, 630px) rotate(-45deg)'

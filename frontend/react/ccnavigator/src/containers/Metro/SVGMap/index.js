@@ -10,7 +10,7 @@ class SVGMap extends React.Component {
     super(props);
     this.state = {
       matrix: [1, 0, 0, 1, 0, 0],
-      viewBox: [180, -80, 900, 900], /* default view box */
+      viewBox: [100, -80, 1000, 900], /* default view box */
       buttonHeld: false,
       dragging: false,
       startX: 0,
@@ -24,7 +24,7 @@ class SVGMap extends React.Component {
   componentDidMount() {
     if((this.props.width > 900) && (this.props.height > 900)) {
       var s = Math.min(this.props.width,this.props.height);
-      var z = 700 / s;
+      var z = 900 / s;
       //var z = 200 / s;
       this.zoomWith(z);
     }
