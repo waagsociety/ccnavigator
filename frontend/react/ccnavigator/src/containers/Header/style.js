@@ -18,10 +18,14 @@ const Style = StyleSheet.create({
   },
   title: {
     fontSize: '1.2em',
+    marginBottom: '0.5em',
 
     '@media (orientation: landscape)': {
       fontSize: '1.4em'
     }
+  },
+  subtitle: {
+    lineHeight: '1.35em'
   }
 });
 

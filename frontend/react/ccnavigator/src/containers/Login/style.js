@@ -28,6 +28,10 @@ const Style = StyleSheet.create({
     padding: '0.8em 0.8em 0.6em',
     border: 'none',
     textTransform: 'uppercase'
+  },
+  small: {
+    fontSize: '0.8em',
+    lineHeight: '1.35em'
   }
 });
 

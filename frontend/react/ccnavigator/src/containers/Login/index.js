@@ -50,6 +50,7 @@ class Login extends React.Component {
     return (
         <div className={css(Style.login_form)}>
           <h3>Log in to the navigator</h3>
+          <p className={css(Style.small)}>Log in to save your progress, receive feedback and other great features</p>
           <input placeholder="username" className={css(Style.input)} type="text" ref={(elem) => { this.userField = elem; }} />
           <input placeholder="password" className={css(Style.input)} type="password" ref={(elem) => { this.passField = elem; }} />
           <button className={css(Style.button)} onClick={ this.onLogin.bind(this) }>login</button>

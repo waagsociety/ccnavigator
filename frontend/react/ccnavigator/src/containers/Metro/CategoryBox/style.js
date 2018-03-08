@@ -1,5 +1,5 @@
 import { StyleSheet } from "aphrodite";
-
+import { Constants } from 'config/Constants.js';
 
 export const RawStyle = {
   'category-anchor' : { /*position top left corner of the boxes*/
@@ -30,9 +30,9 @@ export const RawStyle = {
     display: 'inline-block',
     padding: '10px',
 
-    ':hover': {
-      backgroundColor: 'rgba(0,0,0,0.1)'
-    }
+    //':hover': {
+    //  backgroundColor: 'rgba(0,0,0,0.1)'
+    //}
   },
   'category-box-row' : {
     background: 'none'
@@ -62,7 +62,11 @@ export const RawStyle = {
     textDecoration: 'none',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+
+    //':hover': {
+    //  color: [Constants.colors.turquoise]
+    //}
   },
   'no-select': {
     userSelect: 'none',

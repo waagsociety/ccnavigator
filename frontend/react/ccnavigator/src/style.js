@@ -50,7 +50,7 @@ const Style = StyleSheet.create({
       },
       '*a': {
         color: [Constants.colors.text],
-        transition: 'color 200ms ease'
+        transition: 'color 100ms ease'
       },
       '*div': {
         boxSizing: 'border-box'
