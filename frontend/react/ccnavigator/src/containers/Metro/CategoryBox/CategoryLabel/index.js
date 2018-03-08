@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { css } from 'util/aphrodite-custom.js';
 //own imports
-import { abbreviateString} from "util/utility.js"
+import { firstLettersString } from "util/utility.js"
 import { Style } from './style.js';
 import { Link } from 'react-router-dom'
 
@@ -11,7 +11,7 @@ class CategoryLabel extends React.Component {
   constructor(props) {
     super(props);
     var name = (this.props.entity.attributes || {}).name;
-    var shortName = abbreviateString(name);
+    var shortName = firstLettersString(name);
     this.state = {
       shortLabels: true,
       name: name,
@@ -36,16 +36,24 @@ class CategoryLabel extends React.Component {
 
   render() {
     var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.state.name : this.state.shortName);
-    var dots = new Array(this.props.entity.nodes.length || 0)
-    dots.fill("•")
+    //var dots = new Array(this.props.entity.nodes.length || 0)
+    //dots.fill("•")
+
+    var dots = this.props.entity.nodes.map((node, index) => {
+      return (
+        <span key={index} className={css(Style["dot"])}></span>
+      )
+    })
+
+
+
+    //onMouseEnter={this.onLabelMouseEnter.bind(this)}
+    //onMouseLeave={this.onLabelMouseLeave.bind(this)}
+
     return (
-      <Link to={`/theme/${this.props.entity.id}`}>
-        <div
-          className={css(Style["label"])}
-          onMouseEnter={this.onLabelMouseEnter.bind(this)}
-          onMouseLeave={this.onLabelMouseLeave.bind(this)} >
-          <span><span className={css(Style["dots"])}>{dots.join('')}</span>{displayName}</span>
-        </div>
+      <Link className={css(Style["label"])} to={`/theme/${this.props.entity.id}`}>
+        {dots}
+        {displayName}
       </Link>
     );
 

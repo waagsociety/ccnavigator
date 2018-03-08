@@ -21,6 +21,18 @@ export const groupBy = function(ar, len) {
 };
 
 /**
+  * convert a string to a abbrivated string with first letter of every word
+  */
+export const firstLettersString = function(string = "") {
+  var words = string.split(/[^a-zA-Z0-9]+/);
+  var firstLetters = words.map((word) => {
+    return word.charAt(0);
+  });
+
+  return firstLetters.join("").toUpperCase();
+};
+
+/**
   * convert a string to a abbrivated string with padding, like "bla bla bla" to "  BBB  "
   */
 export const abbreviateString = function(string = "") {
