@@ -5,6 +5,7 @@ const Style = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexGrow: '1',
 
     '@media (orientation: landscape)': {
       flexDirection: 'column',
@@ -17,6 +18,10 @@ const Style = StyleSheet.create({
   },
   title: {
     fontSize: '1.2em',
+
+    '@media (orientation: landscape)': {
+      fontSize: '1.4em'
+    }
   }
 });
 

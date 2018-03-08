@@ -17,19 +17,22 @@ const Style = StyleSheet.create({
     flexGrow: '1',
     overflow: 'hidden',
   },
-  left_panel: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  },
   panel: {
     position: 'relative',
     zIndex: '100',
     flexGrow: '0',
     backgroundColor: 'white',
-    padding: '0.5rem',
+    padding: '1rem',
     overflow: 'hidden',
     boxShadow: '0 0 0.75rem 0 rgba(0,0,0,0.1)'
+  },
+  header_panel: {
+    padding: '0.75rem 1rem'
+  },
+  left_panel: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
   }
 });
 

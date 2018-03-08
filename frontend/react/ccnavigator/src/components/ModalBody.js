@@ -5,7 +5,6 @@ import Style from './ModalStyle.js';
 
 const ModalBody = (props) => {
 
-  //var description = props.description ? <div className={css(Style.description)}>{buildJSXFromHTML(props.description)}</div> : ''
   var description = props.description ? <div className={css(Style.description)}>{props.description}</div> : ''
 
   var boxes = (props.boxes || []).map((box, index) => {

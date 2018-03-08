@@ -24,8 +24,8 @@ class SVGMap extends React.Component {
   componentDidMount() {
     if((this.props.width > 900) && (this.props.height > 900)) {
       var s = Math.min(this.props.width,this.props.height);
-      //var z = 900 / s;
-      var z = 800 / s;
+      var z = 700 / s;
+      //var z = 200 / s;
       this.zoomWith(z);
     }
   }
@@ -175,7 +175,7 @@ class SVGMap extends React.Component {
     if(scale <= 0) return;
 
     // todo better
-    if(scale < 1 && this.state.viewBox[2] > 3600) return;
+    if(scale < 1 && this.state.viewBox[2] > 1600) return;
     if(scale > 1 && this.state.viewBox[2] < 300) return;
 
     const nw = this.state.viewBox[2] / scale;

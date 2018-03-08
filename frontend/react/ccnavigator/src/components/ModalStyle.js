@@ -74,7 +74,11 @@ const Style = StyleSheet.create({
     fontSize: '13px',
     lineHeight: labelHeight-3 + 'px',
     textTransform: 'uppercase',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+
+    ':last-child': {
+      marginRight: '0'
+    }
   },
   title: {
     fontSize: '35px',

@@ -1,6 +1,8 @@
 import {StyleSheet, css} from "util/aphrodite-custom.js"
 import { Constants } from 'config/Constants.js';
 
+const labelHeight = 20;
+
 /**
  * global styles
  */
@@ -34,6 +36,9 @@ const Style = StyleSheet.create({
       },
       '*h3, h4': {
         lineHeight: '1.5em'
+      },
+      '*h3': {
+        marginBottom: '0.75em'
       },
       '*p': {
         margin: '0 0 1.5em',

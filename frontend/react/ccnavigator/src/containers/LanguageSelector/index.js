@@ -16,15 +16,12 @@ class LanguageSelector extends React.Component {
       return (<option key={index} value={item}>{item}</option>)
     });
 
-		return (
-			<span className={css(Style.container)}>
-        <select onChange={this.onChange.bind(this)}>
-          {options}
-        </select>
-      </span>
+    return (
+      <select onChange={this.onChange.bind(this)}>
+        {options}
+      </select>
     );
-	}
-
+  }
 }
 
 const mapStateToProps = (state, ownProps) => ({

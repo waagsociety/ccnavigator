@@ -25,7 +25,7 @@ class MultiToolList extends React.Component {
     var entityId = this.props.match.params.id;
     //get hierarchy path of this term
     ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
-      console.log(term)
+      //console.log(term)
       this.setState({termHierachy: term});
     }.bind(this));
     //full info on this entity
@@ -69,7 +69,7 @@ class MultiToolList extends React.Component {
         var themeDescription,
             themeTools
 
-        themeDescription = '[themeDescription]'
+        //themeDescription = subTitle
 
         if (term.nodes.length > 0) {
           themeTools = term.nodes.map((node) => {
@@ -87,14 +87,14 @@ class MultiToolList extends React.Component {
         //list the tools in this subcategory
         var content = (
           <div>
-            <p>{themeDescription}</p>
-            <h4>tools</h4>
+            <p>{term.attributes.field_subtitle}</p>
+            <h4>tools:</h4>
             {themeTools}
           </div>
         ) // todo: make translatable
 
         return {
-          link: `/tool-list/${term.id}`,
+          link: `/theme/${term.id}`,
           title: term.attributes.name,
           content: content
         }
@@ -103,7 +103,6 @@ class MultiToolList extends React.Component {
 
       //compose body of modal
       modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
-
     }
 
     //return the content in a modal view
