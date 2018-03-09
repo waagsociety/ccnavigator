@@ -12,7 +12,7 @@ const Style = StyleSheet.create({
     },
     '@media (orientation: portrait)': {
       flexDirection: 'row',
-      height: '1.5em',
+      //height: '1.5em',
     }
 
   },

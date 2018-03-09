@@ -60,18 +60,21 @@ const generateSublinePoints = (start, end, index, strokeWidth) => {
 
   //begin point east or west offset from center
   var offset = strokeWidth * 0.75 + (index * strokeWidth * 1.5)
-
   var begin = [start[0] + xSign * offset, start[1]];
+
   //go up or down from the begin
-  var p1 = [begin[0], (begin[1] + (ySign * (40 - (index * strokeWidth * 0.75))))];
+  var p1 = [begin[0], (begin[1] + (ySign * (30 - (index * strokeWidth * 0.75))))];
+
   //go 45,135,225 or 315 degr from end
   var len = Math.random() * 30 + 20;
   var p3 = [(end[0] + (xSign * - len)),(end[1] + (ySign * - len))]
+
   //then go 45,135,225 or 315 degr for a minimal length
   var dX = Math.abs(p3[0] - p1[0]);
   var dY = Math.abs(p3[1] - p1[1]);
   var dM = Math.min(dX,dY);
   var p2 = [(p1[0] + dM * xSign), (p1[1] + dM * ySign)];
+
   //return polyline points
   return [begin,p1,p2,p3,end];
 }
@@ -203,6 +206,7 @@ class MetroMap extends React.Component {
     var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1]- 5} width={centralStationWidth} height="10" rx="5" ry="5" className={css(Style["station"])} />
 
     //{innerArea}
+    //
     //the composed metro map
     return (
       <g>

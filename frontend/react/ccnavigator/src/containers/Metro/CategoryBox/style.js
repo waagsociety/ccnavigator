@@ -1,30 +1,40 @@
 import { StyleSheet } from "aphrodite";
 import { Constants } from 'config/Constants.js';
 
+//const rotate = 'rotate(-0deg)'
+const rotate = 'rotate(-45deg)'
+const scaleSubCategory = 'scale(0.60)'
+
 export const RawStyle = {
   'category-anchor' : { /*position top left corner of the boxes*/
     transformOrigin: 'top-left'
   },
   'category-anchor-1' : {
-    transform: 'translate(175px, 375px) rotate(-45deg)'
+    transform: `translate(190px, 250px) ${rotate}`
   },
   'category-anchor-2' : {
-    transform: 'translate(260px, 50px) rotate(-45deg)'
+    transform: `translate(380px, 60px) ${rotate}`
   },
   'category-anchor-3' : {
-    transform: 'translate(625px, 75px) rotate(-45deg)'
+    transform: `translate(630px, 60px) ${rotate}`
   },
   'category-anchor-4' : {
-    transform: 'translate(570px, 630px) rotate(-45deg)'
+    transform: `translate(620px, 680px) ${rotate}`
   },
   'category-anchor-4-1' : {
-    transform: 'translate(710px, 200px) rotate(-45deg) scale(0.8)'
+    transform: `translate(810px, 270px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-4-2' : {
-    transform: 'translate(800px, 450px) rotate(-45deg) scale(0.8)'
+    transform: `translate(560px, 470px) ${rotate} ${scaleSubCategory}`
+  },
+  'category-anchor-4-3' : {
+    transform: `translate(600px, 270px) ${rotate} ${scaleSubCategory}`
+  },
+  'category-anchor-4-4' : {
+    transform: `translate(960px, 550px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-5' : {
-    transform: 'translate(275px, 650px) rotate(-45deg)'
+    transform: `translate(230px, 720px) ${rotate}`
   },
   'category-box' : {
     display: 'inline-block',

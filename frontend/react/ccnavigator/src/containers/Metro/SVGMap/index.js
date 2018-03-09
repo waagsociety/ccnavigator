@@ -10,7 +10,7 @@ class SVGMap extends React.Component {
     super(props);
     this.state = {
       matrix: [1, 0, 0, 1, 0, 0],
-      viewBox: [100, -80, 1000, 900], /* default view box */
+      viewBox: [100, -100, 1100, 950], /* default view box */
       buttonHeld: false,
       dragging: false,
       startX: 0,
