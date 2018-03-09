@@ -5,7 +5,7 @@ Co-creation navigator is your guide in the world of co-creation. Uses Drupal as 
 ## Deploy
 
 ### All
-ansible-playbook react.yml -i hosts --ask-sudo-pass
+ansible-playbook playbook.yml -i hosts --ask-sudo-pass
 
 ### Only React
-ansible-playbook playbook.yml -i hosts --ask-sudo-pass
+ansible-playbook react.yml -i hosts --ask-sudo-pass
