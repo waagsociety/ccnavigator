@@ -36,29 +36,18 @@ class CategoryLabel extends React.Component {
 
   render() {
     var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.state.name : this.state.shortName);
-    //var dots = new Array(this.props.entity.nodes.length || 0)
-    //dots.fill("•")
-
-    var dots = this.props.entity.nodes.map((node, index) => {
-      return (
-        <span key={index} className={css(Style["dot"])}></span>
-      )
-    })
-
-
+    var toolsCount = <span className={css(Style["dot"])}>{this.props.entity.nodes.length}</span>
 
     //onMouseEnter={this.onLabelMouseEnter.bind(this)}
     //onMouseLeave={this.onLabelMouseLeave.bind(this)}
 
     return (
       <Link className={css(Style["label"])} to={`/theme/${this.props.entity.id}`}>
-        {dots}
+        {toolsCount}
         {displayName}
       </Link>
     );
-
   }
-
 }
 
 //when language changes we need to do stuff

@@ -25,7 +25,9 @@ export const RawStyle = {
       height: '8px',
       marginRight: '0.25em',
       backgroundColor: [Constants.colors.turquoise],
-      borderRadius: '50%'
+      color: '#FFF',
+      borderRadius: '50%',
+      textAlign: 'center'
     }
 };
 
