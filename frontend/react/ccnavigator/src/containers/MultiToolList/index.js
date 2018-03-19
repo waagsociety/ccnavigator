@@ -66,8 +66,7 @@ class MultiToolList extends React.Component {
       var	boxesTitle = 'themes:' // todo: make translatable
       var	boxes = this.state.termHierachy.children.map((term) => {
 
-        var themeDescription,
-            themeTools
+        var themeTools
 
         //themeDescription = subTitle
 

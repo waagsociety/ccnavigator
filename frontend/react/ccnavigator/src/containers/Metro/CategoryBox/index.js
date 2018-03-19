@@ -1,6 +1,7 @@
 import React from 'react';
 import { css } from 'util/aphrodite-custom.js';
 //own imports
+import Label from 'components/Label';
 import { Style } from './style.js';
 import { groupBy} from "util/utility.js"
 import CategoryLabel from "./CategoryLabel"
@@ -44,10 +45,6 @@ class CategoryBox extends React.Component {
       termThemesOutput = <div>{groupedThemes}</div>
     }
 
-    const zoneClassName = css(
-      termEntity.path.length > 1 ? Style["zone"] : [Style["zone"],Style["zone-single"]]
-    ) 
-
 
     //return category box, max 2 labels on a line
     return (
@@ -55,7 +52,7 @@ class CategoryBox extends React.Component {
         <div className={css(Style["category-box"],Style["no-select"])}>
           <h3 className={css(Style["category-title"])}>
             <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
-              <span className={zoneClassName}>{path}</span> {termEntity.attributes.name}
+              <Label value={path} /> {termEntity.attributes.name}
             </Link>
           </h3>
           {termThemesOutput}

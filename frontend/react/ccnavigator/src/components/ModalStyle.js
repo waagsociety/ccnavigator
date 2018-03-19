@@ -63,7 +63,7 @@ const Style = StyleSheet.create({
     }
   },
   labels: {
-    marginRight: '1rem',
+    marginRight: '0.5rem',
   },
   label: {
     margin: '0 0.5rem 3px 0',

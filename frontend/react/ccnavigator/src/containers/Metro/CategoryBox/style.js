@@ -1,5 +1,4 @@
 import { StyleSheet } from "aphrodite";
-import { Constants } from 'config/Constants.js';
 
 //const rotate = 'rotate(-0deg)'
 const rotate = 'rotate(-45deg)'
@@ -46,22 +45,6 @@ export const RawStyle = {
   },
   'category-box-row' : {
     background: 'none'
-  },
-  'zone': {
-    margin: '0 0.25rem 3px 0',
-    padding: '5px 7px 3px',
-    background: 'black',
-    borderRadius: '10px',
-    color: 'white',
-    fontSize: '12px',
-    lineHeight: '12px',
-    textTransform: 'uppercase',
-    textAlign: 'center',
-    whiteSpace: 'nowrap',
-  },
-  'zone-single': {
-    width: '20px',
-    padding: '5px 0px 3px',
   },
   'category-title': {
     fontSize: '24px',

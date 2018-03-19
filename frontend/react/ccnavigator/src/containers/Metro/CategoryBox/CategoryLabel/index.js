@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { css } from 'util/aphrodite-custom.js';
+import { css } from 'util/aphrodite-custom.js'
 //own imports
+import Label from 'components/Label'
 import { firstLettersString } from "util/utility.js"
-import { Style } from './style.js';
+import { Style } from './style.js'
 import { Link } from 'react-router-dom'
+import { Constants } from 'config/Constants'
 
 class CategoryLabel extends React.Component {
 
@@ -36,14 +38,13 @@ class CategoryLabel extends React.Component {
 
   render() {
     var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.state.name : this.state.shortName);
-    var toolsCount = <span className={css(Style["dot"])}>{this.props.entity.nodes.length}</span>
 
     //onMouseEnter={this.onLabelMouseEnter.bind(this)}
     //onMouseLeave={this.onLabelMouseLeave.bind(this)}
 
     return (
       <Link className={css(Style["label"])} to={`/theme/${this.props.entity.id}`}>
-        {toolsCount}
+        <Label value={this.props.entity.nodes.length} color={[Constants.colors.turquoise]} />
         {displayName}
       </Link>
     );
