@@ -35,7 +35,7 @@ class CategoryBox extends React.Component {
     });
 
     //put the term themes in groups
-    var themesInGroups = groupBy(termThemes, 3);
+    var themesInGroups = groupBy(termThemes, 2);
     var groupedThemes = themesInGroups.map((group, index) => {
       return <div key={index} className={css(Style["category-box-row"])}>{group}</div>
     });

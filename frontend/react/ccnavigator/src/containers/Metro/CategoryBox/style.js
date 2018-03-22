@@ -35,6 +35,9 @@ export const RawStyle = {
   'category-anchor-5' : {
     transform: `translate(230px, 720px) ${rotate}`
   },
+  'category-anchor-6' : {
+    transform: `translate(400px, -3070px) ${rotate}`
+  },
   'category-box' : {
     display: 'inline-block',
     padding: '10px',
