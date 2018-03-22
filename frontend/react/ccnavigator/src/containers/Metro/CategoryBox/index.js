@@ -48,7 +48,7 @@ class CategoryBox extends React.Component {
 
     //return category box, max 2 labels on a line
     return (
-      <foreignObject className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
+      <foreignObject width="260px" height="160px" className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
         <div className={css(Style["category-box"],Style["no-select"])}>
           <h3 className={css(Style["category-title"])}>
             <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
