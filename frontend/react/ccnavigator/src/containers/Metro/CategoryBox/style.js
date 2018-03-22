@@ -52,7 +52,8 @@ export const RawStyle = {
   'category-title': {
     fontSize: '24px',
     textTransform: 'lowercase',
-    marginBottom: '0'
+    marginBottom: '0',
+    whiteSpace: 'nowrap'
   },
   'category-title-link': {
     textDecoration: 'none',
