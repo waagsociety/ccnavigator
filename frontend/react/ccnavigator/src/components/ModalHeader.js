@@ -19,11 +19,10 @@ const ModalHeader = (props) => {
   return (
     <div className={css(Style.modalHeader)}>
       <Link to="/" className={css(Style.close)}>&times;</Link>
-
-      <div className={css(Style.titleContainer)}>
+      <h1 className={css(Style.title)}>
         <div className={css(Style.labels)}>{labels}</div>
-        <h1 className={css(Style.title)}>{props.title}</h1>
-      </div>
+        {props.title}
+      </h1>
 
       {subTitle}
     </div>

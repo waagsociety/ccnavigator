@@ -19,12 +19,12 @@ const Label = (props) => {
 const Style = StyleSheet.create({
   label: {
     display: 'inline-block',
-    margin: '0 0.5em 0.25em 0',
+    margin: '0.25em 0.5em 0.25em 0',
     //paddingTop: '0.25em',
     background: 'black',
     borderRadius: '0.75em',
     color: 'white',
-    fontSize: '0.7em',
+    fontSize: '0.4em',
     height: '1.5em',
     lineHeight: '1.75em',
     textTransform: 'uppercase',

@@ -9,7 +9,7 @@ export const RawStyle = {
     transformOrigin: 'top-left'
   },
   'category-anchor-1' : {
-    transform: `translate(190px, 250px) ${rotate}`
+    transform: `translate(160px, 280px) ${rotate}`
   },
   'category-anchor-2' : {
     transform: `translate(380px, 60px) ${rotate}`
@@ -24,13 +24,13 @@ export const RawStyle = {
     transform: `translate(810px, 270px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-4-2' : {
-    transform: `translate(560px, 470px) ${rotate} ${scaleSubCategory}`
+    transform: `translate(560px, 465px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-4-3' : {
-    transform: `translate(600px, 270px) ${rotate} ${scaleSubCategory}`
+    transform: `translate(850px, 690px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-4-4' : {
-    transform: `translate(960px, 550px) ${rotate} ${scaleSubCategory}`
+    transform: `translate(960px, 440px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-5' : {
     transform: `translate(230px, 720px) ${rotate}`
@@ -50,7 +50,7 @@ export const RawStyle = {
     background: 'none'
   },
   'category-title': {
-    fontSize: '24px',
+    fontSize: '30px',
     textTransform: 'lowercase',
     marginBottom: '0',
     whiteSpace: 'nowrap'
