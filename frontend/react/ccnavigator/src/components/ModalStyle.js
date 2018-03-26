@@ -52,16 +52,6 @@ const Style = StyleSheet.create({
     background: '#fff',
     padding: '2rem'
   },
-  titleContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    '@media (max-width: 600px)': {
-      flexDirection: 'column',
-      alignItems: 'flex-start'
-    }
-  },
   labels: {
     marginRight: '0.5rem',
   },
@@ -81,9 +71,16 @@ const Style = StyleSheet.create({
     }
   },
   title: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     fontSize: '35px',
     margin: '0',
-    textTransform: 'lowercase'
+    textTransform: 'lowercase',
+
+    '@media (max-width: 600px)': {
+      flexDirection: 'column',
+    }
   },
   subTitle: {
     fontSize: '23px',
