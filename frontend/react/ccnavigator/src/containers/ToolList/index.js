@@ -31,12 +31,12 @@ class ToolList extends React.Component {
       this.setState({termHierachy: term});
     }.bind(this));
     //full info on this entity
-    ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, function(termEntity) {
+    ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, 0, function(termEntity) {
       //console.log("full term data", termEntity);
       this.setState({termEntity: termEntity});
     }.bind(this));
     //full info on all nodes that have this term
-    ApiClient.instance().fetchContent("node--tool", {"field_category.uuid" : entityId}, null, null, function(nodeEntities) {
+    ApiClient.instance().fetchContent("node--tool", {"field_category.uuid" : entityId}, null, null, 0, function(nodeEntities) {
       //console.log("node entities", nodeEntities);
       this.setState({nodeEntities: nodeEntities});
     }.bind(this));

@@ -22,7 +22,7 @@ class GlossaryItem extends React.Component {
   componentDidMount() {
     var termId = this.props.match.params.id;
     //full info on this node including relationships
-    ApiClient.instance().fetchContent("taxonomy_term--glossary", {tid:termId}, null, null, function(terms) {
+    ApiClient.instance().fetchContent("taxonomy_term--glossary", {tid:termId}, null, null, 0, function(terms) {
       this.setState({
         termEntity: terms[0]
       });
