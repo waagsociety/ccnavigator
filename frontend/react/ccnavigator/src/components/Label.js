@@ -36,6 +36,10 @@ const Style = StyleSheet.create({
     },
     ':last-child': {
       marginLeft: '0.5em'
+    },
+    ':first-child:last-child': {
+      marginLeft: '0em',
+      marginRight: '0em'
     }
   },
   labelCircle: {

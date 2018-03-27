@@ -53,7 +53,7 @@ class CategoryBox extends React.Component {
           <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
             <h3 className={css(Style["category-title"])}>
               <Label value={path} size={'0.6em'}/>
-              {termEntity.attributes.name}
+              <span>{termEntity.attributes.name}</span>
             </h3>
           </Link>
           {termThemesOutput}
