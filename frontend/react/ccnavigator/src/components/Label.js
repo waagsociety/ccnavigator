@@ -10,7 +10,7 @@ const Label = (props) => {
   )
 
   return (
-    <span className={labelClass} style={{"backgroundColor" : props.color}}>
+    <span className={labelClass} style={{"backgroundColor" : props.color, "fontSize" : props.size}}>
       {props.value}
     </span>
   )
@@ -19,8 +19,7 @@ const Label = (props) => {
 const Style = StyleSheet.create({
   label: {
     display: 'inline-block',
-    margin: '0.25em 0.5em 0.25em 0',
-    //paddingTop: '0.25em',
+    margin: '0.25em 0',
     background: 'black',
     borderRadius: '0.75em',
     color: 'white',
@@ -30,7 +29,14 @@ const Style = StyleSheet.create({
     textTransform: 'uppercase',
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
-    verticalAlign: 'middle'
+    verticalAlign: 'middle',
+
+    ':first-child': {
+      marginRight: '0.5em'
+    },
+    ':last-child': {
+      marginLeft: '0.5em'
+    }
   },
   labelCircle: {
     width: '1.5em',
@@ -39,7 +45,6 @@ const Style = StyleSheet.create({
   labelBar: {
     padding: '0 0.65em',
   }
-
 });
 
 

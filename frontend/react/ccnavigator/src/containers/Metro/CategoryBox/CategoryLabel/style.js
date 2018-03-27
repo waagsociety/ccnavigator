@@ -2,33 +2,25 @@ import { StyleSheet } from "aphrodite";
 import { Constants } from 'config/Constants.js';
 
 export const RawStyle = {
-    'label': {
-      background: 'white',
-      color: 'black',
-      marginRight: '0.4rem',
-      marginTop: '0.4rem',
-      display: 'inline-block',
-      padding: '0.4em 0.8em',
-      transition: 'width 2s',
-      //fontFamily: 'Monaco', /* monospaced font */
-      whiteSpace: 'pre',
-      textTransform: 'capitalize',
-      borderRadius: '0.4em',
-      fontSize: '8px',
-      fontWeight: 'bold',
-      userSelect: 'none',
-      textDecoration: 'none'
-    },
-    'dot': {
-      display: 'inline-block',
-      width: '8px',
-      height: '8px',
-      marginRight: '0.25em',
-      backgroundColor: [Constants.colors.turquoise],
-      color: '#FFF',
-      borderRadius: '50%',
-      textAlign: 'center'
-    }
+  'theme': {
+    display: 'inline-block',
+    background: 'white',
+    marginRight: '0.25rem',
+    marginTop: '0.3rem',
+    padding: '0 0.25em',
+    textTransform: 'capitalize',
+    borderRadius: '1em',
+    fontSize: '10px',
+    lineHeight: '2em',
+    fontWeight: 'bold',
+    userSelect: 'none',
+    textDecoration: 'none'
+  },
+  'label': {
+    display: 'inline-block',
+    marginLeft: '0.5em',
+    borderRadius: '1em 0 0 1em',
+  }
 };
 
 export const Style = StyleSheet.create(RawStyle);

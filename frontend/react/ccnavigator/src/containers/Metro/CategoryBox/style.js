@@ -6,22 +6,25 @@ const scaleSubCategory = 'scale(0.60)'
 
 export const RawStyle = {
   'category-anchor' : { /*position top left corner of the boxes*/
-    transformOrigin: 'top-left'
+    transformOrigin: 'top-left',
+    //background: '#F00',
+    width: '250px',
+    height: '150px' 
   },
   'category-anchor-1' : {
     transform: `translate(160px, 280px) ${rotate}`
   },
   'category-anchor-2' : {
-    transform: `translate(380px, 60px) ${rotate}`
+    transform: `translate(350px, 60px) ${rotate}`
   },
   'category-anchor-3' : {
-    transform: `translate(630px, 60px) ${rotate}`
+    transform: `translate(650px, 60px) ${rotate}`
   },
   'category-anchor-4' : {
-    transform: `translate(620px, 680px) ${rotate}`
+    transform: `translate(640px, 680px) ${rotate}`
   },
   'category-anchor-4-1' : {
-    transform: `translate(810px, 270px) ${rotate} ${scaleSubCategory}`
+    transform: `translate(820px, 270px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-4-2' : {
     transform: `translate(560px, 465px) ${rotate} ${scaleSubCategory}`
@@ -30,27 +33,20 @@ export const RawStyle = {
     transform: `translate(850px, 690px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-4-4' : {
-    transform: `translate(960px, 440px) ${rotate} ${scaleSubCategory}`
+    transform: `translate(960px, 470px) ${rotate} ${scaleSubCategory}`
   },
   'category-anchor-5' : {
-    transform: `translate(230px, 720px) ${rotate}`
+    transform: `translate(250px, 720px) ${rotate}`
   },
   'category-anchor-6' : {
     transform: `translate(400px, -3070px) ${rotate}`
   },
   'category-box' : {
-    display: 'inline-block',
-    padding: '10px',
-
-    //':hover': {
-    //  backgroundColor: 'rgba(0,0,0,0.1)'
-    //}
-  },
-  'category-box-row' : {
-    background: 'none'
+    display: 'block',
   },
   'category-title': {
     fontSize: '30px',
+    lineHeight: '1.2em',
     textTransform: 'lowercase',
     marginBottom: '0',
     whiteSpace: 'nowrap'

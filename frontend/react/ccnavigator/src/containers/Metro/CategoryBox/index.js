@@ -35,7 +35,7 @@ class CategoryBox extends React.Component {
     });
 
     //put the term themes in groups
-    var themesInGroups = groupBy(termThemes, 3);
+    var themesInGroups = groupBy(termThemes, 10);
     var groupedThemes = themesInGroups.map((group, index) => {
       return <div key={index} className={css(Style["category-box-row"])}>{group}</div>
     });
@@ -48,11 +48,11 @@ class CategoryBox extends React.Component {
 
     //return category box, max 2 labels on a line
     return (
-      <foreignObject width="260px" height="160px" className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
+      <foreignObject className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
         <div className={css(Style["category-box"],Style["no-select"])}>
           <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
             <h3 className={css(Style["category-title"])}>
-              <Label value={path} />
+              <Label value={path} size={'0.6em'}/>
               {termEntity.attributes.name}
             </h3>
           </Link>
