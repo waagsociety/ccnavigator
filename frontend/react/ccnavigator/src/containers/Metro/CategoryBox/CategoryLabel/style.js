@@ -3,14 +3,13 @@ import { Constants } from 'config/Constants.js';
 
 export const RawStyle = {
   'theme': {
-    display: 'inline-block',
     background: 'white',
     marginRight: '0.25rem',
     marginTop: '0.3rem',
     padding: '0 0.25em',
     textTransform: 'capitalize',
     borderRadius: '1em',
-    fontSize: '10px',
+    fontSize: '0.556em',
     lineHeight: '2em',
     fontWeight: 'bold',
     userSelect: 'none',

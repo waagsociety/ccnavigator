@@ -6,6 +6,8 @@ import { Style } from './style.js';
 import { groupBy} from "util/utility.js"
 import CategoryLabel from "./CategoryLabel"
 import { Link } from 'react-router-dom'
+import { Constants } from 'config/Constants.js';
+
 
 class CategoryBox extends React.Component {
 
@@ -19,46 +21,37 @@ class CategoryBox extends React.Component {
   componentDidMount() {
   }
 
-  /**
-   *
-   */
+
   render() {
     var termEntity = this.props.entity;
     var path = termEntity.path.map(x => x + 1).join("-")
 
-    //render term themes (children of category)
-    var termThemes = (termEntity.children || []).map((subTerm, index) => {
-      var toolsCnt = ((this.state.nrOfToolsPerCategory || {})[subTerm.id]) || 0
-      return (
-        <CategoryLabel key={subTerm.id} entity={subTerm} toolsCnt={toolsCnt} />
-      )
-    });
-
-    //put the term themes in groups
-    var themesInGroups = groupBy(termThemes, 10);
-    var groupedThemes = themesInGroups.map((group, index) => {
-      return <div key={index} className={css(Style["category-box-row"])}>{group}</div>
-    });
-
-    var termThemesOutput
+    // render term themes (if not grandparent) 
+    var termThemes
     if (termEntity.grandparent === false) {
-      termThemesOutput = <div>{groupedThemes}</div>
+      termThemes = (termEntity.children || []).map((subTerm, index) => {
+        var toolsCnt = ((this.state.nrOfToolsPerCategory || {})[subTerm.id]) || 0
+        return (
+          <CategoryLabel key={subTerm.id} entity={subTerm} toolsCnt={toolsCnt} />
+        )
+      })
+      termThemes = <div className={css(Style['category-themes'])}>{termThemes}</div>
     }
 
+    // set class if subcategory
+    var categoryClass = (path.length > 1) ? css(Style['sub-category']) : ''
 
-    //return category box, max 2 labels on a line
+    //return category box
     return (
-      <foreignObject width="250" height="150" className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
-        <div className={css(Style["category-box"],Style["no-select"])}>
-          <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
-            <h3 className={css(Style["category-title"])}>
-              <Label value={path} size={'0.6em'}/>
-              <span>{termEntity.attributes.name}</span>
-            </h3>
-          </Link>
-          {termThemesOutput}
-        </div>
-      </foreignObject>
+      <foreignObject className={categoryClass} width="250" height="150" x={Constants.zones[path].x} y={Constants.zones[path].y} transform={`rotate(-45 ${Constants.zones[path].x},${Constants.zones[path].y})`}>
+        <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
+          <h3 className={css(Style["category-title"])}>
+            <Label value={path} size={'0.6em'}/>
+            <span>{termEntity.attributes.name}</span>
+          </h3>
+        </Link>
+        {termThemes}
+       </foreignObject>
     )
   }
 }
