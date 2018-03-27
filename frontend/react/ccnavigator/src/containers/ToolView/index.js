@@ -62,32 +62,26 @@ class ToolView extends React.Component {
   /**
    * render image or whatever
    */
-  renderInclude(item) {
-    console.log("ite", item)
-    switch(item.type) {
-      case "file--file":
-        var mime = (item.attributes || {}).filemime;
-        var filename, url;
-        switch(mime) {
-          case "image/jpeg":
-            filename = (item.attributes || {}).filename;
-            url = (item.attributes || {}).url;
-            return <img key={item.id} className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
-          case "application/pdf":
-            filename = (item.attributes || {}).filename;
-            url = (item.attributes || {}).url;
-            return <a key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank"><button>DOWNLOAD</button></a>
-          default:
-            console.log("entity mime not supported:", mime);
-            break;
-        }
-        break;
+  renderFile(item) {
+    //console.log("ite", item)
+    var mime = (item.attributes || {}).filemime;
+    var filename, url;
+    switch(mime) {
+      case "image/jpeg":
+        filename = (item.attributes || {}).filename;
+        url = (item.attributes || {}).url;
+        return <img key={item.id} className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
+      case "application/pdf":
+        filename = (item.attributes || {}).filename;
+        url = (item.attributes || {}).url;
+        return <a className={css(Style.button)} key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank">Download</a>
       default:
-        console.log("entity type not supported:", item.type);
+        console.log("entity mime not supported:", mime);
         break;
     }
     return null;
   }
+
 
   closeModal() {
     this.props.history.push('/')
@@ -116,25 +110,39 @@ class ToolView extends React.Component {
       //make tool description
       var body = (this.state.nodeEntity.attributes.body || {}).value || "";
       var jsx = buildJSXFromHTML(body);
-      //includes
-      var includes = (this.state.includedEntities || []).map((item) => {
-        return this.renderInclude(item);
-      });
 
-      //make flag or unflag button
-      let button = null;
-      if(!this.props.flagged) {
-        button = <button onClick={this.onFlag.bind(this)}>flag</button>
-      } else {
-        button = <button onClick={this.onUnflag.bind(this)}>unflag</button>
-      }
+      // includes
+      var files = (this.state.includedEntities || [])
+        .filter((item) => item.type === 'file--file')
 
+      var images = (files || [])
+        .filter((item) => item.attributes.filemime === "image/jpeg")
+        .map((item) => { return this.renderFile(item) })
+
+      var downloads = (files || [])
+        .filter((item) => item.attributes.filemime === "application/pdf")
+        .map((item) => { return this.renderFile(item) })
+
+
+      // make flag or unflag button ##include later
+      // let flagButton = null;
+      // if(!this.props.flagged) {
+      //   flagButton = <button onClick={this.onFlag.bind(this)}>flag</button>
+      // } else {
+      //   flagButton = <button onClick={this.onUnflag.bind(this)}>unflag</button>
+      // }
+
+      
       //body part
       var description = (
-        <div>
-          {button}
-          {jsx}
-          {includes}
+        <div className={css(Style.columns)}>
+          <div className={css(Style.column)}>
+            {images}
+          </div>
+          <div className={css(Style.column)}>
+            {jsx}
+            {downloads}
+          </div>
         </div>
       )
       modalBody = <ModalBody description={description} />

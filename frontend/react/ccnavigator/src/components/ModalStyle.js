@@ -116,8 +116,37 @@ const Style = StyleSheet.create({
   term: {
     fontWeight: '700'
   },
-  image: {
-    width:"50%"
+  columns: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    margin: '0 -1rem',
+
+    '@media (max-width: 640px)': {
+      margin: '0',
+      flexDirection: 'column'
+    }
+  },
+  column: {
+    margin: '0 1rem',
+    width: 'calc(50% - 2rem)',
+
+    '@media (max-width: 640px)': {
+      margin: '0 0 2rem',
+      width: '100%'
+    }
+  },
+  button: {
+    display: 'inline-block',
+    lineHeight: '1.5em',
+    padding: '0.25em 0.5em 0',
+    backgroundColor: Constants.colors.turquoise,
+    color: '#FFF',
+    textDecoration: 'none',
+    borderRadius: '2px',
+
+    ':hover': {
+      opacity: '0.85'
+    }
   }
 });
 

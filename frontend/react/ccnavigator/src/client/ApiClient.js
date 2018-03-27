@@ -371,8 +371,8 @@ class ApiClient {
           var nextURI = new URI(next);
           var nextParams = URI.parseQuery(nextURI.query());
           var nextOffset = parseInt(nextParams["page[offset]"])
-          console.log("uri", uri)
-          console.log("next", next)
+          //console.log("uri", uri)
+          //console.log("next", next)
         }
 
         if(resultHandler) {

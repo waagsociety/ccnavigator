@@ -144,7 +144,7 @@ class ApiHelper {
    * get the vocabulary named category in a hierarchical way, complete with node references, build the tree if it's not cached
    */
   buildContentHierarchy(resultHandler) {
-    console.log("buildContentHierarchy")
+    //console.log("buildContentHierarchy")
     //return cache if available
     if(this.cache.contentHierarchy) {
       resultHandler(this.cache.contentHierarchy);
@@ -155,7 +155,7 @@ class ApiHelper {
       if(vocabulary) {
         //get all tool nodes
         ApiClient.instance().fetchContentAll("node--tool", null, ["title", "field_category"], null, function(toolData) {
-          console.log("tooldata", toolData)
+          //console.log("tooldata", toolData)
           if(toolData) {
             //restructure / extend the vocabulary data
             var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
