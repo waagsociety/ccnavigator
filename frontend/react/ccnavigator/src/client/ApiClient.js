@@ -73,7 +73,7 @@ class ApiClient {
     }
     // localize the path if not default lang
     var dir = uri.directory();
-    if(this.language !== null || this.language !== "en") {
+    if(this.language !== null && this.language !== "en") {
       uri.directory(`/${this.language}${dir}`);
     }
     // set path to api end point if configured
