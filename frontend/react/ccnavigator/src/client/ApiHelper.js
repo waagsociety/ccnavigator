@@ -45,73 +45,73 @@ class ApiHelper {
   /**
    * get one entity by its id from an array of entities
    */
-	_getEntityDataById(id, list) {
-		var data = list || [];
-		return data.filter(function(entry){ return entry.id  === id})[0];
-	}
+  _getEntityDataById(id, list) {
+    var data = list || [];
+    return data.filter(function(entry){ return entry.id  === id})[0];
+  }
 
   /**
-	  * make a structured simple hierarchy map from raw vocabulary result, with entityId as reference to to term
-		*/
-	_getHierachy(vocabulary) {
-		//use data as we received it from drupal
-		var data = vocabulary || [];
-		//get the parent of an item
-		var getParent = function(item, allItems) {
-			var parentId = ((((item.relationships || {}).parent || {}).data || [])[0] || {}).id;
-			if(parentId) {
-				const parentItem = allItems.filter(function(entry){ return entry.id === parentId })[0];
-				return parentItem;
-			}
-			return null;
-		};
-		//recursively get parent term, recursively add current hierarchy to parent
-		var getPathInHierachy = function(item, allItems, tree) {
-			var t1 = {};
-			t1[item.id] = tree;
-			var parent = getParent(item, allItems);
-			if(parent) {
-				var t2 = getPathInHierachy(parent, allItems, t1);
-				return t2;
-			}
-			return t1; //top level
-		}
-		//restructure the data in a hierarchical form
-		var tree = {};
-		for(var i=0;i<data.length;i++) {
-			var item = data[i];
-			//get the hierarchy of each term and merge it with those of other terms
-			var hierarchyPath = getPathInHierachy(item, data, {});// || [];
-			tree = _.merge({}, tree, hierarchyPath);
-		}
-		return tree;
-	}
+    * make a structured simple hierarchy map from raw vocabulary result, with entityId as reference to to term
+    */
+  _getHierachy(vocabulary) {
+    //use data as we received it from drupal
+    var data = vocabulary || [];
+    //get the parent of an item
+    var getParent = function(item, allItems) {
+      var parentId = ((((item.relationships || {}).parent || {}).data || [])[0] || {}).id;
+      if(parentId) {
+        const parentItem = allItems.filter(function(entry){ return entry.id === parentId })[0];
+        return parentItem;
+      }
+      return null;
+    };
+    //recursively get parent term, recursively add current hierarchy to parent
+    var getPathInHierachy = function(item, allItems, tree) {
+      var t1 = {};
+      t1[item.id] = tree;
+      var parent = getParent(item, allItems);
+      if(parent) {
+        var t2 = getPathInHierachy(parent, allItems, t1);
+        return t2;
+      }
+      return t1; //top level
+    }
+    //restructure the data in a hierarchical form
+    var tree = {};
+    for(var i=0;i<data.length;i++) {
+      var item = data[i];
+      //get the hierarchy of each term and merge it with those of other terms
+      var hierarchyPath = getPathInHierachy(item, data, {});// || [];
+      tree = _.merge({}, tree, hierarchyPath);
+    }
+    return tree;
+  }
 
   /**
-	  * convert the structure of a flat vocabulary of terms into a hierarchy by referencing children, order by weight
-		*/
-	_makeVocubalaryHierarchical(vocabulary) {
-		var tree = this._getHierachy(vocabulary || []);
-		var result = [];
-		var walkTree = function(tree, newTree, path) {
+    * convert the structure of a flat vocabulary of terms into a hierarchy by referencing children, order by weight
+    */
+  _makeVocubalaryHierarchical(vocabulary) {
+    var tree = this._getHierachy(vocabulary || []);
+    var result = [];
+    var walkTree = function(tree, newTree, path) {
       var index = 0;
       for(var key in tree) {
-				var node = this._getEntityDataById(key, vocabulary);
+        var node = this._getEntityDataById(key, vocabulary);
         node.children = []; //add array of references to children
         node.path = [...path,index]
         newTree.push(node);
-				walkTree(tree[key], node.children, node.path);
+        walkTree(tree[key], node.children, node.path);
         index += 1;
-			}
-			newTree.sort(function(a,b) {
+      }
+      newTree.sort(function(a,b) {
         var wA = (a.attributes || {}).weight || 0;
-				var wB = (b.attributes || {}).weight || 0;
-				return wA - wB;
-			});
-		}.bind(this);
-		walkTree(tree, result, []);
-		return result;
-	}
+        var wB = (b.attributes || {}).weight || 0;
+        return wA - wB;
+      });
+    }.bind(this);
+    walkTree(tree, result, []);
+    return result;
+  }
 
   /**
    * from an array of nodes index the referenced taxonomy terms, return a mapping of taxonomy termId => array<nodeId>
@@ -144,26 +144,28 @@ class ApiHelper {
    * get the vocabulary named category in a hierarchical way, complete with node references, build the tree if it's not cached
    */
   buildContentHierarchy(resultHandler) {
+    console.log("buildContentHierarchy")
     //return cache if available
     if(this.cache.contentHierarchy) {
       resultHandler(this.cache.contentHierarchy);
       return;
     }
     //fetch and process the data
-    ApiClient.instance().fetchContent("taxonomy_term--category", null, ["name", "parent", "field_subtitle"], null, function(vocabulary) {
-			if(vocabulary) {
-				//get all tool nodes
-				ApiClient.instance().fetchContent("node--tool", null, ["title", "field_category"], null, function(toolData) {
-					if(toolData) {
-						//restructure / extend the vocabulary data
-						var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
-						var hierarchicalVocabulary = ApiHelper.instance()._makeVocubalaryHierarchical(vocabularyWithNodeRefs);
+    ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle"], null, function(vocabulary) {
+      if(vocabulary) {
+        //get all tool nodes
+        ApiClient.instance().fetchContentAll("node--tool", null, ["title", "field_category"], null, function(toolData) {
+          console.log("tooldata", toolData)
+          if(toolData) {
+            //restructure / extend the vocabulary data
+            var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
+            var hierarchicalVocabulary = ApiHelper.instance()._makeVocubalaryHierarchical(vocabularyWithNodeRefs);
             this.cache.contentHierarchy = hierarchicalVocabulary;
             resultHandler(hierarchicalVocabulary);
-					}
-				}.bind(this));
-			}
-		}.bind(this));
+          }
+        }.bind(this));
+      }
+    }.bind(this));
   }
 
   /**

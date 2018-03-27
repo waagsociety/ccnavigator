@@ -25,7 +25,7 @@ class ToolView extends React.Component {
   componentDidMount() {
     var entityId = this.props.match.params.id;
     //full info on this node including relationships
-    ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image", "field_download"], function(node, included) {
+    ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image", "field_download"], 0, function(node, included) {
       //set content
       this.setState({
         nodeEntity: node,
