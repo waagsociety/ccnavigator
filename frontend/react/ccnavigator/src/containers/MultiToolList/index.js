@@ -1,10 +1,12 @@
 import React from 'react';
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
-import { buildJSXFromHTML } from 'util/utility.js';
+import { buildJSXFromHTML } from 'util/utility.js'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
+import { StyleSheet, css } from 'util/aphrodite-custom.js'
+import { Constants } from 'config/Constants.js';
 
 
 /**
@@ -68,13 +70,11 @@ class MultiToolList extends React.Component {
 
         var themeTools
 
-        //themeDescription = subTitle
-
         if (term.nodes.length > 0) {
           themeTools = term.nodes.map((node) => {
             var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
             return (
-              <span key={node.id}>
+              <span key={node.id} className={css(Style.tool)}>
                 {fullNode.attributes.title}
               </span>
             )
@@ -84,10 +84,10 @@ class MultiToolList extends React.Component {
         }
 
         //list the tools in this subcategory
+        //<h4>tools:</h4>
         var content = (
           <div>
             <p>{term.attributes.field_subtitle}</p>
-            <h4>tools:</h4>
             {themeTools}
           </div>
         ) // todo: make translatable
@@ -115,5 +115,21 @@ class MultiToolList extends React.Component {
   }
 
 }
+
+
+const Style = StyleSheet.create({
+  tool: {
+    display: 'inline-block',
+    margin: '0.5em 0.5em 0 0',
+    textTransform: 'lowercase',
+    backgroundColor: Constants.colors.turquoise,
+    color: '#FFF',
+    fontSize: '0.8rem',
+    lineHeight: '1.5em',
+    borderRadius: '0.75em',
+    padding: '0 0.5em'
+  }
+
+});
 
 export default MultiToolList;

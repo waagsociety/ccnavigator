@@ -18,7 +18,7 @@ class SVGMap extends React.Component {
       starty: 0
     }
 
-    console.log("svg map next props a", this.props)
+    //console.log("svg map next props a", this.props)
   }
 
   //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
@@ -34,7 +34,7 @@ class SVGMap extends React.Component {
   componentDidUpdate() {
     var currentZoom = this.props.width / this.state.viewBox[2];
     //console.log('zoom', currentZoom)
-    var zoomIsHigh = (currentZoom > 1.75);
+    var zoomIsHigh = (currentZoom > 1.25);
     if(zoomIsHigh !== this.props.zoomLevelHigh) {
       this.props.dispatch(setZoomLevelHigh(zoomIsHigh));
     }
@@ -85,7 +85,7 @@ class SVGMap extends React.Component {
   }
 
   onMouseMove(e) {
-    console.log("move")
+    //console.log("move")
 
     // first check if the state is buttonHeld, if not we can just return, so we do not move unless the user wants to move
     if (!this.state.buttonHeld) {
@@ -213,8 +213,8 @@ class SVGMap extends React.Component {
 
     //limit the zoom range
     var currentZoom = this.props.width / this.state.viewBox[2];
-    if(scale < 1 && currentZoom < 0.6) return;
-    if(scale > 1 && currentZoom > 4) return;
+    if(scale < 1 && currentZoom < 0.8) return;
+    if(scale > 1 && currentZoom > 3) return;
 
     const nw = this.state.viewBox[2] / scale;
     const nh = this.state.viewBox[3] / scale;

@@ -29,7 +29,7 @@ const Style = StyleSheet.create({
     display: 'inline-block',
     verticalAlign: 'middle',
     position: 'relative',
-    width: '46rem',
+    width: '54rem',
     maxWidth: '100%',
     padding: '1.25rem',
     textAlign: 'left'
@@ -53,7 +53,7 @@ const Style = StyleSheet.create({
     padding: '2rem'
   },
   labels: {
-    marginRight: '0.5rem',
+    marginRight: '0.75rem',
   },
   label: {
     margin: '0 0.5rem 3px 0',
@@ -75,7 +75,7 @@ const Style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     fontSize: '35px',
-    margin: '0',
+    margin: '0 0 1rem 0',
     textTransform: 'lowercase',
 
     '@media (max-width: 600px)': {
@@ -94,8 +94,14 @@ const Style = StyleSheet.create({
   description: {
     marginBottom: '3em'
   },
+  boxes: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: '0 -0.5rem'
+  },
   box: {
-    marginBottom: '1rem',
+    width: 'calc(50% - 1rem)',
+    margin: '0.5rem',
     padding: '1rem',
     backgroundColor: '#fff'
   },
