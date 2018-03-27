@@ -51,6 +51,10 @@ const Style = StyleSheet.create({
       '*div': {
         boxSizing: 'border-box'
       },
+      '*img': {
+        maxWidth: '100%',
+        height: 'auto'
+      },
       '*button': {
         cursor: 'pointer'
       },
