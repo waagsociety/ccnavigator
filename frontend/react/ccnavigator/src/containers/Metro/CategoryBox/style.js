@@ -8,8 +8,7 @@ export const RawStyle = {
   'category-anchor' : { /*position top left corner of the boxes*/
     transformOrigin: 'top-left',
     //background: '#F00',
-    width: '250px',
-    height: '150px' 
+    overflow: 'visible',
   },
   'category-anchor-1' : {
     transform: `translate(160px, 280px) ${rotate}`
@@ -49,7 +48,7 @@ export const RawStyle = {
     lineHeight: '1.2em',
     textTransform: 'lowercase',
     marginBottom: '0',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
   },
   'category-title-link': {
     textDecoration: 'none',
