@@ -6,7 +6,7 @@
     - name: place react app (takes while)
       copy:
         src={{ playbook_dir }}/../frontend/react/ccnavigator/build/
-        dest=/var/www/
+        dest=/var/www/ccn/
         mode=0440
         directory_mode=0550
         owner=www-data
