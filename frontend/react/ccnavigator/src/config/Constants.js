@@ -72,7 +72,7 @@ export const Constants = {
     },
     '4-4' : {
       x : 960,
-      y : 470,
+      y : 530,
       color : 'purple'
     },
     '5' : {

@@ -284,7 +284,7 @@ class ApiClient {
   fetchContentAll(type, filter, fields, include, resultHandler) {
     //
     var allData = [];
-    var allIncluded = [];
+    //var allIncluded = [];
 
     //call the result handler when no more pages
     function fetchMoreContent(type, filter, fields, include, offset, resultHandler) {
@@ -370,7 +370,7 @@ class ApiClient {
         if(next) {
           var nextURI = new URI(next);
           var nextParams = URI.parseQuery(nextURI.query());
-          var nextOffset = parseInt(nextParams["page[offset]"])
+          nextOffset = parseInt(nextParams["page[offset]"], 10)
           //console.log("uri", uri)
           //console.log("next", next)
         }

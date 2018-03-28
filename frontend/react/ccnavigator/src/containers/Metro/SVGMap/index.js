@@ -73,9 +73,9 @@ class SVGMap extends React.Component {
 
     // double click
     if((stamp - prevStamp) < 400) {
-      var viewRect = this.svgElement.getBoundingClientRect();
-      var viewX = e.clientX - viewRect.x;
-      var viewY = e.clientY - viewRect.y;
+      //var viewRect = this.svgElement.getBoundingClientRect();
+      //var viewX = e.clientX - viewRect.x;
+      //var viewY = e.clientY - viewRect.y;
       // click location is ignored
       this.animateZoom2();
     }

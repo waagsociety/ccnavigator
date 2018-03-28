@@ -3,17 +3,16 @@ import { connect } from 'react-redux'
 import { css } from 'util/aphrodite-custom.js'
 //own imports
 import Label from 'components/Label'
-import { firstLettersString } from "util/utility.js"
 import { Style } from './style.js'
 import { Link } from 'react-router-dom'
-import { Constants } from 'config/Constants'
+
 
 class CategoryLabel extends React.Component {
 
   constructor(props) {
-    super(props);
-    var name = (this.props.entity.attributes || {}).name;
-    var shortName = firstLettersString(name);
+    super(props)
+    var name = (this.props.entity.attributes || {}).name
+    var shortName = name.charAt(0)
     this.state = {
       shortLabels: true,
       name: name,

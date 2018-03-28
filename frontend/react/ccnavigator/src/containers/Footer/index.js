@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
 import { Link } from 'react-router-dom'
-import Login from "containers/Login"
-import Logout from "containers/Logout"
+//import Login from "containers/Login"
+//import Logout from "containers/Logout"
 //import LanguageSelector from "containers/LanguageSelector"
 
 class Footer extends React.Component {
