@@ -16,6 +16,7 @@ const Style = StyleSheet.create({
   map_container: {
     flexGrow: '1',
     overflow: 'hidden',
+    touchAction: 'none'
   },
   panel: {
     position: 'relative',
