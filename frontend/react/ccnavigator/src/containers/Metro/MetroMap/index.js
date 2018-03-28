@@ -203,7 +203,11 @@ class MetroMap extends React.Component {
 
     // make stations
     var centralStationWidth = (Math.max(linesNE.length, linesSE.length) + Math.max(linesNW.length, linesSW.length) + 1) * 10;
-    var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1]- 5} width={centralStationWidth} height="10" rx="5" ry="5" className={css(Style["station"])} />
+    var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1] - 5} width={centralStationWidth} height="10" rx="5" ry="5" className={css(Style["station"])} />
+
+    var stations = MetroLayout.mainLine.stations.map((point, index) => {
+      return <rect key={index} x={point[0] - 5} y={point[1] - 5} width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
+    })
 
     //{innerArea}
     //
@@ -227,6 +231,7 @@ class MetroMap extends React.Component {
         {linesNW}
         {linesSW}
         {centralStation}
+        {stations}
       </g>
     )
   }

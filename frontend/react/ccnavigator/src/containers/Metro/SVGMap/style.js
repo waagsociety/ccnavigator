@@ -14,7 +14,11 @@ export const Style = StyleSheet.create({
   },
   button: {
     marginBottom: '0.75rem',
+    padding: '0',
     fontSize: '1.25rem',
+    width: '2rem',
+    lineHeight: '2rem',
+    textAlign: 'center',
     color: '#444',
     backgroundColor: 'white',
     border: 'none',
