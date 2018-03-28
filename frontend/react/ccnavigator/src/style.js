@@ -6,6 +6,9 @@ import { Constants } from 'config/Constants.js';
  */
 const Style = StyleSheet.create({
     globals: {
+      '*html, body, #root': {
+        height: '100%'
+      },
       '*body': {
         margin: '0',
         backgroundColor: [Constants.colors.background],

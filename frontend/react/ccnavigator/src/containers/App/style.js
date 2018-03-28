@@ -5,8 +5,8 @@ const Style = StyleSheet.create({
     display: 'flex',
     alignItems: 'stretch',
     alignContent: 'stretch',
-    width:"100vw",
-    height:"100vh",
+    width:"100%",
+    height:"100%",
     overflow:"hidden",
 
     '@media (orientation: portrait)': {
