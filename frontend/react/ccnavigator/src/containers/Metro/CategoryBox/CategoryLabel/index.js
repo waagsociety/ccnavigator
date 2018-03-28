@@ -47,7 +47,7 @@ class CategoryLabel extends React.Component {
     return (
       <Link className={css(Style["theme"])} to={`/theme/${this.props.entity.id}`}>
         <span className={css(Style["label"])}>{displayName}</span>
-        <Label value={this.props.entity.nodes.length} color={[Constants.colors.turquoise]} size={'1em'} />
+        <Label value={this.props.entity.nodes.length} color={this.props.color} size={'1em'} />
       </Link>
     );
   }

@@ -37,43 +37,53 @@ export const Constants = {
   'zones': {
     '1' : {
       x : 160,
-      y : 280
+      y : 280,
+      color : 'turquoise'
     },
     '2' : {
       x : 350,
-      y : 60
+      y : 60,
+      color : 'turquoise'
     },
     '3' : {
-      x : 650,
-      y : 60
+      x : 640,
+      y : 60,
+      color : 'turquoise'
     },
     '4' : {
-      x : 640,
-      y : 680
+      x : 760,
+      y : 200,
+      color : 'turquoise'
     },
     '4-1' : {
-      x : 820,
-      y : 270
+      x : 800,
+      y : 240,
+      color : 'turquoise'
     },
     '4-2' : {
       x : 560,
-      y : 465
+      y : 465,
+      color : 'red'
     },
     '4-3' : {
       x : 850,
-      y : 690
+      y : 690,
+      color : 'yellow'
     },
     '4-4' : {
       x : 960,
-      y : 470
+      y : 470,
+      color : 'purple'
     },
     '5' : {
       x : 250,
-      y : 720
+      y : 720,
+      color : 'turquoise'
     },
     '6' : {
       x : 400,
-      y : -3070
+      y : -3070,
+      color : 'text'
     }
   }
 }

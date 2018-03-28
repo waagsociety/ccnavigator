@@ -1,6 +1,9 @@
 import { StyleSheet } from "aphrodite";
 
 export const RawStyle = {
+  'category' : {
+    pointerEvents: 'none'
+  },
   'sub-category' : {
     fontSize: '12px'
   },
@@ -12,10 +15,11 @@ export const RawStyle = {
     whiteSpace: 'nowrap',
   },
   'category-title-link': {
-    textDecoration: 'none',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    textDecoration: 'none',
+    pointerEvents: 'auto',
 
     //':hover': {
     //  color: [Constants.colors.turquoise]

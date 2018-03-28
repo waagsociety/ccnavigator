@@ -13,7 +13,8 @@ export const RawStyle = {
     lineHeight: '2em',
     fontWeight: 'bold',
     userSelect: 'none',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    pointerEvents: 'auto'
   },
   'label': {
     display: 'inline-block',
