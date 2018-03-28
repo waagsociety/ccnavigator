@@ -3,7 +3,7 @@ import { StyleSheet } from "aphrodite";
 
 export const RawStyle = {
   'theme': {
-    background: 'white',
+    background: '#FFF',
     marginRight: '0.25rem',
     marginTop: '0.3rem',
     padding: '0 0.25em',

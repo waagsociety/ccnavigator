@@ -63,6 +63,10 @@ const Style = StyleSheet.create({
       },
       '*:focus': {
         outline: '0'
+      },
+      '*::selection': {
+        background: '#000',
+        color: '#FFF'
       }
     }
 });

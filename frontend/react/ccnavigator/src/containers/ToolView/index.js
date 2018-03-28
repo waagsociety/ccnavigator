@@ -1,5 +1,5 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js';
+import { css } from 'util/aphrodite-custom.js'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
@@ -7,7 +7,8 @@ import { connect } from 'react-redux'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
-import Style from 'components/ModalStyle.js';
+import Loading from 'components/Loading'
+import Style from 'components/ModalStyle.js'
 import { buildJSXFromHTML} from "util/utility"
 
 
@@ -89,8 +90,8 @@ class ToolView extends React.Component {
 
   render() {
     //show loading till we have fetched all
-    var modalHeader = <ModalHeader title={"loading"} />
-    var modalBody = "loading";
+    var modalHeader
+    var modalBody = <Loading />
 
     //build content view when we have all data
     if(this.state.nodeEntity) {
@@ -102,7 +103,7 @@ class ToolView extends React.Component {
       //display the caterories this tool falls under
       if(this.state.termEntities) {
         labels = this.state.termEntities.map((term) => {
-          return term.path.map(x => x + 1).join("-")
+          return "zone " + (term.path[0] + 1)
         });
       }
       modalHeader = <ModalHeader labels={labels} title={title} />

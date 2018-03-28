@@ -5,8 +5,9 @@ import { buildJSXFromHTML } from 'util/utility.js'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
+import Loading from 'components/Loading'
 import { StyleSheet, css } from 'util/aphrodite-custom.js'
-import { Constants } from 'config/Constants.js';
+import { Constants } from 'config/Constants.js'
 
 
 /**
@@ -48,17 +49,20 @@ class MultiToolList extends React.Component {
 
   render() {
     //show loading till we have fetched all
-    var modalHeader = <ModalHeader title={"loading"} />
-    var modalBody = "loading";
+    var modalHeader
+    var modalBody = <Loading />
 
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
       //make header
-      var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
+      var categoryColor = Constants.colors[Constants.zones[path].color]
+      //var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var labels = ["zone " + (this.state.termHierachy.path[0] + 1)]
       var title =  this.state.termEntity.attributes.name || ""
       var subTitle = this.state.termEntity.attributes.field_subtitle || ""
-      modalHeader = <ModalHeader labels={labels} title={title} subTitle={subTitle} />
+      modalHeader = <ModalHeader color={categoryColor} labels={labels} title={title} subTitle={subTitle} />
 
       //make content
       var description = (this.state.termEntity.attributes.description || {}).value || ""

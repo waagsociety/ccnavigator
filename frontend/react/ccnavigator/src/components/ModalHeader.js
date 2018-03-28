@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Label from 'components/Label';
 import { css } from 'util/aphrodite-custom.js';
 import Style from './ModalStyle.js';
+import Back from 'containers/Back';
 
 
 const ModalHeader = (props) => {
@@ -13,17 +14,15 @@ const ModalHeader = (props) => {
     return <Label key={index} value={label} />
   })
 
-//className={css(Style.label)}
-
 
   return (
-    <div className={css(Style.modalHeader)}>
+    <div className={css(Style.modalHeader)} style={{borderTopColor: props.color}}>
       <Link to="/" className={css(Style.close)}>&times;</Link>
+      <Back />
       <h1 className={css(Style.title)}>
         <div className={css(Style.labels)}>{labels}</div>
         {props.title}
       </h1>
-
       {subTitle}
     </div>
   )

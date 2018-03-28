@@ -32,25 +32,29 @@ const Style = StyleSheet.create({
     width: '54rem',
     maxWidth: '100%',
     padding: '0.75rem',
-    textAlign: 'left'
+    textAlign: 'left',
   },
   close: {
     position: 'absolute',
-    right: '0.75rem',
-    top: '0.75rem',
+    right: '0.5rem',
+    top: '-1.5rem',
     textDecoration: 'none',
-    color: '#000',
+    color: '#FFF',
     fontSize: '1.5rem',
     lineHeight: '1.25rem',
+    userSelect: 'none',
+    transition: 'all 100ms ease',
 
     ':hover': {
-      color: [Constants.colors.red]
+      //color: [Constants.colors.red]
+      transform: 'scale(1.25)'
     }
   },
   modalHeader: {
     position: 'relative',
     background: '#fff',
     padding: '1.25rem',
+    borderTop: '2rem solid ' + [Constants.colors.turquoise],
 
     '@media (orientation: landscape)': {
       padding: '2rem'
@@ -94,6 +98,7 @@ const Style = StyleSheet.create({
     background: [Constants.colors.background],
     minHeight: '20rem',
     padding: '1.25rem',
+    //borderBottom: '5px solid' + Constants.colors.turquoise,
 
     '@media (orientation: landscape)': {
       padding: '2rem'
