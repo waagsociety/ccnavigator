@@ -10,7 +10,7 @@ const Style = StyleSheet.create({
     left: '0',
     right: '0',
     bottom: '0',
-    background: '#000c',
+    background: 'rgba(0,0,0,0.8)',
     overflow: 'auto',
     textAlign: 'center',
     zIndex: '200',
@@ -31,7 +31,7 @@ const Style = StyleSheet.create({
     position: 'relative',
     width: '54rem',
     maxWidth: '100%',
-    padding: '1.25rem',
+    padding: '0.75rem',
     textAlign: 'left'
   },
   close: {
@@ -50,7 +50,11 @@ const Style = StyleSheet.create({
   modalHeader: {
     position: 'relative',
     background: '#fff',
-    padding: '2rem'
+    padding: '1.25rem',
+
+    '@media (orientation: landscape)': {
+      padding: '2rem'
+    }
   },
   labels: {
     marginRight: '0.75rem',
@@ -88,8 +92,12 @@ const Style = StyleSheet.create({
   },
   modalBody: {
     background: [Constants.colors.background],
-    padding: '2rem',
-    minHeight: '20rem'
+    minHeight: '20rem',
+    padding: '1.25rem',
+
+    '@media (orientation: landscape)': {
+      padding: '2rem'
+    }
   },
   description: {
     marginBottom: '3em'
@@ -100,10 +108,14 @@ const Style = StyleSheet.create({
     margin: '0 -0.5rem'
   },
   box: {
-    width: 'calc(50% - 1rem)',
+    width: 'calc(100% - 1rem)',
     margin: '0.5rem',
     padding: '1rem',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+
+    '@media (orientation: landscape)': {
+      width: 'calc(50% - 1rem)',
+    }
   },
   boxLink: {
     display: 'block',
