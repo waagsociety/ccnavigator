@@ -3,7 +3,7 @@ import { css } from 'util/aphrodite-custom.js';
 //own imports
 import Label from 'components/Label';
 import { Style } from './style.js';
-import { groupBy} from "util/utility.js"
+//import { groupBy} from "util/utility.js"
 import CategoryLabel from "./CategoryLabel"
 import { Link } from 'react-router-dom'
 import { Constants } from 'config/Constants.js';

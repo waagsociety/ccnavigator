@@ -10,12 +10,13 @@ import Logout from "containers/Logout"
 class Footer extends React.Component {
 
   render() {
-    var userform = null;
-    if (this.props.user) {
-      userform = <Logout/>
-    } else {
-      userform = <Login/>
-    }
+    // include login functionality later
+    // var userform = null;
+    // if (this.props.user) {
+    //   userform = <Logout/>
+    // } else {
+    //   userform = <Login/>
+    // }
 
     var navigation = (
       <div className={css(Style["navigation"])}>

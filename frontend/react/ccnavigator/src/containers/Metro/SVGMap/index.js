@@ -212,9 +212,8 @@ class SVGMap extends React.Component {
     if(scale <= 0) return;
 
     //limit the zoom range
-    var currentZoom = this.props.width / this.state.viewBox[2];
-    if(scale < 1 && currentZoom < 0.8) return;
-    if(scale > 1 && currentZoom > 3) return;
+    if(scale > 1 && this.state.viewBox[2] < 300) return;
+    if(scale < 1 && this.state.viewBox[2] > 1500) return;
 
     const nw = this.state.viewBox[2] / scale;
     const nh = this.state.viewBox[3] / scale;
