@@ -80,8 +80,8 @@ class SVGMap extends React.Component {
       this.animateZoom2();
     }
 
-    //
-    e.preventDefault();
+    
+    //e.preventDefault();
   }
 
   onMouseMove(e) {

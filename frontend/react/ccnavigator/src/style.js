@@ -7,7 +7,9 @@ import { Constants } from 'config/Constants.js';
 const Style = StyleSheet.create({
     globals: {
       '*html, body, #root': {
-        height: '100%'
+        width: '100%',
+        height: '100%',
+        position: 'fixed'
       },
       '*body': {
         margin: '0',
