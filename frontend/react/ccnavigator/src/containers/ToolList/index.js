@@ -83,7 +83,7 @@ class ToolList extends React.Component {
       var description = (this.state.termEntity.attributes.description || {}).value || ""
       description = buildJSXFromHTML(description)
 
-      var boxesTitle = 'tools:' // todo: make translatable
+      var boxesTitle
       var boxes = this.state.nodeEntities.map((node) => {
 
         return {
@@ -91,10 +91,15 @@ class ToolList extends React.Component {
           title: node.attributes.title,
           content: node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
         }
-      });
+      })
+      if (boxes.length > 0) {
+        boxesTitle = 'tools:'
+      }
 
       modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
     }
+
+
 
     //return the content in a modal view
     return (

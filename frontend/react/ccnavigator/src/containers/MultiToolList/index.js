@@ -69,7 +69,7 @@ class MultiToolList extends React.Component {
       description = buildJSXFromHTML(description)
 
       //use the concise term with hierarchy to build the term box
-      var	boxesTitle = 'themes:' // todo: make translatable
+      var	boxesTitle
       var	boxes = this.state.termHierachy.children.map((term) => {
 
         var themeTools
@@ -78,7 +78,7 @@ class MultiToolList extends React.Component {
           themeTools = term.nodes.map((node) => {
             var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
             return (
-              <span key={node.id} className={css(Style.tool)}>
+              <span key={node.id} className={css(Style.tool)} style={{backgroundColor: categoryColor}}>
                 {fullNode.attributes.title}
               </span>
             )
@@ -103,6 +103,10 @@ class MultiToolList extends React.Component {
         }
 
       });
+      if (boxes.length > 0) {
+        boxesTitle = 'themes:'
+      }
+
 
       //compose body of modal
       modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
