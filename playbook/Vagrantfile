@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   # run this with: "vagrant provision --provision-with deploy"
   config.vm.provision "deploy", type: "ansible" do |ansible|
     ansible.raw_arguments = ['--timeout=300']
-    ansible.playbook = "deploy.yml"
+    ansible.playbook = "react.yml"
     #ansible.limit = "all,localhost"
     ansible.extra_vars = {
       drupal_database: "ccnavigator",
