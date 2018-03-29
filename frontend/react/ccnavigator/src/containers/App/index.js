@@ -3,6 +3,7 @@ import Header from "containers/Header"
 import Footer from "containers/Footer"
 import Metro from "containers/Metro"
 import Modal from "components/Modal.js"
+import Page from "containers/Page"
 import ToolList from "containers/ToolList"
 import MultiToolList from "containers/MultiToolList"
 import ToolView from "containers/ToolView"
@@ -35,11 +36,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
-    ApiClient.instance().fetchContent("node--page", {field_path:"/about"}, null, null, 0, function(node, included) {
-      console.log("node about", node);
-    });
-
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
   }
@@ -114,7 +110,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" />
             <Route path="/introduction" render={() => introduction } />
-            <Route path="/about" render={() => about } />
+            <Route path="/about" component={Page} />
             <Route path="/theme/:id" component={ToolList} />
             <Route path="/zone/:id" component={MultiToolList} />
             <Route path="/tool/:id" component={ToolView} />
