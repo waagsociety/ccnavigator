@@ -63,7 +63,8 @@ class ToolView extends React.Component {
   /**
    * render image or whatever
    */
-  renderFile(item) {
+  renderFile(item, meta) {
+    console.log("item meta", meta)
     //console.log("ite", item)
     var mime = (item.attributes || {}).filemime;
     var filename, url;
@@ -113,6 +114,8 @@ class ToolView extends React.Component {
       var jsx = buildJSXFromHTML(body);
 
       // includes
+      var filesMeta = ((this.state.nodeEntity.relationships || {}).field_download || {}).data || [];
+
       var files = (this.state.includedEntities || [])
         .filter((item) => item.type === 'file--file')
 
@@ -122,7 +125,10 @@ class ToolView extends React.Component {
 
       var downloads = (files || [])
         .filter((item) => item.attributes.filemime === "application/pdf")
-        .map((item) => { return this.renderFile(item) })
+        .map((item) => {
+          var meta = filesMeta.filter((itemMeta) => itemMeta.id === item.id)[0]
+          return this.renderFile(item, meta)
+        })
 
 
       // make flag or unflag button ##include later
@@ -133,7 +139,6 @@ class ToolView extends React.Component {
       //   flagButton = <button onClick={this.onUnflag.bind(this)}>unflag</button>
       // }
 
-      
       //body part
       var description = (
         <div className={css(Style.columns)}>
