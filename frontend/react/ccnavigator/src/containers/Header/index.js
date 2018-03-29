@@ -22,7 +22,7 @@ class Header extends React.Component {
       <div className={css(Style.header_container)}>
         <div>
           <h1 className={css(Style.title)}>Co-creation Navigator</h1>
-          <p className={css(Style.subtitle)}>Subtitle that explains what the navigator is and does</p>
+          <p className={css(Style.subtitle)}>guiding you through the&nbsp;co-creative landscape</p>
         </div>
         <ToolSelectedList/>
       </div>

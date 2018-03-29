@@ -25,6 +25,7 @@ const Style = StyleSheet.create({
     }
   },
   subtitle: {
+    fontSize: '0.9em',
     lineHeight: '1.35em'
   }
 });
