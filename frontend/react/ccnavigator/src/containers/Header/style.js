@@ -17,7 +17,7 @@ const Style = StyleSheet.create({
 
   },
   title: {
-    fontSize: '1.2em',
+    fontSize: '1.5em',
     marginBottom: '0.5em',
 
     '@media (orientation: landscape)': {

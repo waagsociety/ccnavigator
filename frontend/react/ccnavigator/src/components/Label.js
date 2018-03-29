@@ -10,7 +10,7 @@ const Label = (props) => {
   )
 
   return (
-    <span className={labelClass} style={{"backgroundColor" : props.color, "fontSize" : props.size}}>
+    <span className={labelClass} style={{"backgroundColor" : props.color, "fontSize" : props.size, 'verticalAlign': props.align}}>
       {props.value}
     </span>
   )
