@@ -61,6 +61,9 @@
         owner=www-data
         group=www-data
       become: true
+    - name: add htaccess for making react routes work
+      copy: src=config/.htaccess dest=/var/www/.htaccess
+      become: true
     # fix permissions
     - name: fix permissions on synced dirs
       file:
@@ -82,6 +85,8 @@
         mode: 'u+w,g+w'
         recurse: yes
       become: true
+    - name: Restart apache
+      service: name=apache2 state=restarted
     # rebuild drush cache
     - name: drush rebuild cache
       shell: '~/.config/composer/vendor/bin/drush cr --root=/var/www/drupal'

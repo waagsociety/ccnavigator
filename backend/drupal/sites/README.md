@@ -63,6 +63,8 @@ https://www.drupal.org/docs/8/modules/json-api/what-json-api-does-not-do
     http://l2thel.local/jsonapi/node/tool?filter[nid][value]=2
     multiple:
     http://l2thel.local/jsonapi/node/tool?filter[nodes][condition][path]=nid&filter[nodes][condition][operator]=IN&filter[nodes][condition][value][]=1&filter[nodes][condition][value][]=2
+    pagination:
+    http://127.0.0.1/en/jsonapi/node/tool?field[node--tool]=title,field_category&page[offset]=50&page[limit]=50
 
 ## Using REST with views
     http://127.0.0.1/nl/[view-name]/feed
