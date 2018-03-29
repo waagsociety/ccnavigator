@@ -18,7 +18,7 @@ class SVGMap extends React.Component {
       starty: 0
     }
 
-    console.log("svg map next props a", this.props)
+    //console.log("svg map next props a", this.props)
   }
 
   //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
@@ -32,11 +32,11 @@ class SVGMap extends React.Component {
   }
 
   componentDidUpdate() {
-    var currentZoom = this.props.width / this.state.viewBox[2];
-    //console.log('zoom', currentZoom)
-    var zoomIsHigh = (currentZoom > 1.75);
+    var enlargement = (1100 / this.props.width) / (this.state.viewBox[2] / this.props.width)
+
+    var zoomIsHigh = (enlargement > 1.75)
     if(zoomIsHigh !== this.props.zoomLevelHigh) {
-      this.props.dispatch(setZoomLevelHigh(zoomIsHigh));
+      this.props.dispatch(setZoomLevelHigh(zoomIsHigh))
     }
   }
 
@@ -73,9 +73,9 @@ class SVGMap extends React.Component {
 
     // double click
     if((stamp - prevStamp) < 400) {
-      var viewRect = this.svgElement.getBoundingClientRect();
-      var viewX = e.clientX - viewRect.x;
-      var viewY = e.clientY - viewRect.y;
+      //var viewRect = this.svgElement.getBoundingClientRect();
+      //var viewX = e.clientX - viewRect.x;
+      //var viewY = e.clientY - viewRect.y;
       // click location is ignored
       this.animateZoom2();
     }
@@ -85,7 +85,7 @@ class SVGMap extends React.Component {
   }
 
   onMouseMove(e) {
-    console.log("move")
+    //console.log("move")
 
     // first check if the state is buttonHeld, if not we can just return, so we do not move unless the user wants to move
     if (!this.state.buttonHeld) {
@@ -212,9 +212,8 @@ class SVGMap extends React.Component {
     if(scale <= 0) return;
 
     //limit the zoom range
-    var currentZoom = this.props.width / this.state.viewBox[2];
-    if(scale < 1 && currentZoom < 0.6) return;
-    if(scale > 1 && currentZoom > 4) return;
+    if(scale > 1 && this.state.viewBox[2] < 300) return;
+    if(scale < 1 && this.state.viewBox[2] > 1300) return;
 
     const nw = this.state.viewBox[2] / scale;
     const nh = this.state.viewBox[3] / scale;

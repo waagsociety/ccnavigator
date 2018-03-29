@@ -1,10 +1,13 @@
 import React from 'react';
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
-import { buildJSXFromHTML } from 'util/utility.js';
+import { buildJSXFromHTML } from 'util/utility.js'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
+import Loading from 'components/Loading'
+import { StyleSheet, css } from 'util/aphrodite-custom.js'
+import { Constants } from 'config/Constants.js'
 
 
 /**
@@ -46,17 +49,20 @@ class MultiToolList extends React.Component {
 
   render() {
     //show loading till we have fetched all
-    var modalHeader = <ModalHeader title={"loading"} />
-    var modalBody = "loading";
+    var modalHeader
+    var modalBody = <Loading />
 
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
       //make header
-      var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
+      var categoryColor = Constants.colors[Constants.zones[path].color]
+      //var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var labels = ["zone " + (this.state.termHierachy.path[0] + 1)]
       var title =  this.state.termEntity.attributes.name || ""
       var subTitle = this.state.termEntity.attributes.field_subtitle || ""
-      modalHeader = <ModalHeader labels={labels} title={title} subTitle={subTitle} />
+      modalHeader = <ModalHeader color={categoryColor} labels={labels} title={title} subTitle={subTitle} />
 
       //make content
       var description = (this.state.termEntity.attributes.description || {}).value || ""
@@ -68,13 +74,11 @@ class MultiToolList extends React.Component {
 
         var themeTools
 
-        //themeDescription = subTitle
-
         if (term.nodes.length > 0) {
           themeTools = term.nodes.map((node) => {
             var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
             return (
-              <span key={node.id}>
+              <span key={node.id} className={css(Style.tool)}>
                 {fullNode.attributes.title}
               </span>
             )
@@ -84,10 +88,10 @@ class MultiToolList extends React.Component {
         }
 
         //list the tools in this subcategory
+        //<h4>tools:</h4>
         var content = (
           <div>
             <p>{term.attributes.field_subtitle}</p>
-            <h4>tools:</h4>
             {themeTools}
           </div>
         ) // todo: make translatable
@@ -115,5 +119,21 @@ class MultiToolList extends React.Component {
   }
 
 }
+
+
+const Style = StyleSheet.create({
+  tool: {
+    display: 'inline-block',
+    margin: '0.5em 0.5em 0 0',
+    textTransform: 'lowercase',
+    backgroundColor: Constants.colors.turquoise,
+    color: '#FFF',
+    fontSize: '0.8rem',
+    lineHeight: '1.5em',
+    borderRadius: '0.75em',
+    padding: '0 0.5em'
+  }
+
+});
 
 export default MultiToolList;

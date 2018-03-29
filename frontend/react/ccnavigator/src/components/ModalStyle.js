@@ -10,7 +10,7 @@ const Style = StyleSheet.create({
     left: '0',
     right: '0',
     bottom: '0',
-    background: '#000c',
+    background: 'rgba(0,0,0,0.8)',
     overflow: 'auto',
     textAlign: 'center',
     zIndex: '200',
@@ -29,31 +29,39 @@ const Style = StyleSheet.create({
     display: 'inline-block',
     verticalAlign: 'middle',
     position: 'relative',
-    width: '46rem',
+    width: '54rem',
     maxWidth: '100%',
-    padding: '1.25rem',
-    textAlign: 'left'
+    padding: '0.75rem',
+    textAlign: 'left',
   },
   close: {
     position: 'absolute',
-    right: '0.75rem',
-    top: '0.75rem',
+    right: '0.5rem',
+    top: '-1.5rem',
     textDecoration: 'none',
-    color: '#000',
+    color: '#FFF',
     fontSize: '1.5rem',
     lineHeight: '1.25rem',
+    userSelect: 'none',
+    transition: 'all 100ms ease',
 
     ':hover': {
-      color: [Constants.colors.red]
+      //color: [Constants.colors.red]
+      transform: 'scale(1.25)'
     }
   },
   modalHeader: {
     position: 'relative',
     background: '#fff',
-    padding: '2rem'
+    padding: '1.25rem',
+    borderTop: '2rem solid ' + [Constants.colors.turquoise],
+
+    '@media (orientation: landscape)': {
+      padding: '2rem'
+    }
   },
   labels: {
-    marginRight: '0.5rem',
+    marginRight: '0.75rem',
   },
   label: {
     margin: '0 0.5rem 3px 0',
@@ -75,7 +83,7 @@ const Style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     fontSize: '35px',
-    margin: '0',
+    margin: '0 0 1rem 0',
     textTransform: 'lowercase',
 
     '@media (max-width: 600px)': {
@@ -88,16 +96,31 @@ const Style = StyleSheet.create({
   },
   modalBody: {
     background: [Constants.colors.background],
-    padding: '2rem',
-    minHeight: '20rem'
+    minHeight: '20rem',
+    padding: '1.25rem',
+    //borderBottom: '5px solid' + Constants.colors.turquoise,
+
+    '@media (orientation: landscape)': {
+      padding: '2rem'
+    }
   },
   description: {
     marginBottom: '3em'
   },
+  boxes: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: '0 -0.5rem'
+  },
   box: {
-    marginBottom: '1rem',
+    width: 'calc(100% - 1rem)',
+    margin: '0.5rem',
     padding: '1rem',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+
+    '@media (orientation: landscape)': {
+      width: 'calc(50% - 1rem)',
+    }
   },
   boxLink: {
     display: 'block',
@@ -110,8 +133,37 @@ const Style = StyleSheet.create({
   term: {
     fontWeight: '700'
   },
-  image: {
-    width:"50%"
+  columns: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    margin: '0 -1rem',
+
+    '@media (max-width: 640px)': {
+      margin: '0',
+      flexDirection: 'column'
+    }
+  },
+  column: {
+    margin: '0 1rem',
+    width: 'calc(50% - 2rem)',
+
+    '@media (max-width: 640px)': {
+      margin: '0 0 2rem',
+      width: '100%'
+    }
+  },
+  button: {
+    display: 'inline-block',
+    lineHeight: '1.5em',
+    padding: '0.25em 0.5em 0',
+    backgroundColor: Constants.colors.turquoise,
+    color: '#FFF',
+    textDecoration: 'none',
+    borderRadius: '2px',
+
+    ':hover': {
+      opacity: '0.85'
+    }
   }
 });
 

@@ -23,10 +23,11 @@ const Style = StyleSheet.create({
     background: 'black',
     borderRadius: '0.75em',
     color: 'white',
-    fontSize: '0.4em',
+    fontSize: '0.35em',
     height: '1.5em',
     lineHeight: '1.75em',
     textTransform: 'uppercase',
+    fontWeight: '400',
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
     verticalAlign: 'middle',
@@ -36,6 +37,10 @@ const Style = StyleSheet.create({
     },
     ':last-child': {
       marginLeft: '0.5em'
+    },
+    ':first-child:last-child': {
+      marginLeft: '0em',
+      marginRight: '0em'
     }
   },
   labelCircle: {

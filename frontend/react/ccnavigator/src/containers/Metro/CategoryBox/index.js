@@ -3,9 +3,11 @@ import { css } from 'util/aphrodite-custom.js';
 //own imports
 import Label from 'components/Label';
 import { Style } from './style.js';
-import { groupBy} from "util/utility.js"
+//import { groupBy} from "util/utility.js"
 import CategoryLabel from "./CategoryLabel"
 import { Link } from 'react-router-dom'
+import { Constants } from 'config/Constants.js';
+
 
 class CategoryBox extends React.Component {
 
@@ -19,46 +21,43 @@ class CategoryBox extends React.Component {
   componentDidMount() {
   }
 
-  /**
-   *
-   */
+
   render() {
     var termEntity = this.props.entity;
     var path = termEntity.path.map(x => x + 1).join("-")
+    var categoryColor = Constants.colors[Constants.zones[path].color]
 
-    //render term themes (children of category)
-    var termThemes = (termEntity.children || []).map((subTerm, index) => {
-      var toolsCnt = ((this.state.nrOfToolsPerCategory || {})[subTerm.id]) || 0
-      return (
-        <CategoryLabel key={subTerm.id} entity={subTerm} toolsCnt={toolsCnt} />
-      )
-    });
 
-    //put the term themes in groups
-    var themesInGroups = groupBy(termThemes, 10);
-    var groupedThemes = themesInGroups.map((group, index) => {
-      return <div key={index} className={css(Style["category-box-row"])}>{group}</div>
-    });
-
-    var termThemesOutput
+    // render term themes (if not grandparent) 
+    var termThemes
     if (termEntity.grandparent === false) {
-      termThemesOutput = <div>{groupedThemes}</div>
+      termThemes = (termEntity.children || []).map((subTerm, index) => {
+        return <CategoryLabel key={subTerm.id} entity={subTerm} color={categoryColor} />
+      })
+      termThemes = <div className={css(Style['category-themes'])}>{termThemes}</div>
     }
 
 
-    //return category box, max 2 labels on a line
+    // set category classes
+    var categoryClass = [Style['category']]
+
+    if (path.length > 1) {
+      categoryClass.push(Style['sub-category'])
+    }
+
+    //return category box
     return (
-      <foreignObject className={css(Style["category-anchor"],Style[`category-anchor-${path}`])}>
-        <div className={css(Style["category-box"],Style["no-select"])}>
-          <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
-            <h3 className={css(Style["category-title"])}>
+      <foreignObject className={css(categoryClass)} width="250" height="125" x={Constants.zones[path].x} y={Constants.zones[path].y} transform={`rotate(-45 ${Constants.zones[path].x},${Constants.zones[path].y})`}>
+        <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
+          <h3 className={css(Style["category-title"])}>
+            {path.length === 1 &&
               <Label value={path} size={'0.6em'}/>
-              {termEntity.attributes.name}
-            </h3>
-          </Link>
-          {termThemesOutput}
-        </div>
-      </foreignObject>
+            }
+            <span>{termEntity.attributes.name}</span>
+          </h3>
+        </Link>
+        {termThemes}
+       </foreignObject>
     )
   }
 }

@@ -6,6 +6,9 @@ import { Constants } from 'config/Constants.js';
  */
 const Style = StyleSheet.create({
     globals: {
+      '*html, body, #root': {
+        height: '100%'
+      },
       '*body': {
         margin: '0',
         backgroundColor: [Constants.colors.background],
@@ -30,13 +33,10 @@ const Style = StyleSheet.create({
         margin: '0'
       },
       '*h1, h2': {
-        lineHeight: '1.2em'
+        lineHeight: '1.25em'
       },
       '*h3, h4': {
         lineHeight: '1.5em'
-      },
-      '*h3': {
-        marginBottom: '0.75em'
       },
       '*p': {
         margin: '0 0 1.5em',
@@ -47,17 +47,26 @@ const Style = StyleSheet.create({
         }
       },
       '*a': {
+        boxSizing: 'border-box',
         color: [Constants.colors.text],
         transition: 'color 100ms ease'
       },
       '*div': {
         boxSizing: 'border-box'
       },
+      '*img': {
+        maxWidth: '100%',
+        height: 'auto'
+      },
       '*button': {
         cursor: 'pointer'
       },
       '*:focus': {
         outline: '0'
+      },
+      '*::selection': {
+        background: '#000',
+        color: '#FFF'
       }
     }
 });

@@ -34,7 +34,7 @@ const ModalBody = (props) => {
     <div className={css(Style.modalBody)}>
       {description}
       <h3>{props.boxesTitle}</h3>
-      {boxes}
+      <div className={css(Style.boxes)}>{boxes}</div>
     </div>
   )
 }

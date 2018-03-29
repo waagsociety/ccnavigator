@@ -3,10 +3,12 @@ import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 //import ToolListItem from "./ToolListItem"
 import { connect } from 'react-redux'
-import { buildJSXFromHTML } from 'util/utility.js';
+import { buildJSXFromHTML } from 'util/utility.js'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
+import Loading from 'components/Loading'
+import { Constants } from 'config/Constants.js'
 
 
 /**
@@ -54,17 +56,28 @@ class ToolList extends React.Component {
 
   render() {
     //show loading till we have fetched all
-    var modalHeader = <ModalHeader title={"loading"} />
-    var modalBody = "loading"; // todo: make translatable
+    var modalHeader
+    var modalBody = <Loading />
 
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
       //make header
-      var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
+
+      var categoryColor
+      if (Constants.zones[path]) {
+        categoryColor = Constants.colors[Constants.zones[path].color]
+      } else if (Constants.zones[path.slice(0, -2)]) {
+        categoryColor = Constants.colors[Constants.zones[path.slice(0, -2)].color]
+      }
+
+      //var labels = ["zone " + this.state.termHierachy.path.map(x => x + 1).join("-")]
+      var labels = ["zone " + (this.state.termHierachy.path[0] + 1)]
       var title =  this.state.termEntity.attributes.name || ""
       var subTitle = this.state.termEntity.attributes.field_subtitle || ""
-      modalHeader = <ModalHeader labels={labels} title={title} subTitle={subTitle} />
+      //
+      modalHeader = <ModalHeader color={categoryColor} labels={labels} title={title} subTitle={subTitle} />
 
       //make body
       var description = (this.state.termEntity.attributes.description || {}).value || ""

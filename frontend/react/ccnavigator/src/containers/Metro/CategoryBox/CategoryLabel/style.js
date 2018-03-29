@@ -1,20 +1,20 @@
 import { StyleSheet } from "aphrodite";
-import { Constants } from 'config/Constants.js';
+
 
 export const RawStyle = {
   'theme': {
-    display: 'inline-block',
-    background: 'white',
+    background: '#FFF',
     marginRight: '0.25rem',
     marginTop: '0.3rem',
     padding: '0 0.25em',
     textTransform: 'capitalize',
     borderRadius: '1em',
-    fontSize: '10px',
+    fontSize: '0.556em',
     lineHeight: '2em',
     fontWeight: 'bold',
     userSelect: 'none',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    pointerEvents: 'auto'
   },
   'label': {
     display: 'inline-block',
