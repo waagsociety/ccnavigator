@@ -55,6 +55,10 @@ class App extends React.Component {
     //this.setState({ width: update_width, height: update_height });
   }
 
+  closeModal() {
+    this.props.history.push('/')
+  }
+
   render() {
     var about = (
       <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
@@ -81,7 +85,7 @@ class App extends React.Component {
       <Router>
         <div className={css(Style.app_container)}>
           <MediaQuery orientation="landscape">
-            <div className={css([Style.panel, Style.left_panel])} style={{width:'14rem'}}>
+            <div className={css([Style.panel, Style.left_panel])} style={{width: '15rem'}}>
               <Header />
               <Footer />
             </div>
