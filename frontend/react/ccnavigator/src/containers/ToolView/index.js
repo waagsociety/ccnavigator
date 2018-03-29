@@ -64,7 +64,6 @@ class ToolView extends React.Component {
    * render image or whatever
    */
   renderFile(item, meta) {
-    
     //console.log("ite", item)
     var mime = (item.attributes || {}).filemime;
     var filename, url;
@@ -76,12 +75,7 @@ class ToolView extends React.Component {
       case "application/pdf":
         filename = (item.attributes || {}).filename;
         url = (item.attributes || {}).url;
-        var label
-        if(meta) {
-          label = (meta || {}).meta.description
-        } else {
-          label = 'download'
-        }
+        var label = (meta.description) ? meta.description : 'download';
         return <a className={css(Style.button)} key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank">{label}</a>
       default:
         console.log("entity mime not supported:", mime);
@@ -132,7 +126,7 @@ class ToolView extends React.Component {
       var downloads = (files || [])
         .filter((item) => item.attributes.filemime === "application/pdf")
         .map((item) => {
-          var meta = filesMeta.filter((itemMeta) => itemMeta.id === item.id)[0]
+          var meta = filesMeta.filter((itemMeta) => itemMeta.id === item.id)[0].meta
           return this.renderFile(item, meta)
         })
 
