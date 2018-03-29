@@ -12,6 +12,7 @@ import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
+import ApiClient from 'client/ApiClient';
 
 import {
   BrowserRouter as Router,
@@ -34,6 +35,11 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+
+    ApiClient.instance().fetchContent("node--page", {field_path:"/about"}, null, null, 0, function(node, included) {
+      console.log("node about", node);
+    });
+
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
   }
