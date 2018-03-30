@@ -104,11 +104,13 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
       if(endPoint.port !== null && endPoint.port !== "") {
         uri.port(endPoint.port);
       }
+      /* mmm drupal puts its own endpoint in the path
       // set path to api end point if configured
       var dir = uri.directory();
       if(endPoint.path !== null && endPoint.path !== "") {
         uri.directory(`/${endPoint.path}${dir}`);
       }
+      */
     }
     return uri.href();
   }

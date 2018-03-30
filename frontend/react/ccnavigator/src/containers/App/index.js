@@ -38,8 +38,8 @@ class App extends React.Component {
   componentDidMount() {
     const browser = detect();
     // handle the case where we don't detect the browser
-    if (browser) {
-      alert(browser.name + " " + browser.version );
+    if (browser && browser.name === "ie") {
+      alert("This website needs a modern browser to function. Recent versions of Firefox, Edge, Chrome, Opera and Safari will do.");
     }
 
     this.updateDimensions();
