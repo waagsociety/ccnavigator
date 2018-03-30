@@ -63,10 +63,10 @@ const generateSublinePoints = (start, end, index, strokeWidth) => {
   var begin = [start[0] + xSign * offset, start[1]];
 
   //go up or down from the begin
-  var p1 = [begin[0], (begin[1] + (ySign * (30 - (index * strokeWidth * 0.75))))];
+  var p1 = [begin[0], (begin[1] + (ySign * (42.5 - (index * strokeWidth * 0.75))))];
 
   //go 45,135,225 or 315 degr from end
-  var len = Math.random() * 30 + 20;
+  var len = Math.random() * 30 + 40;
   var p3 = [(end[0] + (xSign * - len)),(end[1] + (ySign * - len))]
 
   //then go 45,135,225 or 315 degr for a minimal length

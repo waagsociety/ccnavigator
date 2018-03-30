@@ -51,28 +51,28 @@ export const Constants = {
       color : 'turquoise'
     },
     '4' : {
-      x : 815,
+      x : 810,
       y : 300,
       color : 'turquoise'
     },
-    '4-1' : {
-      x : 680,
-      y : 640,
+    '4-1' : { //sessions
+      x : 660,
+      y : 670,
       color : 'turquoise'
     },
-    '4-2' : {
-      x : 560,
-      y : 465,
+    '4-2' : { //technology
+      x : 540,
+      y : 475,
       color : 'red'
     },
-    '4-3' : {
-      x : 850,
-      y : 690,
+    '4-3' : { //events
+      x : 955,
+      y : 705,
       color : 'yellow'
     },
-    '4-4' : {
-      x : 960,
-      y : 530,
+    '4-4' : { //open labs
+      x : 1020,
+      y : 520,
       color : 'purple'
     },
     '5' : {

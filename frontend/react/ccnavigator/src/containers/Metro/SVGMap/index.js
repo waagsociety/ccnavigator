@@ -46,10 +46,10 @@ class SVGMap extends React.Component {
   componentDidMount() {
     if((this.props.width > 900) && (this.props.height > 900)) {
       //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
-      var s = Math.min(this.props.width,this.props.height);
-      var z = 900 / s;
-      //var z = 200 / s;
-      this.zoomWith(z);
+      var s = Math.min(this.props.width,this.props.height)
+      var z = 900 / s
+      console.log(z)
+      this.zoomWith(z)
     }
     //subscribe to location change to be able to block links when dragging
     this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
@@ -71,23 +71,18 @@ class SVGMap extends React.Component {
   }
 
   componentDidUpdate() {
-    var enlargement = (1100 / this.props.width) / (this.state.viewBox[2] / this.props.width)
-
-    var zoomIsHigh = (enlargement > 1.75)
+    var zoomLevel = (this.state.viewBox[2] / 1100) * (this.state.viewBox[2] / this.props.width)
+    var zoomIsHigh = (zoomLevel < 0.7)
     if(zoomIsHigh !== this.props.zoomLevelHigh) {
       this.props.dispatch(setZoomLevelHigh(zoomIsHigh))
     }
   }
 
-  getZoom() {
-    return this.state.matrix[0];
-  }
-
   onZoomIn() {
-    this.zoomWith(1.5);
+    this.zoomWith(1.4);
   }
   onZoomOut() {
-    this.zoomWith(1/1.5);
+    this.zoomWith(1/1.4);
   }
 
   onMousePressed(e) {

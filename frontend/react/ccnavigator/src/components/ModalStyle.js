@@ -29,7 +29,7 @@ const Style = StyleSheet.create({
     display: 'inline-block',
     verticalAlign: 'middle',
     position: 'relative',
-    width: '54rem',
+    width: '55rem',
     maxWidth: '100%',
     padding: '0.75rem',
     textAlign: 'left',
@@ -113,6 +113,8 @@ const Style = StyleSheet.create({
     margin: '0 -0.5rem'
   },
   box: {
+    display: 'flex',
+    flexDirection: 'column',
     width: 'calc(100% - 1rem)',
     margin: '0.5rem',
     padding: '1rem',
@@ -123,10 +125,11 @@ const Style = StyleSheet.create({
     }
   },
   boxTitle: {
+    fontSize: '1.15em',
     textTransform: 'lowercase'
   },
   boxLink: {
-    display: 'block',
+    //display: 'block',
     textDecoration: 'none',
 
     ':hover': {

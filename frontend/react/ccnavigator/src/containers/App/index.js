@@ -13,7 +13,6 @@ import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
-import ApiClient from 'client/ApiClient';
 import {
   BrowserRouter as Router,
   Route,
@@ -68,20 +67,6 @@ class App extends React.Component {
   }
 
   render() {
-    var about = (
-      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
-        <ModalHeader title="About" />
-        <ModalBody description="About the Co-Creation Navigator" />
-      </Modal>
-    )
-
-    var introduction = (
-      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
-        <ModalHeader title="The Co-creation Navigator" />
-        <ModalBody description="Ahoy!" />
-      </Modal>
-    )
-
     var notFound = (
       <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
         <ModalHeader title="Not found 404" />
@@ -115,7 +100,6 @@ class App extends React.Component {
 
           <Switch>
             <Route exact path="/" />
-            <Route path="/introduction" render={() => introduction } />
             <Route path="/about" component={Page} />
             <Route path="/theme/:id" component={ToolList} />
             <Route path="/zone/:id" component={MultiToolList} />

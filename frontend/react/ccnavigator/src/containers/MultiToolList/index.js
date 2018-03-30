@@ -6,6 +6,7 @@ import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import Loading from 'components/Loading'
+import Label from 'components/Label'
 import { StyleSheet, css } from 'util/aphrodite-custom.js'
 import { Constants } from 'config/Constants.js'
 
@@ -73,32 +74,30 @@ class MultiToolList extends React.Component {
       //use the concise term with hierarchy to build the term box
       var	boxesTitle
 
+      // if not grandparent, do boxes..
       if (this.state.termHierachy.children.length > 0) {
         if (this.state.termHierachy.children[0].children.length === 0) {
 
-          var	boxes = this.state.termHierachy.children.map((term) => {
+          var	boxes = this.state.termHierachy.children.map((term, index) => {
 
-            var themeTools
-    
-            if (term.nodes.length > 0) {
-              themeTools = term.nodes.map((node) => {
-                var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
-                return (
-                  <span key={node.id} className={css(Style.tool)} style={{backgroundColor: categoryColor}}>
-                    {fullNode.attributes.title}
-                  </span>
-                )
-              })
-            } else {
-              themeTools = 'no tools yet...' // todo: make translatable
-            }
+            // if (term.nodes.length > 0) {
+            //   themeTools = term.nodes.map((node) => {
+            //     var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
+            //     return (
+            //       <span key={node.id} className={css(Style.tool)} style={{backgroundColor: categoryColor}}>
+            //         {fullNode.attributes.title}
+            //       </span>
+            //     )
+            //   })
+            // } else {
+            //   themeTools = 'no tools yet...' // todo: make translatable
+            // }
     
             //list the tools in this subcategory
-            //<h4>tools:</h4>
             var content = (
-              <div>
+              <div className={css(Style.theme)}>
                 <p>{term.attributes.field_subtitle}</p>
-                {themeTools}
+                <div><Label value={`${term.nodes.length} tools`} size={'0.7em'} color={categoryColor} /></div>
               </div>
             ) // todo: make translatable
     
@@ -107,7 +106,7 @@ class MultiToolList extends React.Component {
               title: term.attributes.name,
               content: content
             }
-    
+
           });
           if (boxes.length > 0) {
             boxesTitle = 'themes:'
@@ -133,6 +132,12 @@ class MultiToolList extends React.Component {
 
 
 const Style = StyleSheet.create({
+  theme: {
+    flexGrow: '1',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   tool: {
     display: 'inline-block',
     margin: '0.5em 0.5em 0 0',

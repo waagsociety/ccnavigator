@@ -8,23 +8,19 @@ const ModalBody = (props) => {
   var description = props.description ? <div className={css(Style.description)}>{props.description}</div> : ''
 
   var boxes = (props.boxes || []).map((box, index) => {
-    var boxContents = (
-      <div>
-        <h3 className={css(Style.boxTitle)}>{box.title}</h3>
-        {box.content}
-      </div>
-    )
 
     if (box.link) {
       return (
         <Link key={index} to={box.link} className={css(Style.box, Style.boxLink)}>
-          {boxContents}
+          <h3 className={css(Style.boxTitle)}>{box.title}</h3>
+          {box.content}
         </Link>
       )
     } else {
       return (
         <div key={index} className={css(Style.box)}>
-          {boxContents}
+          <h3 className={css(Style.boxTitle)}>{box.title}</h3>
+          {box.content}
         </div>
       )
     }

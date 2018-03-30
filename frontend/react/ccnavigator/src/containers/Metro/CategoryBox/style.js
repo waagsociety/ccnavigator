@@ -1,4 +1,5 @@
 import { StyleSheet } from "aphrodite";
+import { Constants } from 'config/Constants.js';
 
 export const RawStyle = {
   'category' : {
@@ -13,6 +14,7 @@ export const RawStyle = {
     textTransform: 'lowercase',
     marginBottom: '0',
     whiteSpace: 'nowrap',
+
   },
   'category-title-link': {
     display: 'flex',
@@ -20,11 +22,14 @@ export const RawStyle = {
     alignItems: 'center',
     textDecoration: 'none',
     pointerEvents: 'auto',
-    WebkitUserDrag: 'none'
+    WebkitUserDrag: 'none',
+    transition: 'all 75ms ease',
 
-    //':hover': {
-    //  color: [Constants.colors.turquoise]
-    //}
+    ':hover': {
+      marginTop: '0.05rem',
+      marginBottom: '-0.05rem',
+      transition: 'all 0ms ease',
+    }
   },
   'category-themes': {
     display: 'flex',

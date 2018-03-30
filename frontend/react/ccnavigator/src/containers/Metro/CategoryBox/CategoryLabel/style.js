@@ -15,7 +15,14 @@ export const RawStyle = {
     userSelect: 'none',
     textDecoration: 'none',
     pointerEvents: 'auto',
-    WebkitUserDrag: 'none'
+    WebkitUserDrag: 'none',
+    transition: 'all 75ms ease',
+
+    ':hover': {
+      marginTop: '0.35rem',
+      marginBottom: '-0.05rem',
+      transition: 'all 0ms ease',
+    }
   },
   'label': {
     display: 'inline-block',
