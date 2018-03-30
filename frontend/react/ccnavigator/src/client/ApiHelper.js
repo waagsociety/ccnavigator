@@ -151,7 +151,7 @@ class ApiHelper {
       return;
     }
     //fetch and process the data
-    ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle"], null, function(vocabulary) {
+    ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "weight"], null, function(vocabulary) {
       if(vocabulary) {
         //get all tool nodes
         ApiClient.instance().fetchContentAll("node--tool", null, ["title", "field_category"], null, function(toolData) {
