@@ -60,6 +60,31 @@ const Style = StyleSheet.create({
         maxWidth: '100%',
         height: 'auto'
       },
+      '*table': {
+        width: '100%'
+      },
+      '*tr': {
+        display: 'flex',
+        justifyContent: 'space-around'
+
+      },
+      '*td': {
+        //padding: '0 1.5rem',
+        //textAlign: 'center',
+
+        //':first-child' : {
+        //  paddingLeft: '0'
+        //},
+        //':last-child' : {
+        //  paddingRight: '0'
+        //}
+      },
+      '*td img': {
+        width: 'auto',
+        height: 'auto',
+        maxWidth: '250px',
+        maxHeight: '125px',
+      },
       '*ul': {
         margin: '1.5em 0',
         paddingLeft: '1em'

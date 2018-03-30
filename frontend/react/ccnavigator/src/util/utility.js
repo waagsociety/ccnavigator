@@ -75,19 +75,16 @@ export const abbreviateString2 = function(string = "", transitionState) {
  * rebuild user formatted HTML string from CMS
  * convert simple html (replacing <a> with <link>), limit node types supported
  */
-
 export const buildJSXFromHTML = function(htmlString) {
 
   const convertAttributes = function(attributes, mapping) {
     return attributes.reduce((result, pair) => {
       switch(pair.name) {
-        case "cellpadding":
-        case "cellspacing":
-        case "style":
-
-
         case "href":
           result["to"] = pair.value;
+          break;
+        case "src":
+          result["src"] = pair.value;
           break;
         default:
           result[pair.name] = pair.value;
@@ -98,7 +95,7 @@ export const buildJSXFromHTML = function(htmlString) {
   }
 
   const convertNode = function(node, childs, index) {
-    console.log(node.nodeName)
+    //console.log(node.nodeName)
     var converted = null;
     switch(node.nodeName) {
       case "#text":
@@ -115,7 +112,7 @@ export const buildJSXFromHTML = function(htmlString) {
       case "img":
         var attrs = convertAttributes(node.attrs)
         attrs["key"] = index
-        console.log(attrs)
+        //console.log(attrs)
         converted = React.createElement("img", attrs)
         break;
       case "table":
