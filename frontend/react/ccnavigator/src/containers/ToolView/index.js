@@ -97,8 +97,6 @@ class ToolView extends React.Component {
     //build content view when we have all data
     if(this.state.nodeEntity) {
 
-      console.log(this.state.nodeEntity)
-
       //make header
       var title =  this.state.nodeEntity.attributes.title || "";
       var labels = [];

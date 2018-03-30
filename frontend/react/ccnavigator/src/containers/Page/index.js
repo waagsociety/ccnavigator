@@ -1,14 +1,9 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js'
 import ApiClient from 'client/ApiClient'
-import ApiHelper from 'client/ApiHelper'
-import { setToolStatus } from 'actions'
-import { connect } from 'react-redux'
 import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import Loading from 'components/Loading'
-import Style from 'components/ModalStyle.js'
 import { buildJSXFromHTML} from "util/utility"
 
 
@@ -47,7 +42,7 @@ class Page extends React.Component {
     //build content view when we have all data
     if(this.state.nodeEntity) {
 
-      console.log(this.state.nodeEntity)
+      //console.log(this.state.nodeEntity)
 
       //make header
       var title =  this.state.nodeEntity[0].attributes.title || "";

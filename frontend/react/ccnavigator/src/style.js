@@ -90,9 +90,12 @@ const Style = StyleSheet.create({
         margin: '1.5em 0',
         paddingLeft: '1em'
       },
-      '*li': {
+      '*ul li': {
         lineHeight: '1.5em',
         listStyleType: 'square'
+      },
+      '*ol li': {
+        lineHeight: '1.5em',
       },
       '*button': {
         cursor: 'pointer'

@@ -134,6 +134,7 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
   }
 
   const convertNode = function(node, childs, index) {
+    var attrs
     var converted = null;
     switch(node.nodeName) {
       case "#text":
@@ -143,12 +144,12 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
         }
         break;
       case "a":
-        var attrs = convertAttributes(node.attrs)
+        attrs = convertAttributes(node.attrs)
         attrs["key"] = index
         converted = React.createElement(Link, attrs, childs)
         break;
       case "img":
-        var attrs = convertAttributes(node.attrs)
+        attrs = convertAttributes(node.attrs)
         attrs["key"] = index
         //console.log(attrs)
         converted = React.createElement("img", attrs)
@@ -159,6 +160,7 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
       case "tbody":
       case "th":
       case "td":
+      case "ol":
       case "ul":
       case "li":
       case "h3":

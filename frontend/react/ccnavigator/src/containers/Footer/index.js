@@ -20,7 +20,7 @@ class Footer extends React.Component {
 
     var navigation = (
       <div className={css(Style["navigation"])}>
-        <Link className={css(Style["navigationLink"])} to="about">about</Link>
+        <Link className={css(Style["navigationLink"])} to="/about">about</Link>
       </div>
     )
 
