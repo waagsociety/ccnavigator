@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "aphrodite": "^1.2.5",
+    "detect-browser": "^2.2.0",
     "json": "^9.0.6",
     "lodash": "^4.17.4",
     "npm": "^5.8.0",

@@ -14,12 +14,12 @@ import ModalBody from 'components/ModalBody'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
 import ApiClient from 'client/ApiClient';
-
 import {
   BrowserRouter as Router,
   Route,
   Switch
 } from 'react-router-dom'
+const { detect } = require('detect-browser');
 
 class App extends React.Component {
 
@@ -36,6 +36,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    const browser = detect();
+    // handle the case where we don't detect the browser
+    if (browser) {
+      alert(browser.name + " " + browser.version );
+    }
+
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
   }
