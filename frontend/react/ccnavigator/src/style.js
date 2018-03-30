@@ -51,7 +51,8 @@ const Style = StyleSheet.create({
       '*a': {
         boxSizing: 'border-box',
         color: [Constants.colors.text],
-        transition: 'color 100ms ease'
+        transition: 'color 100ms ease',
+        userSelect: 'none',
       },
       '*div': {
         boxSizing: 'border-box'

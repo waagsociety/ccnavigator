@@ -10,7 +10,7 @@ const ModalBody = (props) => {
   var boxes = (props.boxes || []).map((box, index) => {
     var boxContents = (
       <div>
-        <h3>{box.title}</h3>
+        <h3 className={css(Style.boxTitle)}>{box.title}</h3>
         {box.content}
       </div>
     )

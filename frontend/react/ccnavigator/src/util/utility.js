@@ -140,7 +140,7 @@ export const buildJSXFromHTML = function(htmlString) {
   }
 
   var ast = parse5.parseFragment(htmlString)
-  console.log(ast);
+  //console.log(ast);
   var buildJSX = function(node, index) {
     var childs = [];
     if(node.childNodes) {

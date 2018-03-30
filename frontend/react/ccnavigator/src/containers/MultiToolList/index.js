@@ -55,6 +55,8 @@ class MultiToolList extends React.Component {
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
+      
+
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
       var categoryColor = Constants.colors[Constants.zones[path].color]
@@ -70,43 +72,48 @@ class MultiToolList extends React.Component {
 
       //use the concise term with hierarchy to build the term box
       var	boxesTitle
-      var	boxes = this.state.termHierachy.children.map((term) => {
 
-        var themeTools
+      if (this.state.termHierachy.children.length > 0) {
+        if (this.state.termHierachy.children[0].children.length === 0) {
 
-        if (term.nodes.length > 0) {
-          themeTools = term.nodes.map((node) => {
-            var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
-            return (
-              <span key={node.id} className={css(Style.tool)} style={{backgroundColor: categoryColor}}>
-                {fullNode.attributes.title}
-              </span>
-            )
-          })
-        } else {
-          themeTools = 'no tools yet...' // todo: make translatable
+          var	boxes = this.state.termHierachy.children.map((term) => {
+
+            var themeTools
+    
+            if (term.nodes.length > 0) {
+              themeTools = term.nodes.map((node) => {
+                var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
+                return (
+                  <span key={node.id} className={css(Style.tool)} style={{backgroundColor: categoryColor}}>
+                    {fullNode.attributes.title}
+                  </span>
+                )
+              })
+            } else {
+              themeTools = 'no tools yet...' // todo: make translatable
+            }
+    
+            //list the tools in this subcategory
+            //<h4>tools:</h4>
+            var content = (
+              <div>
+                <p>{term.attributes.field_subtitle}</p>
+                {themeTools}
+              </div>
+            ) // todo: make translatable
+    
+            return {
+              link: `/theme/${term.id}`,
+              title: term.attributes.name,
+              content: content
+            }
+    
+          });
+          if (boxes.length > 0) {
+            boxesTitle = 'themes:'
+          }
         }
-
-        //list the tools in this subcategory
-        //<h4>tools:</h4>
-        var content = (
-          <div>
-            <p>{term.attributes.field_subtitle}</p>
-            {themeTools}
-          </div>
-        ) // todo: make translatable
-
-        return {
-          link: `/theme/${term.id}`,
-          title: term.attributes.name,
-          content: content
-        }
-
-      });
-      if (boxes.length > 0) {
-        boxesTitle = 'themes:'
       }
-
 
       //compose body of modal
       modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
