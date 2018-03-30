@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Config from 'config/Config';
 const parse5 = require('parse5');
+const URI = require('urijs');
 
 /**
   * groups the items in an array like [0,1,2,3,4] with len == 2 becomes [[0,1],[2,3],[4]]
@@ -73,18 +75,53 @@ export const abbreviateString2 = function(string = "", transitionState) {
 
 /**
  * rebuild user formatted HTML string from CMS
- * convert simple html (replacing <a> with <link>), limit node types supported
+ * - convert simple html (replacing <a> with <link>), limited node types supported
+ * - endpoint config need for resolving relative paths from CMS
  */
-export const buildJSXFromHTML = function(htmlString) {
+
+export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
+
+  //
+  var endPoint = endPointConfig;
+  if(endPointConfig === null) {
+    endPoint = Config.endPoint;
+  }
+
+  const resolveRelativePathIfRelative = function(oldPath) {
+    var uri = URI(oldPath);
+    if(uri.is("absolute")) {
+      return oldPath;
+    }
+    if(endPoint !== null)
+    {
+      if(endPoint.host === null || endPoint.host === "") {
+        var host = window.location.hostname;
+        uri.host(host);
+      } else {
+        uri.host(endPoint.host);
+      }
+      // set port if configured
+      if(endPoint.port !== null && endPoint.port !== "") {
+        uri.port(endPoint.port);
+      }
+      // set path to api end point if configured
+      var dir = uri.directory();
+      if(endPoint.path !== null && endPoint.path !== "") {
+        uri.directory(`/${endPoint.path}${dir}`);
+      }
+    }
+    return uri.href();
+  }
 
   const convertAttributes = function(attributes, mapping) {
     return attributes.reduce((result, pair) => {
       switch(pair.name) {
         case "href":
-          result["to"] = pair.value;
+          result["to"] = resolveRelativePathIfRelative(pair.value);
           break;
         case "src":
-          result["src"] = pair.value;
+          var path = resolveRelativePathIfRelative(pair.value);
+          result["src"] = path;
           break;
         default:
           result[pair.name] = pair.value;
@@ -95,7 +132,6 @@ export const buildJSXFromHTML = function(htmlString) {
   }
 
   const convertNode = function(node, childs, index) {
-    //console.log(node.nodeName)
     var converted = null;
     switch(node.nodeName) {
       case "#text":
