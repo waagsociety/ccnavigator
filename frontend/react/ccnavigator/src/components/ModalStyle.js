@@ -122,6 +122,9 @@ const Style = StyleSheet.create({
       width: 'calc(50% - 1rem)',
     }
   },
+  boxTitle: {
+    textTransform: 'lowercase'
+  },
   boxLink: {
     display: 'block',
     textDecoration: 'none',
@@ -154,11 +157,13 @@ const Style = StyleSheet.create({
   },
   button: {
     display: 'inline-block',
+    margin: '0 1em 1em 0',
     lineHeight: '1.5em',
     padding: '0.25em 0.5em 0',
     backgroundColor: Constants.colors.turquoise,
     color: '#FFF',
     textDecoration: 'none',
+    textTransform: 'lowercase',
     borderRadius: '2px',
 
     ':hover': {

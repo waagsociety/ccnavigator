@@ -97,6 +97,8 @@ class ToolView extends React.Component {
     //build content view when we have all data
     if(this.state.nodeEntity) {
 
+      console.log(this.state.nodeEntity)
+
       //make header
       var title =  this.state.nodeEntity.attributes.title || "";
       var labels = [];
@@ -130,6 +132,11 @@ class ToolView extends React.Component {
           return this.renderFile(item, meta)
         })
 
+      var links = (this.state.nodeEntity.attributes.field_link || [])
+        .map((item, key) => {
+          return <a className={css(Style.button)} key={key} href={item.uri} target="_blank">{item.title}</a>
+        })
+
 
       // make flag or unflag button ##include later
       // let flagButton = null;
@@ -147,6 +154,7 @@ class ToolView extends React.Component {
           </div>
           <div className={css(Style.column)}>
             {jsx}
+            {links}
             {downloads}
           </div>
         </div>
