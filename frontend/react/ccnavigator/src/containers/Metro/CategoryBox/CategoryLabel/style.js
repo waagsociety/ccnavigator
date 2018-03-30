@@ -14,7 +14,8 @@ export const RawStyle = {
     fontWeight: 'bold',
     userSelect: 'none',
     textDecoration: 'none',
-    pointerEvents: 'auto'
+    pointerEvents: 'auto',
+    WebkitUserDrag: 'none'
   },
   'label': {
     display: 'inline-block',

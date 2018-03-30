@@ -3,6 +3,7 @@ import { css } from 'util/aphrodite-custom.js';
 import { Style } from './style.js';
 import { connect } from 'react-redux';
 import { setZoomLevelHigh} from 'actions'
+import { withRouter } from 'react-router-dom';
 
 class SVGMap extends React.Component {
 
@@ -13,6 +14,7 @@ class SVGMap extends React.Component {
       viewBox: [100, -100, 1100, 950], /* default view box */
       buttonHeld: false,
       dragging: false,
+      didDrag: false,
       mousePressedStamp: 0,
       startX: 0,
       starty: 0
@@ -21,13 +23,50 @@ class SVGMap extends React.Component {
     //console.log("svg map next props a", this.props)
   }
 
-  //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
+  /*
+
+  componentDidMount() {
+    this.update();
+    this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
+  }
+
+  componentDidUnMount() {
+    if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
+  }
+
+  handleLocationChange = (location) => {
+    if(location.pathname !== "/" ) {
+      this.props.history.push("/")
+    }
+  }
+
+  */
+
+
   componentDidMount() {
     if((this.props.width > 900) && (this.props.height > 900)) {
+      //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
       var s = Math.min(this.props.width,this.props.height);
       var z = 900 / s;
       //var z = 200 / s;
       this.zoomWith(z);
+    }
+    //subscribe to location change to be able to block links when dragging
+    this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
+  }
+
+  //
+  componentDidUnMount() {
+    if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
+  }
+
+  //
+  handleLocationChange = (location) => {
+    console.log("location")
+    if(location.pathname !== "/" ) {
+      if(this.state.didDrag) {
+        this.props.history.push("/")
+      }
     }
   }
 
@@ -65,6 +104,7 @@ class SVGMap extends React.Component {
     const state = {
       buttonHeld: true,
       dragging: false,
+      didDrag: false,
       startX,
       startY,
       mousePressedStamp: stamp
@@ -80,13 +120,11 @@ class SVGMap extends React.Component {
       this.animateZoom2();
     }
 
-    
+    //
     //e.preventDefault();
   }
 
   onMouseMove(e) {
-    //console.log("move")
-
     // first check if the state is buttonHeld, if not we can just return, so we do not move unless the user wants to move
     if (!this.state.buttonHeld) {
       return;
@@ -107,7 +145,8 @@ class SVGMap extends React.Component {
   }
 
   onMouseReleased(e) {
-    this.setState({ buttonHeld: false, dragging: false });
+    this.setState({ buttonHeld: false, didDrag: this.state.dragging, dragging: false });
+
   }
 
   /**
@@ -252,5 +291,8 @@ const mapStateToProps = (state, ownProps) => ({
   zoomLevelHigh: state.zoomLevelHigh
 })
 SVGMap = connect(mapStateToProps)(SVGMap, null, null, { withRef: true })
+
+SVGMap = withRouter(SVGMap)
+//export default withRouter(SVGMap);
 
 export default SVGMap;
