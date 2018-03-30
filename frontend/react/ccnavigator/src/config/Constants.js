@@ -51,13 +51,13 @@ export const Constants = {
       color : 'turquoise'
     },
     '4' : {
-      x : 760,
-      y : 200,
+      x : 815,
+      y : 300,
       color : 'turquoise'
     },
     '4-1' : {
-      x : 800,
-      y : 240,
+      x : 680,
+      y : 640,
       color : 'turquoise'
     },
     '4-2' : {

@@ -81,6 +81,11 @@ export const buildJSXFromHTML = function(htmlString) {
   const convertAttributes = function(attributes, mapping) {
     return attributes.reduce((result, pair) => {
       switch(pair.name) {
+        case "cellpadding":
+        case "cellspacing":
+        case "style":
+          
+          
         case "href":
           result["to"] = pair.value;
           break;
@@ -93,33 +98,53 @@ export const buildJSXFromHTML = function(htmlString) {
   }
 
   const convertNode = function(node, childs, index) {
+    console.log(node.nodeName)
     var converted = null;
     switch(node.nodeName) {
       case "#text":
-        converted = node.value
+        if (node.value === 'whitespees') {
+          converted = ''
+        } else { 
+          converted = node.value
+        }
         break;
       case "a":
         var attrs = convertAttributes(node.attrs)
-        attrs["key"] = index;
-        converted = React.createElement(Link, attrs, childs);
+        attrs["key"] = index
+        converted = React.createElement(Link, attrs, childs)
         break;
-      case "li":
-      case "p":
+      case "img":
+        var attrs = convertAttributes(node.attrs)
+        attrs["key"] = index
+        console.log(attrs)
+        converted = React.createElement("img", attrs)
+        break;
+      case "table":
+      case "tr":
+      case "thead":
+      case "tbody":
+      case "th":
+      case "td":
       case "ul":
+      case "li":
+      case "h3":
+      case "p":
+      case "small":
       case "span":
-        converted = React.createElement(node.nodeName, {key:index}, childs);
+        converted = React.createElement(node.nodeName, {key:index}, childs)
         break;
       case "#document-fragment":
         converted = childs
         break;
       default:
-        converted = React.createElement("span", {key:index}, childs);
+        converted = React.createElement("span", {key:index}, childs)
         break;
     }
     return converted;
   }
 
   var ast = parse5.parseFragment(htmlString)
+  console.log(ast);
   var buildJSX = function(node, index) {
     var childs = [];
     if(node.childNodes) {

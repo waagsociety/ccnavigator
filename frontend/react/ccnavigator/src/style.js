@@ -60,6 +60,14 @@ const Style = StyleSheet.create({
         maxWidth: '100%',
         height: 'auto'
       },
+      '*ul': {
+        margin: '1.5em 0',
+        paddingLeft: '1em'
+      },
+      '*li': {
+        lineHeight: '1.5em',
+        listStyleType: 'square'
+      },
       '*button': {
         cursor: 'pointer'
       },
