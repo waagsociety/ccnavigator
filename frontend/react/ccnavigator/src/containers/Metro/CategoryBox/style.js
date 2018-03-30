@@ -2,7 +2,7 @@ import { StyleSheet } from "aphrodite";
 
 export const RawStyle = {
   'category' : {
-    pointerEvents: 'none'
+    pointerEvents: 'none',
   },
   'sub-category' : {
     fontSize: '12px'
@@ -20,6 +20,7 @@ export const RawStyle = {
     alignItems: 'center',
     textDecoration: 'none',
     pointerEvents: 'auto',
+    WebkitUserDrag: 'none'
 
     //':hover': {
     //  color: [Constants.colors.turquoise]
