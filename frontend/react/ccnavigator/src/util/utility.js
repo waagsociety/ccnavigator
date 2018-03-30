@@ -84,8 +84,8 @@ export const buildJSXFromHTML = function(htmlString) {
         case "cellpadding":
         case "cellspacing":
         case "style":
-          
-          
+
+
         case "href":
           result["to"] = pair.value;
           break;
@@ -102,10 +102,9 @@ export const buildJSXFromHTML = function(htmlString) {
     var converted = null;
     switch(node.nodeName) {
       case "#text":
-        if (node.value === 'whitespees') {
-          converted = ''
-        } else { 
-          converted = node.value
+        converted = node.value
+        if (!converted.replace(/\s/g, '').length) {
+          return null;// string only contained whitespace
         }
         break;
       case "a":
