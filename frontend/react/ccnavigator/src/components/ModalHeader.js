@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Label from 'components/Label';
 import { css } from 'util/aphrodite-custom.js';
 import Style from './ModalStyle.js';
-import Back from 'containers/Back';
+import Back from 'containers/Back.js';
 
 
 const ModalHeader = (props) => {

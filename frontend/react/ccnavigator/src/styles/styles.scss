@@ -1,9 +1,15 @@
 
+@import "_resets";
 @import "_variables";
 @import "_fonts";
 @import "_typography";
 @import "_links";
 @import "_forms";
+
+@import "_layout";
+@import "_header";
+@import "_content";
+@import "_toolFilter";
 
 
 html, body, #root {
@@ -33,16 +39,3 @@ td img {
   max-width: 250px;
   max-height: 125px;
 }
-ul {
-  margin: 1.5em 0;
-  padding-left: 1em;
-}
-ul li {
-  line-height: 1.5em;
-  list-style-type: square;
-}
-ol li {
-  line-height: 1.5em;
-}
-
-

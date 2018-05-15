@@ -1,0 +1,48 @@
+// RESETS
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  text-size-adjust: none;
+}
+
+iframe {
+  max-width: 100%;
+  border: none;
+}
+
+figure {
+  margin: 0;
+  max-width: 100%;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  outline: none;
+  border: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:focus {
+  outline: 0;
+}

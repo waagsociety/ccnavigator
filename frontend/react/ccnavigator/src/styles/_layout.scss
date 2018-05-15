@@ -1,0 +1,35 @@
+
+#container-app {
+  display: flex;
+  align-items: stretch;
+  align-content: stretch;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  @media (orientation: portrait) {
+    flex-direction: column;
+  }
+}
+#container-map {
+  flex-grow: 1;
+  overflow: hidden;
+  touch-action: none;
+}
+.panel {
+  position: relative;
+  z-index: 100;
+  flex-grow: 0;
+  background-color: white;
+  padding: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+}
+#panel-header {
+  padding: 0.75rem 1rem;
+}
+#panel-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

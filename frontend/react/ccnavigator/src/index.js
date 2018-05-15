@@ -4,7 +4,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 //custom
 import reducer from './reducers'
-import App from 'containers/App'
+import App from 'containers/App.js'
 import StoreIO from 'client/StoreIO'
 import ApiHelper from 'client/ApiHelper'
 
@@ -19,7 +19,7 @@ const apiHelper = new ApiHelper.instance(store);
 
 render(
   <Provider store={store}>
-      <App/>
+    <App/>
   </Provider>,
   document.getElementById('root')
 );

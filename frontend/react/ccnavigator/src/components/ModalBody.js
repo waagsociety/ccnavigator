@@ -28,7 +28,7 @@ const ModalBody = (props) => {
 
   return (
     <div className={css(Style.modalBody)}>
-      {description}
+      <div className="content">{description}</div>
       <h3>{props.boxesTitle}</h3>
       <div className={css(Style.boxes)}>{boxes}</div>
     </div>

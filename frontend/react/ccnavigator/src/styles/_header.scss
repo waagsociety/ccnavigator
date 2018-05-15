@@ -1,0 +1,60 @@
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+
+  @media (orientation: landscape) {
+    flex-direction: column;
+  }
+  @media (orientation: portrait) {
+    flex-direction: row;
+  }
+}
+
+#site-title {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+
+  @media (orientation: landscape) {
+    font-size: 1.4em;
+  }
+}
+
+#site-subtitle {
+  font-size: 0.9em;
+  line-height: 1.35em;
+  font-weight: 300;
+}
+
+
+#site-navigation {
+  margin-top: 1.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #CCC;
+
+  li {
+    margin-top: 1rem;
+
+    a {
+      position: relative;
+      display: block;
+      text-decoration: none;
+    }
+
+    &:hover a,
+    &.current a {
+      color: $color-turquoise;
+    }
+
+    &.current a:after {
+      content: "";
+      font-family: "FontAwesome";
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
