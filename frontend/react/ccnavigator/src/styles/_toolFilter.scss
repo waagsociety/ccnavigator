@@ -1,8 +1,21 @@
+.tool-filter {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 
 .tool-filter-options {
 
   li {
+    @include label($color-background, $color-text);
     display: inline-block;
+    margin: 0.2em 0.4em 0.2em 0;
+
+    &:hover,
+    &.selected {
+      background-color: $color-turquoise;
+      color: #FFF;
+    }
   }
 
 

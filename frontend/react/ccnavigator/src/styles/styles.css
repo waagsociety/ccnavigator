@@ -2264,8 +2264,25 @@ button {
 .content ol li {
   line-height: 1.5em; }
 
+.tool-filter {
+  margin-top: 1rem;
+  margin-bottom: 1rem; }
+
 .tool-filter-options li {
-  display: inline-block; }
+  background: #F2F2F2;
+  color: #000;
+  padding: 0.25em 0.75em 0;
+  border-radius: 1em;
+  font-size: 0.65em;
+  line-height: 1.8em;
+  user-select: none;
+  text-decoration: none;
+  pointer-events: auto;
+  display: inline-block;
+  margin: 0.2em 0.4em 0.2em 0; }
+  .tool-filter-options li:hover, .tool-filter-options li.selected {
+    background-color: #2FB6BC;
+    color: #FFF; }
 
 html, body, #root {
   width: 100%;

@@ -4,3 +4,15 @@ $color-red: #DA0812;
 $color-turquoise: #2FB6BC;
 $color-yellow: #F6A500;
 $color-purple: #522E90;
+
+@mixin label($background-color, $color) {
+  background: $background-color;
+  color: $color;
+  padding: 0.25em 0.75em 0;
+  border-radius: 1em;
+  font-size: 0.65em;
+  line-height: 1.8em;
+  user-select: none;
+  text-decoration: none;
+  pointer-events: auto;
+}
