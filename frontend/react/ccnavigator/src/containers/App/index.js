@@ -13,6 +13,7 @@ import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import { css } from 'util/aphrodite-custom.js';
 import Style from './style.js';
+import 'styles/styles.css'
 import {
   BrowserRouter as Router,
   Route,

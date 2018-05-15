@@ -28,6 +28,7 @@ export const RawStyle = {
     display: 'inline-block',
     marginLeft: '0.5em',
     borderRadius: '1em 0 0 1em',
+    fontWeight: '500'
   }
 };
 

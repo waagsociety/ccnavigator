@@ -1,0 +1,122 @@
+@font-face {
+  font-family: "Maax";
+  font-weight: 400;
+  font-style: normal;
+  src: url(/fonts/maax/maax-400.eot);
+  src: url(/fonts/maax/maax-400.eot#iefix) format("embedded-opentype"), url(/fonts/maax/maax-400.otf) format("opentype"), url(/fonts/maax/maax-400.woff) format("woff"); }
+
+@font-face {
+  font-family: "Maax";
+  font-weight: 400;
+  font-style: italic;
+  src: url(/fonts/maax/maax-400-italic.eot);
+  src: url(/fonts/maax/maax-400-italic.eot#iefix) format("embedded-opentype"), url(/fonts/maax/maax-400-italic.otf) format("opentype"), url(/fonts/maax/maax-400-italic.woff) format("woff"); }
+
+@font-face {
+  font-family: "Maax";
+  font-weight: 500;
+  font-style: normal;
+  src: url(/fonts/maax/maax-500.eot);
+  src: url(/fonts/maax/maax-500.eot#iefix) format("embedded-opentype"), url(/fonts/maax/maax-500.otf) format("opentype"), url(/fonts/maax/maax-500.woff) format("woff"); }
+
+body {
+  margin: 0;
+  background-color: #F2F2F2;
+  font-family: "Maax", sans-serif;
+  font-size: 16px; }
+  @media (min-width: 600px) {
+    body {
+      font-size: 18px; } }
+
+em {
+  font-style: italic; }
+
+strong, th {
+  font-weight: 500; }
+
+h1, h2, h3, h4, h5 {
+  font-size: 1em;
+  font-weight: 500;
+  margin: 0; }
+
+h1, h2 {
+  line-height: 1.25em; }
+
+h3, h4 {
+  line-height: 1.5em; }
+
+p {
+  margin: 0 0 1.5em;
+  line-height: 1.5em; }
+  p :last-child {
+    margin-bottom: 0; }
+
+:focus {
+  outline: 0; }
+
+::selection {
+  background: #000;
+  color: #FFF; }
+
+a {
+  box-sizing: border-box;
+  color: #000;
+  transition: color 100ms ease;
+  user-select: none; }
+
+button {
+  cursor: pointer; }
+
+input {
+  font-family: "Maax", sans-serif;
+  background-color: #F2F2F2;
+  border: none;
+  border-bottom: 2px solid #F2F2F2;
+  margin-bottom: 0.5rem;
+  padding: 0.8em 0.8em 0.6em;
+  transition: all 200ms ease; }
+  input :focus {
+    border-bottom-color: #F2F2F2; }
+
+button {
+  background-color: #2FB6BC;
+  color: #FFF;
+  padding: 0.8em 0.8em 0.6em;
+  border: none;
+  text-transform: uppercase; }
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  position: fixed; }
+
+div {
+  box-sizing: border-box; }
+
+img {
+  max-width: 100%;
+  height: auto; }
+
+table {
+  width: 100%; }
+
+tr {
+  display: flex;
+  justify-content: space-around; }
+
+td img {
+  width: auto;
+  height: auto;
+  max-width: 250px;
+  max-height: 125px; }
+
+ul {
+  margin: 1.5em 0;
+  padding-left: 1em; }
+
+ul li {
+  line-height: 1.5em;
+  list-style-type: square; }
+
+ol li {
+  line-height: 1.5em; }

@@ -1,0 +1,10 @@
+a {
+  box-sizing: border-box;
+  color: $color-text;
+  transition: color 100ms ease;
+  user-select: none;
+}
+
+button {
+  cursor: pointer;
+}

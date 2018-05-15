@@ -48,7 +48,7 @@ class SVGMap extends React.Component {
       //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
       var s = Math.min(this.props.width,this.props.height)
       var z = 900 / s
-      console.log(z)
+      //console.log(z)
       this.zoomWith(z)
     }
     //subscribe to location change to be able to block links when dragging
@@ -71,7 +71,7 @@ class SVGMap extends React.Component {
   }
 
   componentDidUpdate() {
-    var zoomLevel = (this.state.viewBox[2] / 1100) * (this.state.viewBox[2] / this.props.width)
+    //var zoomLevel = (this.state.viewBox[2] / 1100) * (this.state.viewBox[2] / this.props.width)
     //var zoomIsHigh = (zoomLevel < 0.7)
     var zoomIsHigh = true
     if(zoomIsHigh !== this.props.zoomLevelHigh) {

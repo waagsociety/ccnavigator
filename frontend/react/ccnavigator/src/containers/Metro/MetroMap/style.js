@@ -3,9 +3,8 @@ import { Constants } from 'config/Constants.js';
 
 export const RawStyle = {
   'mapText': {
-    fontFamily: [Constants.fonts.defaultBold],
     fontSize: '20px',
-    fontWeight: '700',
+    fontWeight: '500',
     userSelect: 'none'
   },
   'line': {
