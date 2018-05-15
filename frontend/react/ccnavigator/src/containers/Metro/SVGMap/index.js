@@ -72,7 +72,8 @@ class SVGMap extends React.Component {
 
   componentDidUpdate() {
     var zoomLevel = (this.state.viewBox[2] / 1100) * (this.state.viewBox[2] / this.props.width)
-    var zoomIsHigh = (zoomLevel < 0.7)
+    //var zoomIsHigh = (zoomLevel < 0.7)
+    var zoomIsHigh = true
     if(zoomIsHigh !== this.props.zoomLevelHigh) {
       this.props.dispatch(setZoomLevelHigh(zoomIsHigh))
     }

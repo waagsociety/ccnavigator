@@ -31,6 +31,14 @@ export const RawStyle = {
       transition: 'all 0ms ease',
     }
   },
+  'category-subtitle': {
+    fontSize: '0.8em',
+    lineHeight: '1.2em',
+    textTransform: 'lowercase',
+    marginBottom: '0',
+    //whiteSpace: 'nowrap',
+
+  },
   'category-themes': {
     display: 'flex',
     flexWrap: 'wrap'
