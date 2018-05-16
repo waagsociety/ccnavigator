@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 // import Login from "containers/Login"
 // import Logout from "containers/Logout"
 // import LanguageSelector from "containers/LanguageSelector"
-import ToolFilter from "containers/ToolFilter"
+import ToolFilter from "containers/ToolFilters"
 
 class Footer extends React.Component {
 

@@ -1,11 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { css } from 'util/aphrodite-custom.js'
-//own imports
-import Label from 'components/Label'
-import { Style } from './style.js'
 import { Link } from 'react-router-dom'
-
+import Label from 'components/Label'
 
 class CategoryLabel extends React.Component {
 
@@ -44,8 +40,8 @@ class CategoryLabel extends React.Component {
     //<span className={css(Style["toolCount"])}>{this.props.entity.nodes.length}</span>
 
     return (
-      <Link className={css(Style["theme"])} to={`/theme/${this.props.entity.id}`}>
-        <span className={css(Style["label"])}>{displayName}</span>
+      <Link className="theme-label" to={`/theme/${this.props.entity.id}`}>
+        <span className="theme-label-text">{displayName}</span>
         <Label value={this.props.entity.nodes.length} color={this.props.color} size={'1em'} />
       </Link>
     );

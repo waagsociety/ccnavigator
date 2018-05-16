@@ -3,7 +3,7 @@ import ApiHelper from 'client/ApiHelper'
 import { connect } from 'react-redux'
 import SVGMap from "./SVGMap"
 import MetroMap from "./MetroMap"
-import CategoryBox from "./CategoryBox"
+import CategoryBox from "./Zone.js"
 import sizeMe from 'react-sizeme'
 
 class Metro extends React.Component {

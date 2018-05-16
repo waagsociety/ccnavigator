@@ -1,0 +1,62 @@
+
+.zone {
+  pointer-events: none;
+}
+
+.sub-zone {
+  font-size: 12px;
+}
+
+.zone-title {
+  font-size: 1.778em;
+  line-height: 1.2em;
+  text-transform: lowercase;
+  margin-bottom: 0;
+  white-space: nowrap;
+
+}
+
+.zone-title-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  pointer-events: auto;
+  -webkit-user-drag: none;
+  transition: all 75ms ease;
+
+  &:hover {
+    margin-top: 0.05rem;
+    margin-bottom: -0.05rem;
+    transition: all 0ms ease;
+  }
+}
+
+
+.themes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.theme-label {
+  @include label(#FFF, #000);
+
+  font-size: 0.556em;
+  margin-top: 0.3rem;
+  margin-right: 0.25rem;
+  -webkit-user-drag: none;
+
+  &:hover {
+    // margin-top: 0.35rem;
+    // margin-bottom: -0.05rem;
+    //background-color: $color-background;
+    transition: all 0ms ease;
+  }
+
+  .theme-label-text {
+    display: inline-block;
+    margin-left: 0.5em;
+    border-radius: 1em 0 0 1em;
+    font-weight: 500;
+  }
+}

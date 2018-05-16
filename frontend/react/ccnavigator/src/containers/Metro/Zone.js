@@ -1,12 +1,9 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js';
-//own imports
-import Label from 'components/Label';
-import { Style } from './style.js';
-//import { groupBy} from "util/utility.js"
-import CategoryLabel from "./CategoryLabel"
 import { Link } from 'react-router-dom'
 import { Constants } from 'config/Constants.js';
+//import { groupBy} from "util/utility.js"
+import Label from 'components/Label';
+import CategoryLabel from "./Theme.js"
 
 
 class CategoryBox extends React.Component {
@@ -34,30 +31,32 @@ class CategoryBox extends React.Component {
       termThemes = (termEntity.children || []).map((subTerm, index) => {
         return <CategoryLabel key={subTerm.id} entity={subTerm} color={categoryColor} />
       })
-      termThemes = <div className={css(Style['category-themes'])}>{termThemes}</div>
+      termThemes = <div className="themes">{termThemes}</div>
     }
 
 
     // set category classes
-    var categoryClass = [Style['category']]
-
+    var zoneClass = 'zone'
     if (path.length > 1) {
-      categoryClass.push(Style['sub-category'])
+      zoneClass += ' sub-zone'
+    }
+
+    var categoryWidth = 250
+    if(path.length > 1){
+      categoryWidth = 170
     }
 
     //return category box
-    //<h5 className={css(Style["category-subtitle"])}>{termEntity.attributes.field_subtitle}</h5>
     return (
-      <foreignObject className={css(categoryClass)} width="250" height="125" x={Constants.zones[path].x} y={Constants.zones[path].y} transform={`rotate(-45 ${Constants.zones[path].x},${Constants.zones[path].y})`}>
-        <Link to={`/zone/${this.props.entity.id}`} className={css(Style["category-title-link"])}>
-          <h3 className={css(Style["category-title"])}>
+      <foreignObject className={zoneClass} width={categoryWidth} height="130" x={Constants.zones[path].x} y={Constants.zones[path].y} transform={`rotate(-45 ${Constants.zones[path].x},${Constants.zones[path].y})`}>
+        <Link to={`/zone/${this.props.entity.id}`} className="zone-title-link">
+          <h3 className="zone-title">
             {path.length === 1 &&
               <Label value={path} size={'0.6em'}/>
             }
             <span>{termEntity.attributes.name}</span>
           </h3>
         </Link>
-        
         {termThemes}
        </foreignObject>
     )

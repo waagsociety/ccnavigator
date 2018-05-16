@@ -43,6 +43,10 @@ table {
   box-sizing: border-box;
 }
 
+.no-select {
+  user-select: none;
+}
+
 :focus {
   outline: 0;
 }
