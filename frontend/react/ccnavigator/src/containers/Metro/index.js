@@ -2,7 +2,7 @@ import React from 'react';
 import ApiHelper from 'client/ApiHelper'
 import { connect } from 'react-redux'
 import SVGMap from "./SVGMap.js"
-import MetroMap from "./MetroMap"
+import MetroMap from "./MetroMap.js"
 import CategoryBox from "./Zone.js"
 import sizeMe from 'react-sizeme'
 

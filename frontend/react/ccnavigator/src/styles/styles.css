@@ -2487,6 +2487,62 @@ button {
     .svg-map-zoom-buttons button:hover {
       color: #000; }
 
+.station {
+  fill: #FFF;
+  stroke: #000;
+  stroke-width: 3px; }
+
+.river {
+  stroke: none;
+  fill: #BBD5EA; }
+
+.area {
+  fill: #F2F2F2;
+  stroke: none; }
+
+.wide-area {
+  fill: #E5E5E5;
+  stroke: none; }
+
+.inner-area {
+  fill: #DBDBDB;
+  stroke: none; }
+
+.central-area {
+  fill: #CCC;
+  stroke: none; }
+
+.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 6px; }
+
+.main-line {
+  stroke: #27BDBE; }
+
+.sub-line-e-0 {
+  stroke: #FAA619; }
+
+.sub-line-e-1 {
+  stroke: #522E90; }
+
+.sub-line-e-2 {
+  stroke: #F00; }
+
+.sub-line-w-0 {
+  stroke: #27BDBE; }
+
+.sub-line-w-1 {
+  stroke: #FF1B22; }
+
+.sub-line-w-2 {
+  stroke: #00F; }
+
+.map-text {
+  font-size: 20px;
+  font-weight: 500;
+  user-select: none; }
+
 .zone {
   pointer-events: none; }
 
