@@ -144,14 +144,35 @@ class Tool extends React.Component {
 
       //body part
       var description = (
-        <div className="columns">
-          <div className="column">
-            {images}
+        <div>
+          <div className="tool-metas">
+            <div className="tool-meta">
+              <span className="tool-meta-name">group size:</span>
+              <span className="tool-meta-value">0-5</span>
+            </div>
+            <div className="tool-meta">
+              <span className="tool-meta-name">duration:</span>
+              <span className="tool-meta-value">30-120 min</span>
+            </div>
+            <div className="tool-meta">
+              <span className="tool-meta-name">facilitator / participant:</span>
+              <span className="tool-meta-value">1/5</span>
+            </div>
+            <div className="tool-meta">
+              <span className="tool-meta-name">experience level facilitator:</span>
+              <span className="tool-meta-value">2</span>
+            </div>
+
           </div>
-          <div className="column">
-            {jsx}
-            {links}
-            {downloads}
+          <div className="columns">
+            <div className="column">
+              {images}
+            </div>
+            <div className="column">
+              {jsx}
+              {links}
+              {downloads}
+            </div>
           </div>
         </div>
       )

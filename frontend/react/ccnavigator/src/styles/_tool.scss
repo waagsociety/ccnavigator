@@ -1,0 +1,19 @@
+.tool-metas {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  font-size: 0.9rem;
+}
+
+.tool-meta-name {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 0.5em;
+  margin-bottom: 0.25em;
+}
+
+.tool-meta-value {
+  @include label($color-turquoise, #FFF);
+  font-size: 0.8em;
+}

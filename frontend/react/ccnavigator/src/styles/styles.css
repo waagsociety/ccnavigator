@@ -2600,6 +2600,7 @@ button {
   user-select: none;
   text-decoration: none;
   pointer-events: auto;
+  white-space: nowrap;
   transition: all 75ms ease;
   font-size: 0.556em;
   margin-top: 0.3rem;
@@ -2612,6 +2613,33 @@ button {
     margin-left: 0.5em;
     border-radius: 1em 0 0 1em;
     font-weight: 500; }
+
+.tool-metas {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  font-size: 0.9rem; }
+
+.tool-meta-name {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 0.5em;
+  margin-bottom: 0.25em; }
+
+.tool-meta-value {
+  background: #2FB6BC;
+  color: #FFF;
+  padding: 0.25em 0.75em 0;
+  border-radius: 1em;
+  font-size: 0.65em;
+  line-height: 1.8em;
+  user-select: none;
+  text-decoration: none;
+  pointer-events: auto;
+  white-space: nowrap;
+  transition: all 75ms ease;
+  font-size: 0.8em; }
 
 .tool-filter {
   margin-top: 1rem;
@@ -2627,6 +2655,7 @@ button {
   user-select: none;
   text-decoration: none;
   pointer-events: auto;
+  white-space: nowrap;
   transition: all 75ms ease;
   display: inline-block;
   margin: 0.2em 0.4em 0.2em 0; }
