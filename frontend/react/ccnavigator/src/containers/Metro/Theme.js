@@ -37,7 +37,7 @@ class CategoryLabel extends React.Component {
 
     //onMouseEnter={this.onLabelMouseEnter.bind(this)}
     //onMouseLeave={this.onLabelMouseLeave.bind(this)}
-    //<span className={css(Style["toolCount"])}>{this.props.entity.nodes.length}</span>
+    //<span className="tool-count">{this.props.entity.nodes.length}</span>
 
     return (
       <Link className="theme-label" to={`/theme/${this.props.entity.id}`}>

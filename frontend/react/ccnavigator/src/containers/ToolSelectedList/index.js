@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import ToolSelectedListItem from "./ToolSelectedListItem"
+import ToolSelectedListItem from "./ToolSelectedListItem.js"
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
 

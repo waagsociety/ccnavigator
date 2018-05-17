@@ -12,3 +12,22 @@
     cursor: pointer;
   }
 }
+
+.button-back {
+  font-family: "FontAwesome";
+  position: absolute;
+  left: 0rem;
+  top: -1.5rem;
+  width: 1.5em;
+  text-align: center;
+  color: #FFF;
+  font-size: 1.15rem;
+  line-height: 1.15rem;
+  user-select: none;
+  cursor: pointer;
+  transition: all 100ms ease;
+
+  &:hover {
+    transform: translateX(-2px);
+  }
+}

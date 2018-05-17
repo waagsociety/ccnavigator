@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactModal from 'react-modal'
-import { css } from 'util/aphrodite-custom.js'
-import Style from './ModalStyle.js'
-
 
 
 ReactModal.setAppElement('body');
-
 
 const Modal = (props) =>
 
@@ -14,10 +10,9 @@ const Modal = (props) =>
     isOpen={props.isOpen}
     onAfterOpen={() => {}}
     onRequestClose={props.onRequestClose}
-    //onRequestClose={() => {}}
     closeTimeoutMS={0}
-    className={css(Style.modalContent)}
-    overlayClassName={css(Style.modalOverlay)}
+    className="modal-content"
+    overlayClassName="modal-overlay"
     contentLabel="..."
     ariaHideApp={true}
     shouldFocusAfterRender={true}
@@ -26,10 +21,7 @@ const Modal = (props) =>
     shouldReturnFocusAfterClose={true}
     role="dialog"
     parentSelector={() => document.body}
-    aria={{
-      labelledby: "heading",
-      describedby: "full_description"
-    }}
+    aria={{ labelledby: "heading",describedby: "full_description" }}
   >
     {props.children}
   </ReactModal>

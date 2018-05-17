@@ -1,0 +1,113 @@
+
+.modal-loading {
+  color: #FFF;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.8);
+  overflow: auto;
+  text-align: center;
+  z-index: 200;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  @media (orientation: landscape) {
+    left: 15rem;
+  }
+}
+
+.modal-content {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: 55rem;
+  max-width: 100%;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+
+.modal-header {
+  position: relative;
+  background: #FFF;
+  padding: 1.25rem;
+  border-top: 2rem solid $color-turquoise;
+
+  @media (orientation: landscape) {
+    padding: 2rem;
+  }
+
+  .button-close {
+    position: absolute;
+    right: 0.5rem;
+    top: -1.5rem;
+    text-decoration: none;
+    color: #FFF;
+    font-size: 1.5rem;
+    line-height: 1.25rem;
+    user-select: none;
+    transition: all 100ms ease;
+  
+    &:hover {
+      transform: scale(1.25);
+    }
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    font-size: 35px;
+    margin: 0 0 1rem 0;
+    text-transform: lowercase;
+
+    @media (max-width: 600px) {
+      flexDirection: column
+    }
+    .labels {
+      margin-right: 0.75rem;
+    }
+    .label {
+      $label-height: 20px;
+
+      margin: 0 0.5rem 3px 0;
+      padding: 3px 10px 0;
+      border-radius: $label-height / 2;
+      font-size: 13px;
+      line-height: $label-height - 3;
+  
+      &:last-child {
+        margin-right: 0
+      }
+    }
+  }
+  .subtitle {
+    font-size: 23px;
+    font-weight: 400;
+  }
+}
+
+.modal-body {
+  background: $color-background;
+  min-height: 20rem;
+  padding: 1.25rem;
+
+  @media (orientation: landscape) {
+    padding: 2rem;
+  }
+}
+
+.description {
+  margin-bottom: 3em;
+}

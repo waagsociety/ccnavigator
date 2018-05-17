@@ -7,7 +7,6 @@ import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import Loading from 'components/Loading'
 import Label from 'components/Label'
-import { StyleSheet, css } from 'util/aphrodite-custom.js'
 import { Constants } from 'config/Constants.js'
 
 
@@ -84,7 +83,7 @@ class Zone extends React.Component {
             //   themeTools = term.nodes.map((node) => {
             //     var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
             //     return (
-            //       <span key={node.id} className={css(Style.tool)} style={{backgroundColor: categoryColor}}>
+            //       <span key={node.id} className="zone-tool" style={{backgroundColor: categoryColor}}>
             //         {fullNode.attributes.title}
             //       </span>
             //     )
@@ -93,9 +92,9 @@ class Zone extends React.Component {
             //   themeTools = 'no tools yet...' // todo: make translatable
             // }
     
-            //list the tools in this subcategory
+            //list the tools in this theme
             var content = (
-              <div className={css(Style.theme)}>
+              <div className="zone-theme">
                 <p>{term.attributes.field_subtitle}</p>
                 <div><Label value={`${term.nodes.length} tools`} size={'0.7em'} color={categoryColor} /></div>
               </div>
@@ -129,27 +128,5 @@ class Zone extends React.Component {
   }
 
 }
-
-
-const Style = StyleSheet.create({
-  theme: {
-    flexGrow: '1',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  tool: {
-    display: 'inline-block',
-    margin: '0.5em 0.5em 0 0',
-    textTransform: 'lowercase',
-    backgroundColor: Constants.colors.turquoise,
-    color: '#FFF',
-    fontSize: '0.8rem',
-    lineHeight: '1.5em',
-    borderRadius: '0.75em',
-    padding: '0 0.5em'
-  }
-
-});
 
 export default Zone;

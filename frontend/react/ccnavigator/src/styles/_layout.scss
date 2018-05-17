@@ -1,4 +1,5 @@
 
+// APP
 #container-app {
   display: flex;
   align-items: stretch;
@@ -32,4 +33,59 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+// COLUMNS
+.columns {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 0 -1rem;
+
+  @media (max-width: 640px) {
+    margin: 0;
+    flex-direction: column
+  }
+
+  .column {
+    margin: 0 1rem;
+    width: calc(50% - 2rem);
+
+    @media (max-width: 640px) {
+      margin: 0 0 2rem;
+      width: 100%;
+    }
+  }
+}
+
+// BOXES
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.5rem;
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+    padding: 1rem;
+    background-color: #fff;
+
+    @media (orientation: landscape) {
+      width: calc(50% - 1rem);
+    }
+  }
+
+  a.box {
+    text-decoration: none;
+
+    &:hover {
+      box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+    }
+  }
+
+  .box-title {
+    font-size: 1.15em;
+    text-transform: lowercase;
+  }
 }

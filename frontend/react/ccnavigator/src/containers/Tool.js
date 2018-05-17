@@ -1,5 +1,4 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
@@ -8,7 +7,6 @@ import Modal from "components/Modal.js"
 import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import Loading from 'components/Loading'
-import Style from 'components/ModalStyle.js'
 import { buildJSXFromHTML} from "util/utility"
 
 
@@ -71,12 +69,12 @@ class Tool extends React.Component {
       case "image/jpeg":
         filename = (item.attributes || {}).filename;
         url = (item.attributes || {}).url;
-        return <img key={item.id} className={css(Style.image)} src={ApiClient.instance().getFullURL(url)} alt={filename} />
+        return <img key={item.id} src={ApiClient.instance().getFullURL(url)} alt={filename} />
       case "application/pdf":
         filename = (item.attributes || {}).filename;
         url = (item.attributes || {}).url;
         var label = (meta.description) ? meta.description : 'download';
-        return <a className={css(Style.button)} key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank">{label}</a>
+        return <a className="button" key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank">{label}</a>
       default:
         console.log("entity mime not supported:", mime);
         break;
@@ -132,7 +130,7 @@ class Tool extends React.Component {
 
       var links = (this.state.nodeEntity.attributes.field_link || [])
         .map((item, key) => {
-          return <a className={css(Style.button)} key={key} href={item.uri} target="_blank">{item.title}</a>
+          return <a className="button" key={key} href={item.uri} target="_blank">{item.title}</a>
         })
 
 
@@ -146,11 +144,11 @@ class Tool extends React.Component {
 
       //body part
       var description = (
-        <div className={css(Style.columns)}>
-          <div className={css(Style.column)}>
+        <div className="columns">
+          <div className="column">
             {images}
           </div>
-          <div className={css(Style.column)}>
+          <div className="column">
             {jsx}
             {links}
             {downloads}

@@ -1,22 +1,12 @@
 import React from 'react'
-import { StyleSheet, css } from 'util/aphrodite-custom.js'
-
 
 const Loading = (props) => {
 
   return (
-    <div className={css(Style.loading)}>
+    <div className="modal-loading">
       Loading...
     </div>
   )
 }
-
-const Style = StyleSheet.create({
-  loading: {
-    color: '#FFF',
-    textAlign: 'center',
-  }
-});
-
 
 export default Loading

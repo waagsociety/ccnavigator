@@ -1,6 +1,4 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js';
-import { Style } from './style.js';
 import { connect } from 'react-redux';
 import { setZoomLevelHigh} from 'actions'
 import { withRouter } from 'react-router-dom';
@@ -221,13 +219,13 @@ class SVGMap extends React.Component {
             ref={(elem) => { this.svgElement = elem }}
             cnt = {this.state.animate}
             viewBox = {this.state.viewBox.join(" ")}
-            className={css(Style.svg)}
+            className="svg-map"
         >
           {this.props.children}
         </svg>
-        <div className={css(Style.buttons)}>
-          <button className={css(Style.button)} onClick={this.onZoomIn.bind(this)}> {"+"} </button>
-          <button className={css(Style.button)} onClick={this.onZoomOut.bind(this)}> {"-"} </button>
+        <div className="svg-map-zoom-buttons">
+          <button onClick={this.onZoomIn.bind(this)}> {"+"} </button>
+          <button onClick={this.onZoomOut.bind(this)}> {"-"} </button>
         </div>
       </div>
     );

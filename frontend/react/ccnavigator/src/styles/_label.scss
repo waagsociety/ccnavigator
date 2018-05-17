@@ -1,0 +1,33 @@
+.label {
+  display: inline-block;
+  margin: 0.25em 0;
+  background-color: black;
+  border-radius: 0.75em;
+  color: white;
+  font-size: 0.35em;
+  height: 1.5em;
+  line-height: 1.75em;
+  text-transform: uppercase;
+  font-weight: 400;
+  white-space: nowrap;
+  box-sizing: border-box;
+  vertical-align: middle;
+
+  &:first-child {
+    margin-right: 0.5em;
+  }
+  &:last-child {
+    margin-left: 0.5em;
+  }
+  &:first-child:last-child {
+    margin-left: 0em;
+    margin-right: 0em;
+  }
+}
+.label-circle {
+  width: 1.5em;
+  text-align: center;
+}
+.label-bar {
+  padding: 0 0.65em;
+}

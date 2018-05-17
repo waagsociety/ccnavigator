@@ -3,8 +3,26 @@ a {
   color: $color-text;
   transition: color 100ms ease;
   user-select: none;
+  cursor: pointer;
+
+  &.button {
+    display: inline-block;
+    margin: 0 1em 1em 0;
+    line-height: 1.5em;
+    padding: 0.25em 0.5em 0;
+    background-color: $color-turquoise;
+    color: #FFF;
+    text-decoration: none;
+    text-transform: lowercase;
+    border-radius: 2px;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
 }
 
 button {
   cursor: pointer;
+  user-select: none;
 }

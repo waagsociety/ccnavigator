@@ -2150,10 +2150,24 @@ a {
   box-sizing: border-box;
   color: #000;
   transition: color 100ms ease;
-  user-select: none; }
+  user-select: none;
+  cursor: pointer; }
+  a.button {
+    display: inline-block;
+    margin: 0 1em 1em 0;
+    line-height: 1.5em;
+    padding: 0.25em 0.5em 0;
+    background-color: #2FB6BC;
+    color: #FFF;
+    text-decoration: none;
+    text-transform: lowercase;
+    border-radius: 2px; }
+    a.button:hover {
+      opacity: 0.85; }
 
 button {
-  cursor: pointer; }
+  cursor: pointer;
+  user-select: none; }
 
 input {
   font-family: "Maax", sans-serif;
@@ -2179,6 +2193,122 @@ button {
   max-width: 14rem;
   margin-top: 2rem; }
 
+.modal-loading {
+  color: #FFF;
+  text-align: center; }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  overflow: auto;
+  text-align: center;
+  z-index: 200; }
+  .modal-overlay:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle; }
+  @media (orientation: landscape) {
+    .modal-overlay {
+      left: 15rem; } }
+
+.modal-content {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: 55rem;
+  max-width: 100%;
+  padding: 0.75rem;
+  text-align: left; }
+
+.modal-header {
+  position: relative;
+  background: #FFF;
+  padding: 1.25rem;
+  border-top: 2rem solid #2FB6BC; }
+  @media (orientation: landscape) {
+    .modal-header {
+      padding: 2rem; } }
+  .modal-header .button-close {
+    position: absolute;
+    right: 0.5rem;
+    top: -1.5rem;
+    text-decoration: none;
+    color: #FFF;
+    font-size: 1.5rem;
+    line-height: 1.25rem;
+    user-select: none;
+    transition: all 100ms ease; }
+    .modal-header .button-close:hover {
+      transform: scale(1.25); }
+  .modal-header .title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    font-size: 35px;
+    margin: 0 0 1rem 0;
+    text-transform: lowercase; }
+    @media (max-width: 600px) {
+      .modal-header .title {
+        flexDirection: column; } }
+    .modal-header .title .labels {
+      margin-right: 0.75rem; }
+    .modal-header .title .label {
+      margin: 0 0.5rem 3px 0;
+      padding: 3px 10px 0;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 17px; }
+      .modal-header .title .label:last-child {
+        margin-right: 0; }
+  .modal-header .subtitle {
+    font-size: 23px;
+    font-weight: 400; }
+
+.modal-body {
+  background: #F2F2F2;
+  min-height: 20rem;
+  padding: 1.25rem; }
+  @media (orientation: landscape) {
+    .modal-body {
+      padding: 2rem; } }
+
+.description {
+  margin-bottom: 3em; }
+
+.label {
+  display: inline-block;
+  margin: 0.25em 0;
+  background-color: black;
+  border-radius: 0.75em;
+  color: white;
+  font-size: 0.35em;
+  height: 1.5em;
+  line-height: 1.75em;
+  text-transform: uppercase;
+  font-weight: 400;
+  white-space: nowrap;
+  box-sizing: border-box;
+  vertical-align: middle; }
+  .label:first-child {
+    margin-right: 0.5em; }
+  .label:last-child {
+    margin-left: 0.5em; }
+  .label:first-child:last-child {
+    margin-left: 0em;
+    margin-right: 0em; }
+
+.label-circle {
+  width: 1.5em;
+  text-align: center; }
+
+.label-bar {
+  padding: 0 0.65em; }
+
 .toggle {
   position: relative;
   padding-right: 1.25em; }
@@ -2189,6 +2319,22 @@ button {
     top: 0;
     right: 0;
     cursor: pointer; }
+
+.button-back {
+  font-family: "FontAwesome";
+  position: absolute;
+  left: 0rem;
+  top: -1.5rem;
+  width: 1.5em;
+  text-align: center;
+  color: #FFF;
+  font-size: 1.15rem;
+  line-height: 1.15rem;
+  user-select: none;
+  cursor: pointer;
+  transition: all 100ms ease; }
+  .button-back:hover {
+    transform: translateX(-2px); }
 
 #container-app {
   display: flex;
@@ -2222,6 +2368,44 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-between; }
+
+.columns {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 0 -1rem; }
+  @media (max-width: 640px) {
+    .columns {
+      margin: 0;
+      flex-direction: column; } }
+  .columns .column {
+    margin: 0 1rem;
+    width: calc(50% - 2rem); }
+    @media (max-width: 640px) {
+      .columns .column {
+        margin: 0 0 2rem;
+        width: 100%; } }
+
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.5rem; }
+  .boxes .box {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+    padding: 1rem;
+    background-color: #fff; }
+    @media (orientation: landscape) {
+      .boxes .box {
+        width: calc(50% - 1rem); } }
+  .boxes a.box {
+    text-decoration: none; }
+    .boxes a.box:hover {
+      box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.1); }
+  .boxes .box-title {
+    font-size: 1.15em;
+    text-transform: lowercase; }
 
 .header-container {
   display: flex;
@@ -2278,6 +2462,31 @@ button {
 .content ol li {
   line-height: 1.5em; }
 
+.svg-map {
+  position: absolute;
+  background-color: #BBD5EA;
+  user-select: none; }
+
+.svg-map-zoom-buttons {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  display: flex;
+  flex-direction: column; }
+  .svg-map-zoom-buttons button {
+    margin-bottom: 0.75rem;
+    padding: 0;
+    font-size: 1.25rem;
+    width: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    color: #444;
+    background-color: white;
+    border: none;
+    box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1); }
+    .svg-map-zoom-buttons button:hover {
+      color: #000; }
+
 .zone {
   pointer-events: none; }
 
@@ -2303,6 +2512,23 @@ button {
     margin-top: 0.05rem;
     margin-bottom: -0.05rem;
     transition: all 0ms ease; }
+
+.zone-theme {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; }
+
+.zone-tool {
+  display: inline-block;
+  margin: 0.5em 0.5em 0 0;
+  text-transform: lowercase;
+  background-color: #2FB6BC;
+  color: #FFF;
+  font-size: 0.8rem;
+  line-height: 1.5em;
+  border-radius: 0.75em;
+  padding: 0 0.5em; }
 
 .themes {
   display: flex;
