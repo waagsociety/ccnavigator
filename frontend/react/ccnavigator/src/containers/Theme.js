@@ -37,7 +37,10 @@ class Theme extends React.Component {
       this.setState({termEntity: termEntity});
     }.bind(this));
     //full info on all nodes that have this term
-    ApiClient.instance().fetchContent("node--tool", {"field_category.uuid" : entityId}, null, null, 0, function(nodeEntities) {
+    var filter = {};
+    filter["field_category.uuid"] = entityId;
+    filter["field_group_size.uuid"] = "1dce75e9-929d-4071-a91e-a5d6db08d2f5";
+    ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
       //console.log("node entities", nodeEntities);
       this.setState({nodeEntities: nodeEntities});
     }.bind(this));

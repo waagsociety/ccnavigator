@@ -91,12 +91,12 @@ class ApiHelper {
     * convert the structure of a flat vocabulary of terms into a hierarchy by referencing children, order by weight
     */
   _makeVocubalaryHierarchical(vocabulary) {
-    var tree = this._getHierachy(vocabulary || []);
+    var tree = this._getHierachy(vocabulary || []); //get tree of ids
     var result = [];
     var walkTree = function(tree, newTree, path) {
       var index = 0;
       for(var key in tree) {
-        var node = this._getEntityDataById(key, vocabulary);
+        var node = this._getEntityDataById(key, vocabulary); //get the object for this id
         node.children = []; //add array of references to children
         node.path = [...path,index]
         newTree.push(node);
@@ -109,8 +109,66 @@ class ApiHelper {
         return wA - wB;
       });
     }.bind(this);
-    walkTree(tree, result, []);
+    walkTree(tree, result, []); //resolve all ids in the tree to objects
     return result;
+  }
+
+  /**
+   * remove end nodes in the hierarchy that have no content (for example because of filter settings)
+   */
+  _cleanEndNodes(tree) {
+      var result = [];
+      //function childrenAre
+
+      var walkTree = function(node, newTree) {
+
+
+        var newC = node.children.filter((child) => {
+          //console.log("remove", (child.children.length === 0))
+          //var hasChildren =
+          //true = keep
+          var childHasChildren = (child.children.length !== 0);
+          var childHasContent = (child.nodes.length !== 0);
+          return (childHasContent || childHasChildren)
+        });
+
+        //node.children = newC;
+        for(var i=0; i<node.children.length; i++) {
+          walkTree(node.children[i], result);
+        }
+
+        node.children = newC
+
+        /*for(var i=0; i<node.children.length; i++) {
+          if(node.children[i].children.length === 0) { //child is end node
+            if(node.children[i].nodes.length === 0) { //end node is empty
+
+            }
+          } else {
+            newTree.push(node)
+            walkTree(node.children[i], newTree);
+          }
+        }*/
+
+        /*
+        if(node.children.length === 0) { //end node
+          if(node.nodes.length !== 1) {
+            newTree.push(node);
+          } else { //with no content
+            //newTree.children = null;
+          }
+        } else {
+          for(var i=0; i<node.children.length; i++) {
+            walkTree(node.children[i], result);
+          }
+        }*/
+      }
+
+      for(var i=0; i<tree.length; i++) {
+        walkTree(tree[i], result);
+      }
+      console.log("R", tree)
+      return tree;
   }
 
   /**
@@ -151,17 +209,21 @@ class ApiHelper {
       return;
     }
     //fetch and process the data
+    var filter = {} // {"field_group_size.uuid":"1dce75e9-929d-4071-a91e-a5d6db08d2f5"}
+    //filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
+
     ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "weight"], null, function(vocabulary) {
       if(vocabulary) {
         //get all tool nodes
-        ApiClient.instance().fetchContentAll("node--tool", null, ["title", "field_category"], null, function(toolData) {
+        ApiClient.instance().fetchContentAll("node--tool", filter, ["title", "field_category"], null, function(toolData) {
           //console.log("tooldata", toolData)
           if(toolData) {
             //restructure / extend the vocabulary data
             var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
             var hierarchicalVocabulary = ApiHelper.instance()._makeVocubalaryHierarchical(vocabularyWithNodeRefs);
-            this.cache.contentHierarchy = hierarchicalVocabulary;
-            resultHandler(hierarchicalVocabulary);
+            var cleanHierarchicalVocabulary = ApiHelper.instance()._cleanEndNodes(hierarchicalVocabulary);
+            this.cache.contentHierarchy = cleanHierarchicalVocabulary;
+            resultHandler(cleanHierarchicalVocabulary);
           }
         }.bind(this));
       }

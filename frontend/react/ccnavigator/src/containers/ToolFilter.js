@@ -71,7 +71,6 @@ class ToolFilter extends React.Component {
       </div>
     );
   }
-
 }
 
-export default ToolFilter
+export default ToolFilter;

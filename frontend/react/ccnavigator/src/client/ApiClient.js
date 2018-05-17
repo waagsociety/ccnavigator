@@ -327,10 +327,12 @@ class ApiClient {
     //filter content by property
     var queryParts = [];
     if(filter && typeof(filter) === "object") {
-      var prop = Object.keys(filter)[0];
-      var val = Object.values(filter)[0];
-      var filterQuery = `filter[${prop}][value]=${val}`;
-      queryParts.push(filterQuery);
+      for(var prop in filter) {
+        var val = filter[prop];
+        var filterQuery = `filter[${prop}][value]=${val}`;
+        queryParts.push(filterQuery);
+      }
+
     }
 
     //get specific fields only

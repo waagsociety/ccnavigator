@@ -37,7 +37,11 @@ class Zone extends React.Component {
       this.setState({termEntity: termEntity});
     }.bind(this));
     //full info on all nodes that have this term its child terms as term
-    ApiClient.instance().fetchContent("node--tool", {"field_category.parent.uuid" : entityId}, null, null, 0, function(nodeEntities) {
+    //var filter = {};
+    //filter["field_category.parent.uuid"] = entityId;
+    //filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
+
+    ApiClient.instance().fetchContent("node--tool", null, null, null, 0, function(nodeEntities) {
       //console.log("node entities", nodeEntities);
       this.setState({nodeEntities: nodeEntities});
     }.bind(this));
@@ -55,7 +59,7 @@ class Zone extends React.Component {
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
-      
+
 
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
@@ -91,15 +95,15 @@ class Zone extends React.Component {
             // } else {
             //   themeTools = 'no tools yet...' // todo: make translatable
             // }
-    
-            //list the tools in this theme
+
+            //list the tools in this subcategory
             var content = (
               <div className="zone-theme">
                 <p>{term.attributes.field_subtitle}</p>
                 <div><Label value={`${term.nodes.length} tools`} size={'0.7em'} color={categoryColor} /></div>
               </div>
             ) // todo: make translatable
-    
+
             return {
               link: `/theme/${term.id}`,
               title: term.attributes.name,

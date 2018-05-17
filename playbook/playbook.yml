@@ -133,7 +133,7 @@
     # patch drupal
     - name: Patch for getting jsonapi to return term its parent as relationship
       patch:
-        src={{ playbook_dir }}/../backend/drupal/patches/2543726-216.patch
+        src={{ playbook_dir }}/../backend/drupal/patches/2543726-309.patch
         basedir=/var/www/drupal-8.4.0
         strip=1
     # patch drupal
