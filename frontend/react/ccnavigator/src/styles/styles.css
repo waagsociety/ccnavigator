@@ -2614,6 +2614,19 @@ button {
     border-radius: 1em 0 0 1em;
     font-weight: 500; }
 
+.short-tool-metas {
+  display: flex;
+  flex-direction: row;
+  font-size: 1rem; }
+
+.short-tool-meta {
+  margin-right: 1.5em; }
+
+.short-tool-meta-icon {
+  font-family: "FontAwesome";
+  margin-right: 0.25em;
+  color: #2FB6BC; }
+
 .tool-metas {
   display: flex;
   flex-direction: row;

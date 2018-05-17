@@ -162,7 +162,6 @@ class Tool extends React.Component {
               <span className="tool-meta-name">experience level facilitator:</span>
               <span className="tool-meta-value">2</span>
             </div>
-
           </div>
           <div className="columns">
             <div className="column">
