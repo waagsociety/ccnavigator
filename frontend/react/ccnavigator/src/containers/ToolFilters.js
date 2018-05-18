@@ -1,5 +1,8 @@
 import React from 'react';
 import ApiClient from 'client/ApiClient';
+import ApiHelper from 'client/ApiHelper';
+import { connect } from 'react-redux';
+import { addToolFilter, removeToolFilter, clearToolFilters } from 'actions'
 
 class ToolFilter extends React.Component {
 
@@ -12,12 +15,18 @@ class ToolFilter extends React.Component {
 
   componentDidMount() {
     //retrieve filters from backend
-    var filterFields = ["duration", "facilitator_participant", "experience_level_facilitator", "group_size" ]
+    ApiHelper.instance().getFilterDefintions((result) => {
+      this.setState({
+        filters:result
+      });
+    });
+
+
+    /*var filterFields = ["duration", "facilitator_participant", "experience_level_facilitator", "group_size" ]
     var filters = [];
     for(var i=0;i<filterFields.length;i++) {
       var resource = `taxonomy_term--${filterFields[i]}`
       ApiClient.instance().fetchContent(resource, null, null, ["vid"], 0, function(terms, vocabulary) {
-
         var filter = {};
         filter.name = (((vocabulary || [])[0] || {}).attributes || {}).name;
         filter.uuid = (((vocabulary || [])[0] || {}).attributes || {}).uuid;
@@ -40,9 +49,28 @@ class ToolFilter extends React.Component {
 
         }
       }.bind(this));
+    }*/
+
+    this.props.dispatch(addToolFilter("a1"));
+    this.props.dispatch(addToolFilter("a2"));
+    this.props.dispatch(addToolFilter("b1"));
+    this.props.dispatch(addToolFilter("b2"));
+    this.props.dispatch(removeToolFilter("b2"));
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("nextProps", nextProps)
+  }
+
+  onToggleTool(uuid) {
+    if(this.props.filtersSelected.find((f) => f === uuid   )) {
+      this.props.dispatch(removeToolFilter(uuid));
+      console.log("remove", uuid)
+    } else {
+      console.log("add", uuid)
+      this.props.dispatch(addToolFilter(uuid));
     }
-
-
 
   }
 
@@ -51,7 +79,8 @@ class ToolFilter extends React.Component {
     //individual filters with options
     var filterBoxes = this.state.filters.map((filter) => {
       var opts = filter.options.map(opt => {
-          return <li key={opt.uuid}>{opt.name}</li>
+          var className = this.props.filtersSelected.indexOf(opt.uuid) !== -1 ? "selected" : null;
+          return <li className={className} key={opt.uuid} onClick={(evt) => {this.onToggleTool(opt.uuid)}}>{opt.name}</li>
       });
       return (
         <div className="tool-filter" key={filter.uuid}>
@@ -73,5 +102,11 @@ class ToolFilter extends React.Component {
   }
 
 }
+
+//connect the status prop to the record for this tool in redux
+const mapStateToProps = (state, ownProps) => ({
+  filtersSelected: state.toolFilters
+})
+ToolFilter = connect(mapStateToProps)(ToolFilter)
 
 export default ToolFilter

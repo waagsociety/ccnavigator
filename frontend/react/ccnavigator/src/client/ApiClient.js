@@ -15,6 +15,10 @@ class ApiClient {
     }
   }
 
+  /**
+   *
+   *
+   */
   constructor() {
     this.language = "en";
     this.cache = {};

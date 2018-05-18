@@ -33,16 +33,10 @@ class CategoryLabel extends React.Component {
 
   render() {
     var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.state.name : this.state.shortName);
-    //var displayName = this.state.name;
-
-    //onMouseEnter={this.onLabelMouseEnter.bind(this)}
-    //onMouseLeave={this.onLabelMouseLeave.bind(this)}
-    //<span className="tool-count">{this.props.entity.nodes.length}</span>
-
     return (
       <Link className="theme-label" to={`/theme/${this.props.entity.id}`}>
         <span className="theme-label-text">{displayName}</span>
-        <Label value={this.props.entity.nodes.length} color={this.props.color} size={'1em'} />
+        {this.props.entity.nodes.length > 0 ? <Label value={this.props.entity.nodes.length} color={this.props.color} size={'1em'} /> : null}
       </Link>
     );
   }

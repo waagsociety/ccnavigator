@@ -4,10 +4,11 @@ var _ = require('lodash');
 let instance = null;
 
 /**
-TODO:
-- refactor : make something like a vocabulary class, which is instantiated with a vocabulary and has functions like buildHierarchy
-*/
-
+ * Higher level function that use API calls to retrieve data structures
+ * ApiHelper has access to the REDUX store
+ * TODO:
+ * - refactor : make something like a vocabulary class, which is instantiated with a vocabulary and has functions like buildHierarchy
+ */
 class ApiHelper {
 
   static instance(store) {
@@ -23,12 +24,15 @@ class ApiHelper {
 
   constructor(store) {
     this.store = store;
-    this.store.subscribe(function(a,b){
+    this.store.subscribe(function(){
       this.onStoreChanged();
     }.bind(this));
     this.clearCaches();
   }
 
+  /**
+   * this should happen before connected componets receive their props
+   */
   onStoreChanged() {
     var lang = this.store.getState().language;
     if(ApiClient.instance().language !== lang) {
@@ -36,6 +40,8 @@ class ApiHelper {
       ApiClient.instance().language = lang;
       this.clearCaches();
     }
+    //when filters are changed (diff state ???)
+    //rebuild filters, after that components should update
   }
 
   clearCaches() {
@@ -51,8 +57,8 @@ class ApiHelper {
   }
 
   /**
-    * make a structured simple hierarchy map from raw vocabulary result, with entityId as reference to to term
-    */
+   * make a structured simple hierarchy map from raw vocabulary result, with entityId as reference to to term
+   */
   _getHierachy(vocabulary) {
     //use data as we received it from drupal
     var data = vocabulary || [];
@@ -117,58 +123,21 @@ class ApiHelper {
    * remove end nodes in the hierarchy that have no content (for example because of filter settings)
    */
   _cleanEndNodes(tree) {
-      var result = [];
-      //function childrenAre
-
-      var walkTree = function(node, newTree) {
-
-
-        var newC = node.children.filter((child) => {
-          //console.log("remove", (child.children.length === 0))
-          //var hasChildren =
-          //true = keep
-          var childHasChildren = (child.children.length !== 0);
-          var childHasContent = (child.nodes.length !== 0);
-          return (childHasContent || childHasChildren)
-        });
-
-        //node.children = newC;
-        for(var i=0; i<node.children.length; i++) {
-          walkTree(node.children[i], result);
-        }
-
-        node.children = newC
-
-        /*for(var i=0; i<node.children.length; i++) {
-          if(node.children[i].children.length === 0) { //child is end node
-            if(node.children[i].nodes.length === 0) { //end node is empty
-
-            }
-          } else {
-            newTree.push(node)
-            walkTree(node.children[i], newTree);
-          }
-        }*/
-
-        /*
-        if(node.children.length === 0) { //end node
-          if(node.nodes.length !== 1) {
-            newTree.push(node);
-          } else { //with no content
-            //newTree.children = null;
-          }
-        } else {
-          for(var i=0; i<node.children.length; i++) {
-            walkTree(node.children[i], result);
-          }
-        }*/
+    var walkTree = function(node) {
+      var newChildren = node.children.filter((child) => {
+        var childHasChildren = (child.children.length !== 0);
+        var childHasContent = (child.nodes.length !== 0);
+        return (childHasContent || childHasChildren)
+      });
+      for(var i=0; i<node.children.length; i++) {
+        walkTree(node.children[i]);
       }
-
-      for(var i=0; i<tree.length; i++) {
-        walkTree(tree[i], result);
-      }
-      console.log("R", tree)
-      return tree;
+      node.children = newChildren
+    }
+    for(var i=0; i<tree.length; i++) {
+      walkTree(tree[i]);
+    }
+    return tree;
   }
 
   /**
@@ -202,7 +171,6 @@ class ApiHelper {
    * get the vocabulary named category in a hierarchical way, complete with node references, build the tree if it's not cached
    */
   buildContentHierarchy(resultHandler) {
-    //console.log("buildContentHierarchy")
     //return cache if available
     if(this.cache.contentHierarchy) {
       resultHandler(this.cache.contentHierarchy);
@@ -210,7 +178,7 @@ class ApiHelper {
     }
     //fetch and process the data
     var filter = {} // {"field_group_size.uuid":"1dce75e9-929d-4071-a91e-a5d6db08d2f5"}
-    //filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
+    filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
 
     ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "weight"], null, function(vocabulary) {
       if(vocabulary) {
@@ -221,9 +189,9 @@ class ApiHelper {
             //restructure / extend the vocabulary data
             var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
             var hierarchicalVocabulary = ApiHelper.instance()._makeVocubalaryHierarchical(vocabularyWithNodeRefs);
-            var cleanHierarchicalVocabulary = ApiHelper.instance()._cleanEndNodes(hierarchicalVocabulary);
-            this.cache.contentHierarchy = cleanHierarchicalVocabulary;
-            resultHandler(cleanHierarchicalVocabulary);
+            //var cleanHierarchicalVocabulary = ApiHelper.instance()._cleanEndNodes(hierarchicalVocabulary);
+            this.cache.contentHierarchy = hierarchicalVocabulary;
+            resultHandler(hierarchicalVocabulary);
           }
         }.bind(this));
       }
@@ -231,7 +199,7 @@ class ApiHelper {
   }
 
   /**
-   * find a term or terms in the tree
+   * Find a term or terms in the tree, build if necessary.
    */
   findTermInContentHierarchy(entityIds, resultHandler) {
     //recursively walkHierarchy
@@ -266,7 +234,7 @@ class ApiHelper {
   }
 
   /**
-   * find a node in the content hierarchy
+   * find a node or nodes in the content hierarchy, build if necessary
    */
   findNodeInContentHierarchy(entityIds, resultHandler) {
     //recursively walkHierarchy
@@ -300,6 +268,55 @@ class ApiHelper {
       }
       resultHandler(result);
     });
+  }
+
+  /**
+   * Retrieve taxonomy_terms we use as metadata for filtering content (tools).
+   * Return as simplified array of filter defintions.
+   */
+  getFilterDefintions(resultHandler) {
+    //return cache if available
+    if(this.cache.getFilterDefintions) {
+      resultHandler(this.cache.getFilterDefintions);
+      return;
+    }
+    //retrieve filters from backend
+    var filterFields = ["duration", "facilitator_participant", "experience_level_facilitator", "group_size" ]
+    var filters = [];
+    for(var i=0;i<filterFields.length;i++) {
+      var resource = `taxonomy_term--${filterFields[i]}`
+      ApiClient.instance().fetchContent(resource, null, null, ["vid"], 0, function(terms, vocabulary) {
+        var filter = {};
+        filter.name = (((vocabulary || [])[0] || {}).attributes || {}).name;
+        filter.uuid = (((vocabulary || [])[0] || {}).attributes || {}).uuid;
+        filter.weight = (((vocabulary || [])[0] || {}).attributes || {}).weight || 0;
+        filter.options = [];
+        for(var i=0;i<terms.length;i++) {
+          var option = {};
+          option.name = ((terms[i]).attributes || {}).name;
+          option.uuid = ((terms[i]).attributes || {}).uuid;
+          filter.options.push(option);
+        }
+        filters.push(filter);
+        if(filters.length === filterFields.length) {
+          var sorted = filters.sort(function(a,b) {
+            return a.weight - b.weight;
+          });
+          this.cache.getFilterDefintions = sorted;
+          resultHandler(sorted);
+        }
+      }.bind(this));
+    }
+  }
+
+  /**
+   * Build a filter query based upon applied filters (in REDUX store) and filter defintions
+   * Group filter settings (taxonomy_terms) that are in the same metadata field (vocabulary)
+   * Like: (duration IS 2m OR 5m) AND (group_size IS 2 OR 4)
+   */
+  buildFilterQuery() {
+
+
   }
 
 }

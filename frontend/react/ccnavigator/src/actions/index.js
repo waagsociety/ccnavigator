@@ -26,3 +26,21 @@ export const setZoomLevelHigh = (high) => ({
   type: 'SET_ZOOM_LEVEL_HIGH',
   zoomLevelHigh: high
 })
+
+//regarding filters on content (tools) on meta data (taxonomy terms)
+export const addToolFilter = (uuid) => ({
+  type: 'ADD_TOOL_FILTER',
+  uuid: uuid
+})
+
+//regarding filters on content (tools) on meta data (taxonomy terms)
+export const removeToolFilter = (uuid) => ({
+  type: 'REMOVE_TOOL_FILTER',
+  uuid: uuid
+})
+
+//regarding filters on content (tools) on meta data (taxonomy terms)
+export const clearToolFilters = (uuid) => ({
+  type: 'CLEAR_TOOL_FILTERS',
+  uuid: uuid
+})
