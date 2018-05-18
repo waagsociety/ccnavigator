@@ -7,12 +7,8 @@ class CategoryLabel extends React.Component {
 
   constructor(props) {
     super(props)
-    var name = (this.props.entity.attributes || {}).name
-    var shortName = name.charAt(0)
     this.state = {
-      shortLabels: true,
-      name: name,
-      shortName: shortName
+      shortLabels: true
     }
   }
 
@@ -32,11 +28,12 @@ class CategoryLabel extends React.Component {
   }
 
   render() {
-    var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.state.name : this.state.shortName);
+    var shortName = this.props.name.charAt(0);
+    var displayName = ((this.props.zoomLevelHigh || this.state.shortLabels === false) ? this.props.name : shortName);
     return (
-      <Link className="theme-label" to={`/navigator/theme/${this.props.entity.id}`}>
+      <Link className="theme-label" to={`/navigator/theme/${this.props.uuid}`}>
         <span className="theme-label-text">{displayName}</span>
-        {this.props.entity.nodes.length > 0 ? <Label value={this.props.entity.nodes.length} color={this.props.color} size={'1em'} /> : null}
+        <Label value={this.props.count ? this.props.count : " " } color={this.props.count ? this.props.color : "lightgray"} size={'1em'} />
       </Link>
     );
   }

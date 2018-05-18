@@ -20,7 +20,6 @@ class CategoryBox extends React.Component {
 
 
   render() {
-    console.log("render zone");
     var termEntity = this.props.entity;
     var path = termEntity.path.map(x => x + 1).join("-")
     var categoryColor = Constants.colors[Constants.zones[path].color]
@@ -30,8 +29,9 @@ class CategoryBox extends React.Component {
     var termThemes
     if (termEntity.grandparent === false) {
       termThemes = (termEntity.children || []).map((subTerm, index) => {
-        console.log("label");
-        return <CategoryLabel key={subTerm.id} r={Math.random()} entity={subTerm} color={categoryColor} />
+        var name = (subTerm.attributes || {}).name;
+        var count = (subTerm.nodes || []).length;
+        return <CategoryLabel key={subTerm.id} uuid={subTerm.id} count={count} name={name} color={categoryColor} />
       })
       termThemes = <div className="themes">{termThemes}</div>
     }
