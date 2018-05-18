@@ -31,7 +31,7 @@ class Page extends React.Component {
   }
 
   closeModal() {
-    this.props.history.push('/')
+    this.props.history.push('/navigator/')
   }
 
   render() {

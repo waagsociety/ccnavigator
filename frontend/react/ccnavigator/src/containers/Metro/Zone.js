@@ -51,7 +51,7 @@ class CategoryBox extends React.Component {
     //return category box
     return (
       <foreignObject className={zoneClass} width={categoryWidth} height="130" x={Constants.zones[path].x} y={Constants.zones[path].y} transform={`rotate(-45 ${Constants.zones[path].x},${Constants.zones[path].y})`}>
-        <Link to={`/zone/${this.props.entity.id}`} className="zone-title-link">
+        <Link to={`/navigator/zone/${this.props.entity.id}`} className="zone-title-link">
           <h3 className="zone-title">
             {path.length === 1 &&
               <Label value={path} size={'0.6em'}/>

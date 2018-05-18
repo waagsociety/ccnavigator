@@ -53,7 +53,7 @@ class Theme extends React.Component {
   }
 
   closeModal() {
-    this.props.history.push('/')
+    this.props.history.push('/navigator/')
   }
 
   render() {
@@ -111,7 +111,7 @@ class Theme extends React.Component {
         )
 
         return {
-          link: `/tool/${node.id}`,
+          link: `/navigator/tool/${node.id}`,
           title: node.attributes.title,
           content: <div>{description}{metaData}</div>
         }
