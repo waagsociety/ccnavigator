@@ -51,16 +51,18 @@ class ToolFilter extends React.Component {
       }.bind(this));
     }*/
 
-    this.props.dispatch(addToolFilter("a1"));
-    this.props.dispatch(addToolFilter("a2"));
-    this.props.dispatch(addToolFilter("b1"));
-    this.props.dispatch(addToolFilter("b2"));
-    this.props.dispatch(removeToolFilter("b2"));
+    //this.props.dispatch(addToolFilter("065cfb65-0fc6-49d6-a7e7-791c3d4faa4f"));
+    //this.props.dispatch(addToolFilter("1dce75e9-929d-4071-a91e-a5d6db08d2f5"));
+    //this.props.dispatch(addToolFilter("1dce75e9-929d-4071-a91e-a5d6db08d2f5"));
+    //this.props.dispatch(addToolFilter("b1"));
+    //this.props.dispatch(addToolFilter("b2"));
+    //this.props.dispatch(removeToolFilter("b2"));
 
   }
 
   componentWillReceiveProps(nextProps) {
     console.log("nextProps", nextProps)
+    //ApiHelper.instance().buildFilter();
   }
 
   onToggleTool(uuid) {
@@ -105,7 +107,7 @@ class ToolFilter extends React.Component {
 
 //connect the status prop to the record for this tool in redux
 const mapStateToProps = (state, ownProps) => ({
-  filtersSelected: state.toolFilters
+  filtersSelected: state.toolFiltersApplied
 })
 ToolFilter = connect(mapStateToProps)(ToolFilter)
 

@@ -59,5 +59,12 @@ export const Constants = {
       y : -3070,
       color : 'text'
     }
+  },
+  'filterFieldMapping': { //TODO: get this configuration from backend: /jsonapi/field_config/field_config?filter[field_name][value]=field_group_size
+    'duration': 'field_duration',
+    'facilitator_participant' : 'field_facilitator_participant',
+    'experience_level_facilitator': 'field_experience_level',
+    'group_size' : 'field_group_size'
   }
 }
+export default Constants;

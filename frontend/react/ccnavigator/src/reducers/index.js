@@ -158,7 +158,7 @@ const CCNavigatorApp = combineReducers({
   tools: toolsReducer,
   activeEntity: entityReducer,
   zoomLevelHigh: zoomLevelReducer,
-  toolFilters: toolFiltersReducer
+  toolFiltersApplied: toolFiltersReducer
 })
 
 export default CCNavigatorApp

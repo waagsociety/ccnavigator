@@ -26,6 +26,7 @@ class Metro extends React.Component {
     if(this.props.language !== nextProps.language) {
       this.update();
     }
+    this.update();
   }
 
   /**
@@ -58,7 +59,8 @@ class Metro extends React.Component {
    * get the vocabulary with category labels to display on the map
    */
   update() {
-    //console.log("rebuild map");
+    console.log("rebuild map");
+    ApiHelper.instance().clearCaches();
     ApiHelper.instance().buildContentHierarchy(function(hierarchy){
       this.setState({
         data: hierarchy
@@ -95,7 +97,8 @@ class Metro extends React.Component {
  * update when language changes
  */
 const mapStateToProps = (state, ownProps) => ({
-  language: state.language
+  language: state.language,
+  filtersSelected: state.toolFiltersApplied
 })
 
 Metro = sizeMe({ monitorHeight: true })(Metro)

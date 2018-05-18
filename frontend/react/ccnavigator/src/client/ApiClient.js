@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import Config from '../config/Config';
+import {flattenArray} from 'util/utility'
 var URI = require('urijs');
 
 let instance = null;
@@ -315,7 +316,15 @@ class ApiClient {
    * - include related items
    * like : /jsonapi/taxonomy_term/category?filter[parent.uuid][value]=6cec371d-6597-4332-a300-c6fed37b3ab0&include=parent&fields[taxonomy_term--category]=name,parent
    *
-   * filter can be entity id like "6cec371d-6597-4332-a30" or property like : {"parent.uuid":"6cec371d-6597-4332-a30"}
+   * filter can be entity id like:
+   * "6cec371d-6597-4332-a30"
+   * or property map like:
+   * {"parent.uuid":"6cec371d-6597-4332-a30"}
+   * or even:
+   * {
+   *  "field_duration.uuid": ["1ad5f89e-bb30-4dc2-9e72-03d4dbe9ec33", "72208106-699f-4a29-870a-1bd0f6d9ea1c"],
+   *  "field_group_size.uuid": ["1dce75e9-929d-4071-a91e-a5d6db08d2f5"]
+   * }
    *
    * resultHandler function arguments: data, included, offset for more pages of data
    *
@@ -331,12 +340,30 @@ class ApiClient {
     //filter content by property
     var queryParts = [];
     if(filter && typeof(filter) === "object") {
-      for(var prop in filter) {
+      //build query for JSONAPI
+      var parts = Object.keys(filter).map((filterPath,index) => {
+        var c = String.fromCharCode('a'.charCodeAt(0)+index);//a,b,c...
+        var opts = filter[filterPath];
+        if(typeof(opts) === "string") {
+          opts = [opts];
+        }
+        var parts = opts.map((value, index) => {
+          var cn = c + (index + 1)
+          var parts = [];
+          parts.push(`filter[${cn}][condition][path]=${filterPath}`)
+          parts.push(`filter[${cn}][condition][value]=${value}`)
+          parts.push(`filter[${cn}][condition][memberOf]=${c}`)
+          return parts;
+        });
+        var conjunction = `filter[${c}][group][conjunction]=OR`;
+        return [conjunction, ...parts];
+      });
+      queryParts = flattenArray(parts);
+      /*for(var prop in filter) { OLD SIMPLE VERSION WITHOUT GROUPING
         var val = filter[prop];
         var filterQuery = `filter[${prop}][value]=${val}`;
         queryParts.push(filterQuery);
-      }
-
+      }*/
     }
 
     //get specific fields only

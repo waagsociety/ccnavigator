@@ -1,4 +1,6 @@
 import ApiClient from 'client/ApiClient'
+import Constants from 'config/Constants'
+import {flattenArray} from 'util/utility'
 var _ = require('lodash');
 
 let instance = null;
@@ -31,7 +33,7 @@ class ApiHelper {
   }
 
   /**
-   * this should happen before connected componets receive their props
+   * This should happen before connected componets receive their props
    */
   onStoreChanged() {
     var lang = this.store.getState().language;
@@ -120,7 +122,7 @@ class ApiHelper {
   }
 
   /**
-   * remove end nodes in the hierarchy that have no content (for example because of filter settings)
+   * Remove end nodes in the hierarchy that have no content (for example because of filter settings).
    */
   _cleanEndNodes(tree) {
     var walkTree = function(node) {
@@ -141,7 +143,7 @@ class ApiHelper {
   }
 
   /**
-   * from an array of nodes index the referenced taxonomy terms, return a mapping of taxonomy termId => array<nodeId>
+   * From an array of nodes index the referenced taxonomy terms, return a mapping of taxonomy termId => array<nodeId>.
    */
   _getContentNodesPerTerm(nodes, termField = "field_category") {
     var mapping = nodes.reduce(function(table, node) {
@@ -157,7 +159,7 @@ class ApiHelper {
   }
 
   /**
-   * add array of node refs to each term
+   * Add array of node refs to each term.
    */
   _extendVocabularyWithNodeReferences(vocabulary, nodes, termField) {
     var table = this._getContentNodesPerTerm(nodes, termField)
@@ -168,7 +170,7 @@ class ApiHelper {
   }
 
   /**
-   * get the vocabulary named category in a hierarchical way, complete with node references, build the tree if it's not cached
+   * Get the vocabulary named category in a hierarchical way, complete with node references, build the tree if it's not cached.
    */
   buildContentHierarchy(resultHandler) {
     //return cache if available
@@ -177,25 +179,28 @@ class ApiHelper {
       return;
     }
     //fetch and process the data
-    var filter = {} // {"field_group_size.uuid":"1dce75e9-929d-4071-a91e-a5d6db08d2f5"}
-    filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
+    this.buildFilter((filter) => {
+      console.log("f", filter);
+      ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "weight"], null, function(vocabulary) {
+        if(vocabulary) {
+          //get all tool nodes
+          //var filter = {} // {"field_group_size.uuid":"1dce75e9-929d-4071-a91e-a5d6db08d2f5"}
+          //filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
 
-    ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "weight"], null, function(vocabulary) {
-      if(vocabulary) {
-        //get all tool nodes
-        ApiClient.instance().fetchContentAll("node--tool", filter, ["title", "field_category"], null, function(toolData) {
-          //console.log("tooldata", toolData)
-          if(toolData) {
-            //restructure / extend the vocabulary data
-            var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
-            var hierarchicalVocabulary = ApiHelper.instance()._makeVocubalaryHierarchical(vocabularyWithNodeRefs);
-            //var cleanHierarchicalVocabulary = ApiHelper.instance()._cleanEndNodes(hierarchicalVocabulary);
-            this.cache.contentHierarchy = hierarchicalVocabulary;
-            resultHandler(hierarchicalVocabulary);
-          }
-        }.bind(this));
-      }
-    }.bind(this));
+          ApiClient.instance().fetchContentAll("node--tool", filter, ["title", "field_category"], null, function(toolData) {
+            console.log("tooldata", toolData)
+            if(toolData) {
+              //restructure / extend the vocabulary data
+              var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");
+              var hierarchicalVocabulary = ApiHelper.instance()._makeVocubalaryHierarchical(vocabularyWithNodeRefs);
+              //var cleanHierarchicalVocabulary = ApiHelper.instance()._cleanEndNodes(hierarchicalVocabulary);
+              this.cache.contentHierarchy = hierarchicalVocabulary;
+              resultHandler(hierarchicalVocabulary);
+            }
+          }.bind(this));
+        }
+      }.bind(this));
+    });
   }
 
   /**
@@ -234,7 +239,7 @@ class ApiHelper {
   }
 
   /**
-   * find a node or nodes in the content hierarchy, build if necessary
+   * Find a node or nodes in the content hierarchy, build if necessary
    */
   findNodeInContentHierarchy(entityIds, resultHandler) {
     //recursively walkHierarchy
@@ -281,7 +286,7 @@ class ApiHelper {
       return;
     }
     //retrieve filters from backend
-    var filterFields = ["duration", "facilitator_participant", "experience_level_facilitator", "group_size" ]
+    var filterFields = Object.keys(Constants.filterFieldMapping);
     var filters = [];
     for(var i=0;i<filterFields.length;i++) {
       var resource = `taxonomy_term--${filterFields[i]}`
@@ -289,6 +294,7 @@ class ApiHelper {
         var filter = {};
         filter.name = (((vocabulary || [])[0] || {}).attributes || {}).name;
         filter.uuid = (((vocabulary || [])[0] || {}).attributes || {}).uuid;
+        filter.vid = (((vocabulary || [])[0] || {}).attributes || {}).vid;
         filter.weight = (((vocabulary || [])[0] || {}).attributes || {}).weight || 0;
         filter.options = [];
         for(var i=0;i<terms.length;i++) {
@@ -314,9 +320,58 @@ class ApiHelper {
    * Group filter settings (taxonomy_terms) that are in the same metadata field (vocabulary)
    * Like: (duration IS 2m OR 5m) AND (group_size IS 2 OR 4)
    */
-  buildFilterQuery() {
+  buildFilter(resultHandler) {
+
+    this.getFilterDefintions((defs) => {
+      //find which group this option is in
+      var findGroup = function(uuidOption) {
+        return defs.filter((group) => {
+          var found = group.options.find((option) => {
+            return option.uuid === uuidOption
+          });
+          return (found !== undefined)
+        })[0];
+      };
+      //group the selected options by field (vocabulary)
+      var state = this.store.getState();
+      var applied = state.toolFiltersApplied;
+      var grouped = applied.reduce(function(groups, item) {
+        var group = findGroup(item);
+        if(group && group.vid) {
+          var filterPath = `${Constants.filterFieldMapping[group.vid]}.uuid`;
+          var opts = groups[filterPath] || [];
+          opts.push(item);
+          groups[filterPath] = opts;
+        }
+        return groups
+      }, {});
+      //
+      resultHandler(grouped);
 
 
+      //build query for JSONAPI
+      /*var parts = Object.keys(grouped).map((filterPath,index) => {
+        var c = String.fromCharCode('a'.charCodeAt(0)+index);//a,b,c...
+        var opts = grouped[filterPath];
+        var parts = opts.map((value, index) => {
+          var cn = c + (index + 1)
+          var parts = [];
+          parts.push(`filter[${cn}][condition][path]=${filterPath}`)
+          parts.push(`filter[${cn}][condition][value]=${value}`)
+          parts.push(`filter[${cn}][condition][memberOf]=${c}`)
+          return parts;
+        });
+        var conjunction = `filter[${c}][group][conjunction]=OR`;
+        return [conjunction, ...parts];
+      });
+      flattenArray(parts).join("&"));*/
+
+      /*var query = grouped.reduce(function(queryString, item) {
+        queryString +=
+      }, "")
+      console.log("applied f", grouped);*/
+
+    });
   }
 
 }
