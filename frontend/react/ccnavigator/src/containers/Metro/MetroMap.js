@@ -1,7 +1,5 @@
 import React from 'react';
-import { css } from 'util/aphrodite-custom.js';
-import { Style } from './style.js';
-import { MetroLayout } from "./layout.js"
+import { MetroLayout } from "./MetroMapLayout.js"
 import CurvedPolyline from "util/curved_polyline.js"
 
 
@@ -86,13 +84,12 @@ const generateSubline = (center, point, index, strokeWidth, side) => {
   // reserve space for main line
   if(side === 'w') index++
 
-  var name = `sub-line-${side}-${index}`
   var linePoints = generateSublinePoints(center, point, index, strokeWidth)
-  var line = <path d={CurvedPolyline.smoothPolyline(linePoints, 10)} className={css(Style["line"], Style[name])} />
+  var line = <path d={CurvedPolyline.smoothPolyline(linePoints, 10)} className={`line sub-line-${side}-${index}`} />
   var arrows = generateLineArrows(linePoints, '<>')
 
   return (
-    <g key={name}>
+    <g key={index}>
       {line}
       {arrows}
     </g>
@@ -108,7 +105,7 @@ const generateStation = (x, y, label, labelAngle) => {
 
   return (
     <g>
-      <rect className={css(Style["station"])}
+      <rect className="station"
         x={x}
         y={y}
         width={MetroLayout.constants.stationSize}
@@ -116,7 +113,7 @@ const generateStation = (x, y, label, labelAngle) => {
         rx={MetroLayout.constants.stationSize / 2}
         ry={MetroLayout.constants.stationSize / 2}
       />
-      <text className={css(Style["mapText"])} x={x} y={y} transform={`rotate(${labelAngle} ${x} ${y+5}) translate(-${label.length * 11} 10)`}>{label}</text>
+      <text className="map-text" x={x} y={y} transform={`rotate(${labelAngle} ${x} ${y+5}) translate(-${label.length * 11} 10)`}>{label}</text>
     </g>
   )
 }
@@ -138,35 +135,35 @@ class MetroMap extends React.Component {
 
     // make land
     var teamAreaClosed = CurvedPolyline.closeLine(MetroLayout.teamArea.points)
-    var teamArea = <path d={CurvedPolyline.smoothPolyline(teamAreaClosed, 20)} className={css(Style["area"])} />
+    var teamArea = <path d={CurvedPolyline.smoothPolyline(teamAreaClosed, 20)} className="area" />
     var communityAreaClosed = CurvedPolyline.closeLine(MetroLayout.communityArea.points)
-    var communityArea = <path d={CurvedPolyline.smoothPolyline(communityAreaClosed, 20)} className={css(Style["area"])} />
+    var communityArea = <path d={CurvedPolyline.smoothPolyline(communityAreaClosed, 20)} className="area" />
     var navigatorAreaClosed = CurvedPolyline.closeLine(MetroLayout.navigatorArea.points)
-    var navigatorArea = <path d={CurvedPolyline.smoothPolyline(navigatorAreaClosed, 20)} className={css(Style["area"])} />
+    var navigatorArea = <path d={CurvedPolyline.smoothPolyline(navigatorAreaClosed, 20)} className="area" />
 
     var cityAreaClosed = CurvedPolyline.closeLine(MetroLayout.cityArea.points)
-    var cityArea = <path d={CurvedPolyline.smoothPolyline(cityAreaClosed, 20)} className={css(Style["wide-area"])} />
+    var cityArea = <path d={CurvedPolyline.smoothPolyline(cityAreaClosed, 20)} className="wide-area" />
 
     var zone2Closed = CurvedPolyline.closeLine(MetroLayout.zone2.points)
-    var zone2 = <path d={CurvedPolyline.smoothPolyline(zone2Closed, 20)} className={css(Style["inner-area"])} />
+    var zone2 = <path d={CurvedPolyline.smoothPolyline(zone2Closed, 20)} className="inner-area" />
 
 
     //var innerAreaClosed = CurvedPolyline.closeLine(MetroLayout.innerArea.points)
-    //var innerArea = <path d={CurvedPolyline.smoothPolyline(innerAreaClosed, 20)} className={css(Style["inner-area"])} />
+    //var innerArea = <path d={CurvedPolyline.smoothPolyline(innerAreaClosed, 20)} className="inner-area" />
 
     var centralAreaClosed = CurvedPolyline.closeLine(MetroLayout.centralArea.points)
-    var centralArea = <path d={CurvedPolyline.smoothPolyline(centralAreaClosed, 20)} className={css(Style["central-area"])} />
+    var centralArea = <path d={CurvedPolyline.smoothPolyline(centralAreaClosed, 20)} className="central-area" />
 
     var islandClosed = CurvedPolyline.closeLine(MetroLayout.island.points)
-    var island = <path d={CurvedPolyline.smoothPolyline(islandClosed, 20)} className={css(Style["area"])} />
+    var island = <path d={CurvedPolyline.smoothPolyline(islandClosed, 20)} className="area" />
 
     // make river
     var closedRiver = CurvedPolyline.closeLine(MetroLayout.river.points)
-    var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className={css(Style["river"])} />
+    var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className="river" />
 
 
     // generate the main line and start/end stations
-    var mainLine = <path d={CurvedPolyline.smoothPolyline(MetroLayout.mainLine.points, 20)} className={css(Style.line, Style["main-line"])} />
+    var mainLine = <path d={CurvedPolyline.smoothPolyline(MetroLayout.mainLine.points, 20)} className="line main-line" />
     var mainLineArrows = generateLineArrows(MetroLayout.mainLine.points, '>')
 
     var startStationPoint = MetroLayout.mainLine.points[0]
@@ -203,10 +200,10 @@ class MetroMap extends React.Component {
 
     // make stations
     var centralStationWidth = (Math.max(linesNE.length, linesSE.length) + Math.max(linesNW.length, linesSW.length) + 1) * 10;
-    var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1] - 5} width={centralStationWidth} height="10" rx="5" ry="5" className={css(Style["station"])} />
+    var centralStation = <rect x={MetroLayout.centralArea.center[0] - centralStationWidth / 2} y={MetroLayout.centralArea.center[1] - 5} width={centralStationWidth} height="10" rx="5" ry="5" className="station" />
 
     var stations = MetroLayout.mainLine.stations.map((point, index) => {
-      return <rect key={index} x={point[0] - 5} y={point[1] - 5} width="10" height="10" rx="5" ry="5" className={css(Style["station"])} />
+      return <rect key={index} x={point[0] - 5} y={point[1] - 5} width="10" height="10" rx="5" ry="5" className="station" />
     })
 
     //{innerArea}

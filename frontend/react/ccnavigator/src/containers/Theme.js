@@ -88,10 +88,32 @@ class Theme extends React.Component {
       var boxesTitle
       var boxes = this.state.nodeEntities.map((node) => {
 
+        var description = node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
+        var metaData = (
+          <div class="short-tool-metas">
+            <div className="short-tool-meta">
+              <span className="short-tool-meta-icon"></span>
+              <span className="short-tool-meta-value">0-5</span>
+            </div>
+            <div className="short-tool-meta">
+              <span className="short-tool-meta-icon"></span>
+              <span className="short-tool-meta-value">30-120 min</span>
+            </div>
+            <div className="short-tool-meta">
+              <span className="short-tool-meta-icon"></span>
+              <span className="short-tool-meta-value">1/5</span>
+            </div>
+            <div className="short-tool-meta">
+              <span className="short-tool-meta-icon"></span>
+              <span className="short-tool-meta-value">2</span>
+            </div>
+          </div>
+        )
+
         return {
           link: `/tool/${node.id}`,
           title: node.attributes.title,
-          content: node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
+          content: <div>{description}{metaData}</div>
         }
       })
       if (boxes.length > 0) {

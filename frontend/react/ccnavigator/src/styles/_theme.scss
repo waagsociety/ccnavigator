@@ -1,0 +1,22 @@
+.short-tool-metas {
+  display: flex;
+  flex-direction: row;
+  //justify-content: space-between;
+  font-size: 1rem;
+}
+
+.short-tool-meta {
+  //@include label($color-turquoise, #FFF);
+  //font-size: 0.8em;
+  margin-right: 1.5em;
+}
+
+.short-tool-meta-icon {
+  font-family: "FontAwesome";
+  margin-right: 0.25em;
+  color: $color-turquoise;
+}
+
+// .short-tool-meta-value {
+//   
+// }
