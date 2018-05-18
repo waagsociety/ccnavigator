@@ -48,7 +48,7 @@ class Zone extends React.Component {
   }
 
   closeModal() {
-    this.props.history.push('/')
+    this.props.history.push('/navigator/')
   }
 
   render() {
@@ -105,7 +105,7 @@ class Zone extends React.Component {
             ) // todo: make translatable
 
             return {
-              link: `/theme/${term.id}`,
+              link: `/navigator/theme/${term.id}`,
               title: term.attributes.name,
               content: content
             }

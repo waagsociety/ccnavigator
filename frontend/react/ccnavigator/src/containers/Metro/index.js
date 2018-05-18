@@ -79,12 +79,14 @@ class Metro extends React.Component {
     }
     //component rerenders on resize because of size me, could also be solved with react-measure
     return (
-      <div style={{width:"100%", height:"100%"}} >
-        <SVGMap width={this.props.size.width} height={this.props.size.height} >
-          <MetroMap/>
-          {categoryBoxes}
-        </SVGMap>
-      </div>
+
+        <div id="container-map" style={{width:"100%", height:"100%"}} >
+          <SVGMap width={this.props.size.width} height={this.props.size.height} >
+            <MetroMap/>
+            {categoryBoxes}
+          </SVGMap>
+        </div>
+
     )
 
 
