@@ -2,6 +2,7 @@
 
 namespace Drupal\jsonapi\Normalizer;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\jsonapi\Normalizer\Value\RelationshipNormalizerValue;
 use Drupal\jsonapi\ResourceType\ResourceTypeRepositoryInterface;
@@ -9,8 +10,12 @@ use Drupal\jsonapi\LinkManager\LinkManager;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 /**
+ * Normalizes a Relationship according to the JSON API specification.
+ *
  * Normalizer class for relationship elements. A relationship can be anything
  * that points to an entity in a JSON API resource.
+ *
+ * @internal
  */
 class RelationshipNormalizer extends NormalizerBase {
 
@@ -58,7 +63,7 @@ class RelationshipNormalizer extends NormalizerBase {
   /**
    * Helper function to normalize field items.
    *
-   * @param \Drupal\jsonapi\Normalizer\Relationship $relationship
+   * @param \Drupal\jsonapi\Normalizer\Relationship|object $relationship
    *   The field object.
    * @param string $format
    *   The format.
@@ -72,6 +77,11 @@ class RelationshipNormalizer extends NormalizerBase {
     /* @var \Drupal\jsonapi\Normalizer\Relationship $relationship */
     $normalizer_items = [];
     foreach ($relationship->getItems() as $relationship_item) {
+      // If the relationship points to a disabled resource type, do not add the
+      // normalized relationship item.
+      if (!$relationship_item->getTargetResourceType()) {
+        continue;
+      }
       $normalizer_items[] = $this->serializer->normalize($relationship_item, $format, $context);
     }
     $cardinality = $relationship->getCardinality();
@@ -81,7 +91,14 @@ class RelationshipNormalizer extends NormalizerBase {
       'link_manager' => $this->linkManager,
       'resource_type' => $context['resource_type'],
     ];
-    return new RelationshipNormalizerValue($normalizer_items, $cardinality, $link_context);
+    // If this is called, access to the Relationship field is allowed. The
+    // cacheability of the access result is carried by the Relationship value
+    // object. Therefore, we can safely construct an access result object here.
+    // Access to the targeted related resources will be checked separately.
+    // @see \Drupal\jsonapi\Normalizer\EntityReferenceFieldNormalizer::normalize()
+    // @see \Drupal\jsonapi\Normalizer\RelationshipItemNormalizer::normalize()
+    $relationship_access = AccessResult::allowed()->addCacheableDependency($relationship);
+    return new RelationshipNormalizerValue($relationship_access, $normalizer_items, $cardinality, $link_context);
   }
 
   /**

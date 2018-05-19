@@ -18,7 +18,9 @@ class SchemataSchemaNormalizer extends SchemataJsonSchemaSchemataSchemaNormalize
   protected $resourceTypeRepository;
 
   /**
-   * @param ResourceTypeRepository $resource_type_repository
+   * Constructs a SchemataSchemaNormalizer object.
+   *
+   * @param \Drupal\jsonapi\ResourceType\ResourceTypeRepository $resource_type_repository
    *   A resource repository.
    */
   public function __construct(ResourceTypeRepository $resource_type_repository) {
@@ -39,9 +41,14 @@ class SchemataSchemaNormalizer extends SchemataJsonSchemaSchemataSchemaNormalize
     }
 
     // Alter the attributes according to the resource config.
+    $root = &$normalized['properties']['data']['properties'];
     foreach (['attributes', 'relationships'] as $property_type) {
-      foreach ($normalized['properties'][$property_type]['properties'] as $fieldname => $schema) {
-        $properties = &$normalized['properties'][$property_type]['properties'];
+      if (!isset($root[$property_type]['required'])) {
+        $root[$property_type]['required'] = [];
+      }
+      $required_fields = [];
+      foreach ($root[$property_type]['properties'] as $fieldname => $schema) {
+        $properties = &$root[$property_type]['properties'];
         unset($properties[$fieldname]);
 
         if (!$resource_type->isFieldEnabled($fieldname)) {
@@ -52,8 +59,12 @@ class SchemataSchemaNormalizer extends SchemataJsonSchemaSchemataSchemaNormalize
           // Otherwise, substitute the public name.
           $public_name = $resource_type->getPublicName($fieldname);
           $properties[$public_name] = $schema;
+          if (in_array($fieldname, $root[$property_type]['required'])) {
+            $required_fields[] = $public_name;
+          }
         }
       }
+      $root[$property_type]['required'] = $required_fields;
     }
 
     return $normalized;

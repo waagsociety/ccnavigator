@@ -8,6 +8,9 @@ use Drupal\KernelTests\KernelTestBase;
 /**
  * @coversDefaultClass \Drupal\jsonapi\Field\FileDownloadUrl
  * @group jsonapi
+ * @group legacy
+ *
+ * @internal
  */
 class FileDownloadUrlTest extends KernelTestBase {
 
@@ -23,13 +26,16 @@ class FileDownloadUrlTest extends KernelTestBase {
   ];
 
   /**
+   * The test file.
+   *
    * @var \Drupal\file\Entity\File
    */
   protected $file;
 
   /**
+   * The test filename.
+   *
    * @var string
-   *   The test filename.
    */
   protected $filename = 'druplicon.txt';
 

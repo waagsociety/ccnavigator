@@ -5,6 +5,7 @@ namespace Drupal\jsonapi\ParamConverter;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\ParamConverter\EntityConverter;
 use Drupal\Core\TypedData\TranslatableInterface;
+use Drupal\jsonapi\Routing\Routes;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -42,7 +43,10 @@ class EntityUuidConverter extends EntityConverter {
    * {@inheritdoc}
    */
   public function applies($definition, $name, Route $route) {
-    return $route->getOption('_is_jsonapi');
+    return (
+      (bool) Routes::getResourceTypeNameFromParameters($route->getDefaults()) &&
+      !empty($definition['type']) && strpos($definition['type'], 'entity') === 0
+    );
   }
 
 }

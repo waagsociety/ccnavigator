@@ -1,6 +1,8 @@
 # JSON API Extras
 
-This module provides extra functionality on top of JSON API. You should not need this module to get an spec compliant JSON API, this module is to customize the output of JSON API.
+This module provides extra functionality on top of JSON API. You should not
+need this module to get an spec compliant JSON API, this module is to
+customize the output of JSON API.
 
 This module adds the following features:
 
@@ -11,4 +13,5 @@ This module adds the following features:
   - Lets you remove fields from the JSON API output.
 
 TODO:
-  * Auto calculate the dependency of the provider of the entity type and bundles in the configuration entity.
+  * Auto calculate the dependency of the provider of the entity type and
+  bundles in the configuration entity.

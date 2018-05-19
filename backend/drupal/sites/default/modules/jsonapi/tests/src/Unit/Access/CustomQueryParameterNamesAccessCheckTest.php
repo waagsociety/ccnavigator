@@ -3,15 +3,20 @@
 namespace Drupal\Tests\jsonapi\Unit\Access;
 
 use Drupal\jsonapi\Access\CustomQueryParameterNamesAccessCheck;
+use Drupal\Tests\UnitTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @coversDefaultClass \Drupal\jsonapi\Access\CustomQueryParameterNamesAccessCheck
  * @group jsonapi
+ *
+ * @internal
  */
-class CustomQueryParameterNamesAccessCheckTest extends \PHPUnit_Framework_TestCase {
+class CustomQueryParameterNamesAccessCheckTest extends UnitTestCase {
 
   /**
+   * Ensures that query params are properly validated.
+   *
    * @dataProvider providerTestAccess
    * @covers ::access
    * @covers ::validate
@@ -31,6 +36,9 @@ class CustomQueryParameterNamesAccessCheckTest extends \PHPUnit_Framework_TestCa
     }
   }
 
+  /**
+   * Data provider for testAccess.
+   */
   public function providerTestAccess() {
     $data = [];
 

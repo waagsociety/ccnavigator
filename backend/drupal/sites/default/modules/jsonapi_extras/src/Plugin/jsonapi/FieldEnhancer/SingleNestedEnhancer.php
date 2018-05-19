@@ -3,6 +3,7 @@
 namespace Drupal\jsonapi_extras\Plugin\jsonapi\FieldEnhancer;
 
 use Drupal\jsonapi_extras\Plugin\ResourceFieldEnhancerBase;
+use Shaper\Util\Context;
 
 /**
  * Perform additional manipulations to date fields.
@@ -27,8 +28,8 @@ class SingleNestedEnhancer extends ResourceFieldEnhancerBase {
   /**
    * {@inheritdoc}
    */
-  public function postProcess($value) {
-    $output = $value;
+  protected function doUndoTransform($data, Context $context) {
+    $output = $data;
     $configuration = $this->getConfiguration();
     $path = $configuration['path'];
     $path_parts = explode('.', $path);
@@ -44,8 +45,8 @@ class SingleNestedEnhancer extends ResourceFieldEnhancerBase {
   /**
    * {@inheritdoc}
    */
-  public function prepareForInput($value) {
-    $input = $value;
+  protected function doTransform($data, Context $context) {
+    $input = $data;
     $configuration = $this->getConfiguration();
     $path = $configuration['path'];
     $path_parts = explode('.', $path);
@@ -59,7 +60,7 @@ class SingleNestedEnhancer extends ResourceFieldEnhancerBase {
   /**
    * {@inheritdoc}
    */
-  public function getJsonSchema() {
+  public function getOutputJsonSchema() {
     return [
       'type' => 'string',
     ];
@@ -69,9 +70,9 @@ class SingleNestedEnhancer extends ResourceFieldEnhancerBase {
    * {@inheritdoc}
    */
   public function getSettingsForm(array $resource_field_info) {
-    $settings = empty($resource_field_info['settings'])
+    $settings = empty($resource_field_info['enhancer']['settings'])
       ? $this->getConfiguration()
-      : $resource_field_info['settings'];
+      : $resource_field_info['enhancer']['settings'];
 
     return [
       'path' => [

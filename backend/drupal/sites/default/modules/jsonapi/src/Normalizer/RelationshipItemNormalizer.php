@@ -2,22 +2,21 @@
 
 namespace Drupal\jsonapi\Normalizer;
 
-use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
-use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\jsonapi\Normalizer\Value\RelationshipItemNormalizerValue;
 use Drupal\jsonapi\ResourceType\ResourceTypeRepositoryInterface;
 use Drupal\jsonapi\Controller\EntityResource;
-use Drupal\serialization\EntityResolver\UuidReferenceInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Converts the Drupal entity reference item object to a JSON API structure.
  *
  * @todo Remove the dependency on \Drupal\jsonapi\Normalizer\JsonApiDocumentTopLevelNormalizer
+ *
+ * @internal
  */
-class RelationshipItemNormalizer extends FieldItemNormalizer implements UuidReferenceInterface, RefinableCacheableDependencyInterface {
-
-  use RefinableCacheableDependencyTrait;
+class RelationshipItemNormalizer extends FieldItemNormalizer {
 
   /**
    * The interface or class that this Normalizer supports.
@@ -55,6 +54,16 @@ class RelationshipItemNormalizer extends FieldItemNormalizer implements UuidRefe
 
   /**
    * {@inheritdoc}
+   *
+   * @todo Remove this override when the dependency on \Drupal\jsonapi\Normalizer\JsonApiDocumentTopLevelNormalizer is removed.
+   */
+  public function setSerializer(SerializerInterface $serializer) {
+    parent::setSerializer($serializer);
+    $this->jsonapiDocumentToplevelNormalizer->setSerializer($serializer);
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function normalize($relationship_item, $format = NULL, array $context = []) {
     /* @var $relationship_item \Drupal\jsonapi\Normalizer\RelationshipItem */
@@ -68,10 +77,6 @@ class RelationshipItemNormalizer extends FieldItemNormalizer implements UuidRefe
     if (isset($context['langcode'])) {
       $values['lang'] = $context['langcode'];
     }
-    $normalizer_value = new RelationshipItemNormalizerValue(
-      $values,
-      $relationship_item->getTargetResourceType()
-    );
 
     $host_field_name = $relationship_item->getParent()->getPropertyName();
     if (!empty($context['include']) && in_array($host_field_name, $context['include'])) {
@@ -80,17 +85,17 @@ class RelationshipItemNormalizer extends FieldItemNormalizer implements UuidRefe
       $included_normalizer_value = $this
         ->jsonapiDocumentToplevelNormalizer
         ->buildNormalizerValue($entity_and_access['entity'], $format, $context);
-      $normalizer_value->setInclude($included_normalizer_value);
-      $normalizer_value->addCacheableDependency($entity_and_access['access']);
-      $normalizer_value->addCacheableDependency($included_normalizer_value);
-      // Add the cacheable dependency of the included item directly to the
-      // response cacheable metadata. This is similar to the flatten include
-      // data structure, instead of a content graph.
-      if (!empty($context['cacheable_metadata'])) {
-        $context['cacheable_metadata']->addCacheableDependency($normalizer_value);
-      }
     }
-    return $normalizer_value;
+    else {
+      $included_normalizer_value = NULL;
+    }
+
+    return new RelationshipItemNormalizerValue(
+      $values,
+      new CacheableMetadata(),
+      $relationship_item->getTargetResourceType(),
+      $included_normalizer_value
+    );
   }
 
   /**
@@ -119,21 +124,6 @@ class RelationshipItemNormalizer extends FieldItemNormalizer implements UuidRefe
       return str_replace($host_field_name . '.', '', $include);
     }, $include_candidates);
     return $context;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getUuid($data) {
-    if (isset($data['uuid'])) {
-      return NULL;
-    }
-    $uuid = $data['uuid'];
-    // The value may be a nested array like $uuid[0]['value'].
-    if (is_array($uuid) && isset($uuid[0]['value'])) {
-      $uuid = $uuid[0]['value'];
-    }
-    return $uuid;
   }
 
 }

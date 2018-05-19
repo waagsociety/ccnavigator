@@ -83,9 +83,24 @@ class JsonapiResourceConfig extends ConfigEntityBase {
    */
   public function calculateDependencies() {
     parent::calculateDependencies();
-    $id = explode('--',$this->id);
+    $id = explode('--', $this->id);
     $typeManager = $this->entityTypeManager();
     $dependency = $typeManager->getDefinition($id[0])->getBundleConfigDependency($id[1]);
     $this->addDependency($dependency['type'], $dependency['name']);
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function urlRouteParameters($rel) {
+    $uri_route_parameters = parent::urlRouteParameters($rel);
+    // The add-form route depends on entity_type_id and bundle.
+    if (in_array($rel, ['add-form'])) {
+      $parameters = explode('--', $this->id);
+      $uri_route_parameters['entity_type_id'] = $parameters[0];
+      $uri_route_parameters['bundle'] = $parameters[1];
+    }
+    return $uri_route_parameters;
+  }
+
 }

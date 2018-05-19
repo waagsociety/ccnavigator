@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\jsonapi\Unit\Normalizer\Value;
 
+use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\jsonapi\ResourceType\ResourceType;
 use Drupal\jsonapi\LinkManager\LinkManager;
@@ -16,6 +17,8 @@ use Prophecy\Argument;
 /**
  * @coversDefaultClass \Drupal\jsonapi\Normalizer\Value\EntityNormalizerValue
  * @group jsonapi
+ *
+ * @internal
  */
 class EntityNormalizerValueTest extends UnitTestCase {
 
@@ -27,17 +30,40 @@ class EntityNormalizerValueTest extends UnitTestCase {
   protected $object;
 
   /**
+   * The cache contexts manager.
+   *
+   * @var \Drupal\Core\Cache\Context\CacheContextsManager|\PHPUnit_Framework_MockObject_MockObject
+   */
+  protected $cacheContextsManager;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
+
+    $this->cacheContextsManager = $this->getMockBuilder('Drupal\Core\Cache\Context\CacheContextsManager')
+      ->disableOriginalConstructor()
+      ->getMock();
+    $this->cacheContextsManager->method('assertValidTokens')->willReturn(TRUE);
+
+    $container = new ContainerBuilder();
+    $container->set('cache_contexts_manager', $this->cacheContextsManager);
+    \Drupal::setContainer($container);
+
     $field1 = $this->prophesize(FieldNormalizerValueInterface::class);
     $field1->getIncludes()->willReturn([]);
     $field1->getPropertyType()->willReturn('attributes');
     $field1->rasterizeValue()->willReturn('dummy_title');
+    $field1->getCacheContexts()->willReturn(['ccbar']);
+    $field1->getCacheTags()->willReturn(['ctbar']);
+    $field1->getCacheMaxAge()->willReturn(20);
     $field2 = $this->prophesize(RelationshipNormalizerValue::class);
     $field2->getPropertyType()->willReturn('relationships');
     $field2->rasterizeValue()->willReturn(['data' => ['type' => 'node', 'id' => 2]]);
+    $field2->getCacheContexts()->willReturn(['ccbaz']);
+    $field2->getCacheTags()->willReturn(['ctbaz']);
+    $field2->getCacheMaxAge()->willReturn(25);
     $included[] = $this->prophesize(JsonApiDocumentTopLevelNormalizerValue::class);
     $included[0]->getIncludes()->willReturn([]);
     $included[0]->rasterizeValue()->willReturn([
@@ -70,12 +96,18 @@ class EntityNormalizerValueTest extends UnitTestCase {
     $field2->getIncludes()->willReturn(array_map(function ($included_item) {
       return $included_item->reveal();
     }, $included));
-    $context = ['resource_type' => new ResourceType('node', 'article', NodeInterface::class)];
+    $context = [
+      'resource_type' => new ResourceType('node', 'article',
+        NodeInterface::class),
+    ];
     $entity = $this->prophesize(EntityInterface::class);
     $entity->uuid()->willReturn('248150b2-79a2-4b44-9f49-bf405a51414a');
     $entity->isNew()->willReturn(FALSE);
     $entity->getEntityTypeId()->willReturn('node');
     $entity->bundle()->willReturn('article');
+    $entity->getCacheContexts()->willReturn(['ccfoo']);
+    $entity->getCacheTags()->willReturn(['ctfoo']);
+    $entity->getCacheMaxAge()->willReturn(15);
     $link_manager = $this->prophesize(LinkManager::class);
     $link_manager
       ->getEntityLink(Argument::any(), Argument::any(), Argument::type('array'), Argument::type('string'))
@@ -93,6 +125,15 @@ class EntityNormalizerValueTest extends UnitTestCase {
       ])
       ->getMock();
     $this->object->method('addCacheableDependency');
+  }
+
+  /**
+   * @covers ::__construct
+   */
+  public function testCacheability() {
+    $this->assertSame(['ccbar', 'ccbaz', 'ccfoo'], $this->object->getCacheContexts());
+    $this->assertSame(['ctbar', 'ctbaz', 'ctfoo'], $this->object->getCacheTags());
+    $this->assertSame(15, $this->object->getCacheMaxAge());
   }
 
   /**

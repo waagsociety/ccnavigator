@@ -61,9 +61,9 @@ class SVGMap extends React.Component {
   //
   handleLocationChange = (location) => {
     //console.log("location")
-    if(location.pathname !== "/" ) {
+    if(location.pathname !== "/navigator" ) {
       if(this.state.didDrag) {
-        this.props.history.push("/")
+        this.props.history.push("/navigator")
       }
     }
   }

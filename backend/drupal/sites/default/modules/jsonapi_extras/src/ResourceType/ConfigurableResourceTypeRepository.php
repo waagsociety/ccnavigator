@@ -7,13 +7,18 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\jsonapi\ResourceType\ResourceTypeRepository;
 use Drupal\jsonapi_extras\Plugin\ResourceFieldEnhancerManager;
-use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 
 /**
  * Provides a repository of JSON API configurable resource types.
  */
 class ConfigurableResourceTypeRepository extends ResourceTypeRepository {
+
+  /**
+   * {@inheritdoc}
+   */
+  const RESOURCE_TYPE_CLASS = ConfigurableResourceType::class;
 
   /**
    * The entity repository.
@@ -30,23 +35,50 @@ class ConfigurableResourceTypeRepository extends ResourceTypeRepository {
   protected $enhancerManager;
 
   /**
-   * @var ConfigFactoryInterface
+   * The bundle manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $bundleManager;
+
+  /**
+   * The configuration factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
   /**
+   * A list of all resource types.
+   *
    * @var \Drupal\jsonapi_extras\ResourceType\ConfigurableResourceType[]
    */
   protected $resourceTypes;
 
   /**
+   * A list of only enabled resource types.
+   *
+   * @var \Drupal\jsonapi_extras\ResourceType\ConfigurableResourceType[]
+   */
+  protected $enabledResourceTypes;
+
+  /**
+   * A list of all resource configuration entities.
+   *
+   * @var \Drupal\jsonapi_extras\Entity\JsonapiResourceConfig[]
+   */
+  protected $resourceConfigs;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $bundle_manager, EntityRepositoryInterface $entity_repository, ResourceFieldEnhancerManager $enhancer_manager, ConfigFactoryInterface $config_factory) {
-    parent::__construct($entity_type_manager, $bundle_manager);
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $bundle_manager, EntityFieldManagerInterface $entity_field_manager, EntityRepositoryInterface $entity_repository, ResourceFieldEnhancerManager $enhancer_manager, ConfigFactoryInterface $config_factory) {
+    parent::__construct($entity_type_manager, $bundle_manager, $entity_field_manager);
     $this->entityRepository = $entity_repository;
     $this->enhancerManager = $enhancer_manager;
     $this->configFactory = $config_factory;
+    $this->entityFieldManager = $entity_field_manager;
+    $this->bundleManager = $bundle_manager;
   }
 
   /**
@@ -54,78 +86,92 @@ class ConfigurableResourceTypeRepository extends ResourceTypeRepository {
    */
   public function all() {
     if (!$this->all) {
-      $this->all = $this->getResourceTypes(FALSE);
+      foreach ($this->getEntityTypeBundleTuples() as $tuple) {
+        list($entity_type_id, $bundle) = $tuple;
+        $resource_config_id = sprintf('%s--%s', $entity_type_id, $bundle);
+        $this->all[] = new ConfigurableResourceType(
+          $entity_type_id,
+          $bundle,
+          $this->entityTypeManager->getDefinition($entity_type_id)->getClass(),
+          $this->getResourceConfig($resource_config_id),
+          $this->enhancerManager,
+          $this->configFactory
+        );
+      }
+      foreach ($this->all as $resource_type) {
+        $relatable_resource_types = $this->calculateRelatableResourceTypes($resource_type);
+        $resource_type->setRelatableResourceTypes($relatable_resource_types);
+      }
     }
     return $this->all;
   }
 
   /**
-   * {@inheritdoc}
+   * Get a single resource configuration entity by its ID.
+   *
+   * @param string $resource_config_id
+   *   The configuration entity ID.
+   *
+   * @return \Drupal\jsonapi_extras\Entity\JsonapiResourceConfig
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    */
-  public function get($entity_type_id, $bundle) {
-    if (empty($entity_type_id)) {
-      throw new PreconditionFailedHttpException('Server error. The current route is malformed.');
-    }
-
-    foreach ($this->getResourceTypes() as $resource) {
-      if ($resource->getEntityTypeId() == $entity_type_id && $resource->getBundle() == $bundle) {
-        return $resource;
-      }
-    }
-
-    return NULL;
+  protected function getResourceConfig($resource_config_id) {
+    $resource_configs = $this->getResourceConfigs();
+    return isset($resource_configs[$resource_config_id]) ?
+      $resource_configs[$resource_config_id] :
+      new NullJsonapiResourceConfig([], '');
   }
 
   /**
-   * Returns an array of resource types.
+   * Load all resource configuration entities.
    *
-   * @param bool $include_disabled
-   *   TRUE to included disabled resource types.
+   * @return \Drupal\jsonapi_extras\Entity\JsonapiResourceConfig[]
+   *   The resource config entities.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   */
+  function getResourceConfigs() {
+    if (!$this->resourceConfigs) {
+      $resource_config_ids = [];
+      foreach ($this->getEntityTypeBundleTuples() as $tuple) {
+        list($entity_type_id, $bundle) = $tuple;
+        $resource_config_ids[] = sprintf('%s--%s', $entity_type_id, $bundle);
+      }
+      $this->resourceConfigs = $this->entityTypeManager
+        ->getStorage('jsonapi_resource_config')
+        ->loadMultiple($resource_config_ids);
+    }
+    return $this->resourceConfigs;
+  }
+
+  /**
+   * Entity type ID and bundle iterator.
    *
    * @return array
-   *   An array of resource types.
+   *   A list of entity type ID and bundle tuples.
    */
-  public function getResourceTypes($include_disabled = TRUE) {
-    if (isset($this->resourceTypes)) {
-      return $this->resourceTypes;
-    }
-
+  protected function getEntityTypeBundleTuples() {
     $entity_type_ids = array_keys($this->entityTypeManager->getDefinitions());
-
-    $resource_types = [];
-
-    $resource_config_ids = [];
-    foreach ($entity_type_ids as $entity_type_id) {
+    // For each entity type return as many tuples as bundles.
+    return array_reduce($entity_type_ids, function ($carry, $entity_type_id) {
       $bundles = array_keys($this->bundleManager->getBundleInfo($entity_type_id));
-      $resource_config_ids = array_merge($resource_config_ids, array_map(function ($bundle) use ($entity_type_id) {
-        return sprintf('%s--%s', $entity_type_id, $bundle);
-      }, $bundles));
-    }
-
-    $resource_configs = $this->entityTypeManager->getStorage('jsonapi_resource_config')->loadMultiple($resource_config_ids);
-
-    foreach ($entity_type_ids as $entity_type_id) {
-      $bundles = array_keys($this->bundleManager->getBundleInfo($entity_type_id));
-      $current_types = array_map(function ($bundle) use ($entity_type_id, $include_disabled, $resource_configs) {
-        $resource_config_id = sprintf('%s--%s', $entity_type_id, $bundle);
-        $resource_config = isset($resource_configs[$resource_config_id]) ? $resource_configs[$resource_config_id] : new NullJsonapiResourceConfig([], '');
-        if (!$include_disabled && $resource_config->get('disabled')) {
-          return NULL;
-        }
-        return new ConfigurableResourceType(
-          $entity_type_id,
-          $bundle,
-          $this->entityTypeManager->getDefinition($entity_type_id)->getClass(),
-          $resource_config,
-          $this->enhancerManager,
-          $this->configFactory
-        );
+      // Get all the tuples for the current entity type.
+      $tuples = array_map(function ($bundle) use ($entity_type_id) {
+        return [$entity_type_id, $bundle];
       }, $bundles);
-      $resource_types = array_merge($resource_types, $current_types);
-    }
+      // Append the tuples to the aggregated list.
+      return array_merge($carry, $tuples);
+    }, []);
+  }
 
-    $this->resourceTypes = array_filter($resource_types);
-    return $this->resourceTypes;
+  /**
+   * {@inheritdoc}
+   */
+  public function getPathPrefix() {
+    return $this->configFactory
+      ->get('jsonapi_extras.settings')
+      ->get('path_prefix');
   }
 
 }

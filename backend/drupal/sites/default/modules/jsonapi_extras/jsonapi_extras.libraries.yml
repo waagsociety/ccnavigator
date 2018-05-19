@@ -9,3 +9,15 @@ admin:
     - core/jquery
     - core/drupal
     - core/jquery.once
+
+expandable_rows_table:
+  version: VERSION
+  css:
+    theme:
+      css/jsonapi_extras.expandable_rows_table.css: {}
+  js:
+    js/jsonapi_extras.expandable_rows_table.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/jquery.once

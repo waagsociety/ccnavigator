@@ -7,10 +7,13 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
+ * The validator.
  */
 class DuplicateFieldConstraintValidator extends ConstraintValidator {
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
@@ -29,7 +32,7 @@ class DuplicateFieldConstraintValidator extends ConstraintValidator {
     $resourceFields = $entity_data['resourceFields'];
     $overrides = [];
 
-    // Get the field values
+    // Get the field values.
     foreach ($resourceFields as $field => $data) {
       // Only get the overridden fields.
       if ($data['fieldName'] != $data['publicName']) {
@@ -49,7 +52,8 @@ class DuplicateFieldConstraintValidator extends ConstraintValidator {
           ->addViolation();
       }
     }
-    // Now compare the overrides with the default names to validate no dupes exist.
+    // Now compare the overrides with the default names to validate no dupes
+    // exist.
     foreach ($overrides as $field => $override) {
       if (array_key_exists($override, $resourceFields)) {
         $this->context->buildViolation($constraint->message)
@@ -58,7 +62,7 @@ class DuplicateFieldConstraintValidator extends ConstraintValidator {
       }
     }
 
-    // Validate URL and resource type
+    // Validate URL and resource type.
     $resource_types = $this->entityTypeManager
       ->getStorage('jsonapi_resource_config')
       ->loadByProperties(['disabled' => FALSE]);
@@ -68,7 +72,10 @@ class DuplicateFieldConstraintValidator extends ConstraintValidator {
       }
 
       if ($resource_type->get('resourceType') == $entity_data['resourceType']) {
-        $this->context->buildViolation('There is already resource (@name) with this resource type.', ['@name' => $resource_type->id()])
+        $this->context->buildViolation(
+          'There is already resource (@name) with this resource type.',
+          ['@name' => $resource_type->id()]
+        )
           ->atPath('resourceType')
           ->addViolation();
       }

@@ -1,18 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: e0ipso
- * Date: 17/09/2017
- * Time: 13:12
- */
 
 namespace Drupal\jsonapi\ResourceType;
 
-
-use Symfony\Component\HttpKernel\Exception\PreconditionFailedHttpException;
-
 /**
  * Provides a repository of all JSON API resource types.
+ *
+ * @internal
  */
 interface ResourceTypeRepositoryInterface {
 
@@ -47,5 +40,13 @@ interface ResourceTypeRepositoryInterface {
    *   The resource type, or NULL if none found.
    */
   public function getByTypeName($type_name);
+
+  /**
+   * Gets the path prefix for routes managed by JSON API.
+   *
+   * @return string
+   *   The route prefix in the JSON API route paths.
+   */
+  public function getPathPrefix();
 
 }

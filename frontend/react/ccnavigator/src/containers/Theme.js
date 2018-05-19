@@ -25,6 +25,14 @@ class Theme extends React.Component {
   }
 
   componentDidMount() {
+    this.update();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.update();
+  }
+
+  update() {
     var entityId = this.props.match.params.id;
     console.log("****", entityId);
     //get hierarchy path of this term
@@ -38,13 +46,13 @@ class Theme extends React.Component {
       this.setState({termEntity: termEntity});
     }.bind(this));
     //full info on all nodes that have this term
-    var filter = {};
-    //filter["field_category.uuid"] = entityId;
-    //filter["field_group_size.uuid"] = "1dce75e9-929d-4071-a91e-a5d6db08d2f5";
-    ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
-      //console.log("node entities", nodeEntities);
-      this.setState({nodeEntities: nodeEntities});
-    }.bind(this));
+    ApiHelper.instance().buildFilter((filter) => {
+      filter["field_category.uuid"] = entityId;
+      ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
+        //console.log("node entities", nodeEntities);
+        this.setState({nodeEntities: nodeEntities});
+      }.bind(this));
+    });
   }
 
   onToolSelected(item) {
@@ -91,7 +99,7 @@ class Theme extends React.Component {
 
         var description = node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
         var metaData = (
-          <div class="short-tool-metas">
+          <div className="short-tool-metas">
             <div className="short-tool-meta">
               <span className="short-tool-meta-icon"></span>
               <span className="short-tool-meta-value">0-5</span>
@@ -138,6 +146,14 @@ class Theme extends React.Component {
 
 }
 
-Theme = connect()(Theme)
+/**
+ * update when language or filters change
+ */
+const mapStateToProps = (state, ownProps) => ({
+  language: state.language,
+  filtersSelected: state.toolFiltersApplied
+})
+
+Theme = connect(mapStateToProps)(Theme)
 
 export default Theme;

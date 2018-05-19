@@ -2,33 +2,37 @@
 
 namespace Drupal\jsonapi\Normalizer\Value;
 
-use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\jsonapi\Normalizer\CacheableDependencyTrait;
 
 /**
+ * Helps normalize fields in compliance with the JSON API spec.
+ *
  * @internal
  */
 class FieldNormalizerValue implements FieldNormalizerValueInterface {
 
-  use RefinableCacheableDependencyTrait;
+  use CacheableDependencyTrait;
+  use CacheableDependenciesMergerTrait;
 
   /**
    * The values.
    *
-   * @param array
+   * @var array
    */
   protected $values;
 
   /**
    * The includes.
    *
-   * @param array
+   * @var array
    */
   protected $includes;
 
   /**
    * The field cardinality.
    *
-   * @param integer
+   * @var int
    */
   protected $cardinality;
 
@@ -42,18 +46,29 @@ class FieldNormalizerValue implements FieldNormalizerValueInterface {
   /**
    * Instantiate a FieldNormalizerValue object.
    *
+   * @param \Drupal\Core\Access\AccessResultInterface $field_access_result
+   *   The field access result.
    * @param \Drupal\jsonapi\Normalizer\Value\FieldItemNormalizerValue[] $values
    *   The normalized result.
    * @param int $cardinality
    *   The cardinality of the field list.
+   * @param string $property_type
+   *   The property type of the field: 'attributes' or 'relationships'.
    */
-  public function __construct(array $values, $cardinality) {
+  public function __construct(AccessResultInterface $field_access_result, array $values, $cardinality, $property_type) {
+    assert($property_type === 'attributes' || $property_type === 'relationships');
+    $this->setCacheability(static::mergeCacheableDependencies(array_merge([$field_access_result], $values)));
+
     $this->values = $values;
     $this->includes = array_map(function ($value) {
+      if (!$value instanceof RelationshipItemNormalizerValue) {
+        return NULL;
+      }
       return $value->getInclude();
     }, $values);
     $this->includes = array_filter($this->includes);
     $this->cardinality = $cardinality;
+    $this->propertyType = $property_type;
   }
 
   /**
@@ -63,11 +78,16 @@ class FieldNormalizerValue implements FieldNormalizerValueInterface {
     if (empty($this->values)) {
       return NULL;
     }
-    return $this->cardinality == 1 ?
-      $this->values[0]->rasterizeValue() :
-      array_map(function ($value) {
-        return $value->rasterizeValue();
-      }, $this->values);
+
+    if ($this->cardinality == 1) {
+      assert(count($this->values) === 1);
+      return $this->values[0] instanceof FieldItemNormalizerValue
+        ? $this->values[0]->rasterizeValue() : NULL;
+    }
+
+    return array_map(function ($value) {
+      return $value instanceof FieldItemNormalizerValue ? $value->rasterizeValue() : NULL;
+    }, $this->values);
   }
 
   /**
@@ -91,20 +111,6 @@ class FieldNormalizerValue implements FieldNormalizerValueInterface {
    */
   public function getPropertyType() {
     return $this->propertyType;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setPropertyType($property_type) {
-    $this->propertyType = $property_type;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setIncludes($includes) {
-    $this->includes = $includes;
   }
 
   /**

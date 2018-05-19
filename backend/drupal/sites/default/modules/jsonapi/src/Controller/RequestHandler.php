@@ -2,89 +2,147 @@
 
 namespace Drupal\jsonapi\Controller;
 
-use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Render\RenderContext;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\jsonapi\Context\CurrentContext;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Render\RendererInterface;
+use Drupal\jsonapi\LinkManager\LinkManager;
+use Drupal\jsonapi\ResourceType\ResourceType;
+use Drupal\jsonapi\ResourceType\ResourceTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\Route;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Acts as intermediate request forwarder for resource plugins.
+ * Acts as request forwarder for \Drupal\jsonapi\Controller\EntityResource.
  *
  * @internal
  */
-class RequestHandler implements ContainerAwareInterface, ContainerInjectionInterface {
-
-  use ContainerAwareTrait;
-
-  protected static $requiredCacheContexts = ['user.permissions'];
+class RequestHandler {
 
   /**
-   * {@inheritdoc}
+   * The JSON API serializer.
+   *
+   * @var \Drupal\jsonapi\Serializer\Serializer
    */
-  public static function create(ContainerInterface $container) {
-    return new static();
+  protected $serializer;
+
+  /**
+   * The renderer.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The JSON API resource type repository.
+   *
+   * @var \Drupal\jsonapi\ResourceType\ResourceTypeRepositoryInterface
+   */
+  protected $resourceTypeRepository;
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $fieldManager;
+
+  /**
+   * The field type manager.
+   *
+   * @var \Drupal\Core\Field\FieldTypePluginManagerInterface
+   */
+  protected $fieldTypeManager;
+
+  /**
+   * The JSON API link manager.
+   *
+   * @var \Drupal\jsonapi\LinkManager\LinkManager
+   */
+  protected $linkManager;
+
+  /**
+   * Creates a new RequestHandler instance.
+   *
+   * @param \Symfony\Component\Serializer\SerializerInterface $serializer
+   *   The JSON API serializer.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
+   * @param \Drupal\jsonapi\ResourceType\ResourceTypeRepositoryInterface $resource_type_repository
+   *   The resource type repository.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager
+   *   The entity field manager.
+   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager
+   *   The field type manager.
+   * @param \Drupal\jsonapi\LinkManager\LinkManager $link_manager
+   *   The JSON API link manager.
+   */
+  public function __construct(SerializerInterface $serializer, RendererInterface $renderer, ResourceTypeRepositoryInterface $resource_type_repository, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $field_manager, FieldTypePluginManagerInterface $field_type_manager, LinkManager $link_manager) {
+    $this->serializer = $serializer;
+    $this->renderer = $renderer;
+    $this->resourceTypeRepository = $resource_type_repository;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->fieldManager = $field_manager;
+    $this->fieldTypeManager = $field_type_manager;
+    $this->linkManager = $link_manager;
   }
 
   /**
-   * Handles a web API request.
+   * Handles a JSON API request.
    *
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The HTTP request object.
+   * @param \Drupal\jsonapi\ResourceType\ResourceType $resource_type
+   *   The JSON API resource type for the current request.
    *
    * @return \Drupal\Core\Cache\CacheableResponseInterface
    *   The response object.
    */
-  public function handle(RouteMatchInterface $route_match, Request $request) {
-    $method = strtolower($request->getMethod());
-    $route = $route_match->getRouteObject();
-
-    // Deserialize incoming data if available.
-    /* @var \Symfony\Component\Serializer\SerializerInterface $serializer */
-    $serializer = $this->container->get('serializer');
-    /* @var \Drupal\jsonapi\Context\CurrentContext $current_context */
-    $current_context = $this->container->get('jsonapi.current_context');
-    $current_context->reset();
-    $unserialized = $this->deserializeBody($request, $serializer, $route->getOption('serialization_class'), $current_context);
-    if ($unserialized instanceof Response && !$unserialized->isSuccessful()) {
-      return $unserialized;
-    }
+  public function handle(Request $request, ResourceType $resource_type) {
+    $unserialized = $this->deserialize($request, $resource_type);
 
     // Determine the request parameters that should be passed to the resource
     // plugin.
-    $route_parameters = $route_match->getParameters();
     $parameters = [];
 
-    // Filter out all internal parameters starting with "_".
-    foreach ($route_parameters as $key => $parameter) {
-      if ($key{0} !== '_') {
-        $parameters[] = $parameter;
-      }
+    $entity_type_id = $resource_type->getEntityTypeId();
+    if ($entity = $request->get($entity_type_id)) {
+      $parameters[$entity_type_id] = $entity;
+    }
+
+    if ($related = $request->get('related')) {
+      $parameters['related'] = $related;
     }
 
     // Invoke the operation on the resource plugin.
-    $action = $this->action($route_match, $method);
-    $resource = $this->resourceFactory($route, $current_context);
+    $action = $this->action($request, $resource_type);
+    $resource = $this->resourceFactory($resource_type);
 
     // Only add the unserialized data if there is something there.
     $extra_parameters = $unserialized ? [$unserialized, $request] : [$request];
 
-    // Execute the request in context so the cacheable metadata from the entity
-    // grants system is caught and added to the response. This is surfaced when
-    // executing the underlying entity query.
+    // @todo Remove this in https://www.drupal.org/project/jsonapi/issues/2952714.
+    // Note that \Drupal\jsonapi\EventSubscriber\ResourceResponseSubscriber::renderResponseBody
+    // does normalization within a render context. This only calls a method on
+    // EntityResource in a render context. Because some methods generate URLs
+    // there, rather than during normalization. Ideally, that would not happen,
+    // then this would not be necessary.
     $context = new RenderContext();
-    /** @var \Drupal\Core\Cache\CacheableResponseInterface $response */
-    $response = $this->container->get('renderer')
+    $response = $this->renderer
       ->executeInRenderContext($context, function () use ($resource, $action, $parameters, $extra_parameters) {
         return call_user_func_array([$resource, $action], array_merge($parameters, $extra_parameters));
       });
@@ -96,63 +154,90 @@ class RequestHandler implements ContainerAwareInterface, ContainerInjectionInter
   }
 
   /**
-   * Deserializes the sent data.
+   * Deserializes request body, if any.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The request.
-   * @param \Symfony\Component\Serializer\SerializerInterface $serializer
-   *   The serializer for the deserialization of the input data.
-   * @param string $serialization_class
-   *   The class the input data needs to deserialize into.
-   * @param \Drupal\jsonapi\Context\CurrentContext $current_context
-   *   The current context.
+   *   The HTTP request object.
+   * @param \Drupal\jsonapi\ResourceType\ResourceType $resource_type
+   *   The JSON API resource type for the current request.
    *
-   * @return mixed
-   *   The deserialized data or a Response object in case of error.
+   * @return array|null
+   *   An object normalization, if there is a valid request body. NULL if there
+   *   is no request body.
+   *
+   * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+   *   Thrown if the request body cannot be decoded, or when no request body was
+   *   provided with a POST or PATCH request.
+   * @throws \Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException
+   *   Thrown if the request body cannot be denormalized.
    */
-  public function deserializeBody(Request $request, SerializerInterface $serializer, $serialization_class, CurrentContext $current_context) {
-    $received = $request->getContent();
-    if (empty($received) || $request->isMethodSafe()) {
+  protected function deserialize(Request $request, ResourceType $resource_type) {
+    if ($request->isMethodSafe(FALSE)) {
       return NULL;
     }
-    $format = $request->getContentType();
-    try {
-      return $serializer->deserialize($received, $serialization_class, $format, [
-        'related' => $request->get('related'),
-        'target_entity' => $request->get($current_context->getResourceType()->getEntityTypeId()),
-        'resource_type' => $current_context->getResourceType(),
-      ]);
+
+    // Deserialize incoming data if available.
+    $received = $request->getContent();
+    $unserialized = NULL;
+    if (!empty($received)) {
+      // First decode the request data. We can then determine if the
+      // serialized data was malformed.
+      try {
+        $unserialized = $this->serializer->decode($received, 'api_json');
+      }
+      catch (UnexpectedValueException $e) {
+        // If an exception was thrown at this stage, there was a problem
+        // decoding the data. Throw a 400 http exception.
+        throw new BadRequestHttpException($e->getMessage());
+      }
+
+      $field_related = $resource_type->getInternalName($request->get('related'));
+      try {
+        $unserialized = $this->serializer->denormalize($unserialized, $request->get('serialization_class'), 'api_json', [
+          'related' => $field_related,
+          'target_entity' => $request->get($resource_type->getEntityTypeId()),
+          'resource_type' => $resource_type,
+        ]);
+      }
+      // These two serialization exception types mean there was a problem with
+      // the structure of the decoded data and it's not valid.
+      catch (UnexpectedValueException $e) {
+        throw new UnprocessableEntityHttpException($e->getMessage());
+      }
+      catch (InvalidArgumentException $e) {
+        throw new UnprocessableEntityHttpException($e->getMessage());
+      }
     }
-    catch (UnexpectedValueException $e) {
-      throw new UnprocessableEntityHttpException(
-        sprintf('There was an error un-serializing the data. Message: %s', $e->getMessage()),
-        $e
-      );
+    elseif ($request->isMethod('POST') || $request->isMethod('PATCH')) {
+      throw new BadRequestHttpException('Empty request body.');
     }
+
+    return $unserialized;
   }
 
   /**
    * Gets the method to execute in the entity resource.
    *
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match.
-   * @param string $method
-   *   The lowercase HTTP method.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request being handled.
+   * @param \Drupal\jsonapi\ResourceType\ResourceType $resource_type
+   *   The JSON API resource type for the current request.
    *
    * @return string
    *   The method to execute in the EntityResource.
    */
-  protected function action(RouteMatchInterface $route_match, $method) {
-    $on_relationship = ($route_match->getRouteObject()->getDefault('_on_relationship'));
-    switch ($method) {
+  protected function action(Request $request, ResourceType $resource_type) {
+    $on_relationship = (bool) $request->get('_on_relationship');
+    switch (strtolower($request->getMethod())) {
+      case 'head':
       case 'get':
         if ($on_relationship) {
           return 'getRelationship';
         }
-        elseif ($route_match->getParameter('related')) {
+        elseif ($request->get('related')) {
           return 'getRelated';
         }
-        return $this->getEntity($route_match) ? 'getIndividual' : 'getCollection';
+        return $request->get($resource_type->getEntityTypeId()) ? 'getIndividual' : 'getCollection';
 
       case 'post':
         return ($on_relationship) ? 'createRelationship' : 'createIndividual';
@@ -166,51 +251,22 @@ class RequestHandler implements ContainerAwareInterface, ContainerInjectionInter
   }
 
   /**
-   * Gets the entity for the operation.
-   *
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The matched route.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   The upcasted entity.
-   */
-  protected function getEntity(RouteMatchInterface $route_match) {
-    $route = $route_match->getRouteObject();
-    return $route_match->getParameter($route->getRequirement('_entity_type'));
-  }
-
-  /**
    * Get the resource.
    *
-   * @param \Symfony\Component\Routing\Route $route
-   *   The matched route.
-   * @param \Drupal\jsonapi\Context\CurrentContext $current_context
-   *   The current context.
+   * @param \Drupal\jsonapi\ResourceType\ResourceType $resource_type
+   *   The JSON API resource type for the current request.
    *
    * @return \Drupal\jsonapi\Controller\EntityResource
    *   The instantiated resource.
    */
-  protected function resourceFactory(Route $route, CurrentContext $current_context) {
-    /** @var \Drupal\jsonapi\ResourceType\ResourceTypeRepositoryInterface $resource_type_repository */
-    $resource_type_repository = $this->container->get('jsonapi.resource_type.repository');
-    /* @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
-    $entity_type_manager = $this->container->get('entity_type.manager');
-    /* @var \Drupal\jsonapi\Query\QueryBuilder $query_builder */
-    $query_builder = $this->container->get('jsonapi.query_builder');
-    /* @var \Drupal\Core\Entity\EntityFieldManagerInterface $field_manager */
-    $field_manager = $this->container->get('entity_field.manager');
-    /* @var \Drupal\Core\Field\FieldTypePluginManagerInterface $plugin_manager */
-    $plugin_manager = $this->container->get('plugin.manager.field.field_type');
-    /** @var \Drupal\jsonapi\LinkManager\LinkManager $link_manager */
-    $link_manager = $this->container->get('jsonapi.link_manager');
+  protected function resourceFactory(ResourceType $resource_type) {
     $resource = new EntityResource(
-      $resource_type_repository->get($route->getRequirement('_entity_type'), $route->getRequirement('_bundle')),
-      $entity_type_manager,
-      $query_builder,
-      $field_manager,
-      $current_context,
-      $plugin_manager,
-      $link_manager
+      $resource_type,
+      $this->entityTypeManager,
+      $this->fieldManager,
+      $this->fieldTypeManager,
+      $this->linkManager,
+      $this->resourceTypeRepository
     );
     return $resource;
   }

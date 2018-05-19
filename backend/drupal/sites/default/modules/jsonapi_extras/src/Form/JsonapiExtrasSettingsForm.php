@@ -2,13 +2,41 @@
 
 namespace Drupal\jsonapi_extras\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\ProxyClass\Routing\RouteBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure JSON API settings for this site.
  */
 class JsonapiExtrasSettingsForm extends ConfigFormBase {
+
+  protected $routerBuilder;
+
+  /**
+   * Constructs a \Drupal\system\ConfigFormBase object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\Core\ProxyClass\Routing\RouteBuilder $router_builder
+   *   The router builder to rebuild menus after saving config entity.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, RouteBuilder $router_builder) {
+    parent::__construct($config_factory);
+    $this->routerBuilder = $router_builder;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('router.builder')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -64,7 +92,7 @@ class JsonapiExtrasSettingsForm extends ConfigFormBase {
       ->save();
 
     // Rebuild the router.
-    \Drupal::service('router.builder')->setRebuildNeeded();
+    $this->routerBuilder->setRebuildNeeded();
 
     parent::submitForm($form, $form_state);
   }

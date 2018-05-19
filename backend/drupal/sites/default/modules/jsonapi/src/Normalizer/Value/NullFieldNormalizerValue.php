@@ -2,14 +2,17 @@
 
 namespace Drupal\jsonapi\Normalizer\Value;
 
-use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\jsonapi\Normalizer\CacheableDependencyTrait;
 
 /**
+ * Normalizes null fields in accordance with the JSON API specification.
+ *
  * @internal
  */
 class NullFieldNormalizerValue implements FieldNormalizerValueInterface {
 
-  use RefinableCacheableDependencyTrait;
+  use CacheableDependencyTrait;
 
   /**
    * The property type.
@@ -17,6 +20,21 @@ class NullFieldNormalizerValue implements FieldNormalizerValueInterface {
    * @var mixed
    */
   protected $propertyType;
+
+  /**
+   * Instantiate a FieldNormalizerValue object.
+   *
+   * @param \Drupal\Core\Access\AccessResultInterface $field_access_result
+   *   The field access result.
+   * @param string $property_type
+   *   The property type of the field: 'attributes' or 'relationships'.
+   */
+  public function __construct(AccessResultInterface $field_access_result, $property_type) {
+    assert($property_type === 'attributes' || $property_type === 'relationships');
+    $this->setCacheability($field_access_result);
+
+    $this->propertyType = $property_type;
+  }
 
   /**
    * {@inheritdoc}
@@ -35,13 +53,6 @@ class NullFieldNormalizerValue implements FieldNormalizerValueInterface {
   /**
    * {@inheritdoc}
    */
-  public function setPropertyType($property_type) {
-    $this->propertyType = $property_type;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function rasterizeValue() {
     return NULL;
   }
@@ -51,13 +62,6 @@ class NullFieldNormalizerValue implements FieldNormalizerValueInterface {
    */
   public function rasterizeIncludes() {
     return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setIncludes($includes) {
-    // Do nothing.
   }
 
   /**

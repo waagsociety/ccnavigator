@@ -3,33 +3,15 @@
 namespace Drupal\jsonapi_extras\Plugin;
 
 use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Shaper\DataAdaptor\ReversibleTransformationInterface;
+use Shaper\DataAdaptor\ReversibleTransformationValidationInterface;
+use Shaper\Transformation\TransformationInterface;
+use Shaper\Transformation\TransformationValidationInterface;
 
 /**
  * Provides an interface defining a ResourceFieldEnhancer entity.
  */
-interface ResourceFieldEnhancerInterface extends ConfigurablePluginInterface {
-
-  /**
-   * Apply the last transformations to the output value of a single field.
-   *
-   * @param mixed $value
-   *   The value to be processed after being prepared for output.
-   *
-   * @return mixed
-   *   The value after being post processed.
-   */
-  public function postProcess($value);
-
-  /**
-   * Apply the initial transformations to the input value of a single field.
-   *
-   * @param mixed $value
-   *   The value to be processed so it can be used as an input.
-   *
-   * @return mixed
-   *   The value after being post precessed.
-   */
-  public function prepareForInput($value);
+interface ResourceFieldEnhancerInterface extends TransformationInterface, ReversibleTransformationInterface, TransformationValidationInterface, ReversibleTransformationValidationInterface {
 
   /**
    * Get the JSON Schema for the new output.
@@ -37,7 +19,7 @@ interface ResourceFieldEnhancerInterface extends ConfigurablePluginInterface {
    * @return array
    *   An structured array representing the JSON Schema of the new output.
    */
-  public function getJsonSchema();
+  public function getOutputJsonSchema();
 
   /**
    * Get a form element to render the settings.

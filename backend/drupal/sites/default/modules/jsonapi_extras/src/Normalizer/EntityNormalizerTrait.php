@@ -40,11 +40,21 @@ trait EntityNormalizerTrait {
       if (isset($field_storage_definitions[$internal_name])) {
         $field_storage_definition = $field_storage_definitions[$internal_name];
         if ($field_storage_definition->getCardinality() === 1) {
-          $field_value = $enhancer ? $enhancer->prepareForInput($field_value) : $field_value;
+          try {
+            $field_value = $enhancer ? $enhancer->transform($field_value) : $field_value;
+          }
+          catch (\TypeError $exception) {
+            $field_value = NULL;
+          }
         }
         elseif (is_array($field_value)) {
           foreach ($field_value as $key => $individual_field_value) {
-            $field_value[$key] = $enhancer ? $enhancer->prepareForInput($individual_field_value) : $individual_field_value;
+            try {
+              $field_value[$key] = $enhancer ? $enhancer->transform($individual_field_value) : $individual_field_value;
+            }
+            catch (\TypeError $exception) {
+              $field_value[$key] = NULL;
+            }
           }
         }
       }
@@ -66,9 +76,11 @@ trait EntityNormalizerTrait {
     $entity_type_id = $resource_type->getEntityTypeId();
     $bundle_id = $resource_type->getBundle();
     // The output depends on the configuration entity for caching.
-    $context['cacheable_metadata']->addCacheableDependency(
-      $this->getResourceConfig($entity_type_id, $bundle_id)
-    );
+    if ($resource_config = $this->getResourceConfig($entity_type_id, $bundle_id)) {
+      $context['cacheable_metadata']->addCacheableDependency(
+        $resource_config
+      );
+    }
     $context['cacheable_metadata']->addCacheableDependency(
       \Drupal::config('jsonapi_extras.settings')
     );

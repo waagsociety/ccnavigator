@@ -16,10 +16,13 @@ use Drupal\jsonapi\Normalizer\EntityReferenceFieldNormalizer;
 use Drupal\jsonapi\LinkManager\LinkManager;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @coversDefaultClass \Drupal\jsonapi\Normalizer\EntityReferenceFieldNormalizer
  * @group jsonapi
+ *
+ * @internal
  */
 class EntityReferenceFieldNormalizerTest extends UnitTestCase {
 
@@ -130,7 +133,6 @@ class EntityReferenceFieldNormalizerTest extends UnitTestCase {
 
   /**
    * @covers ::denormalize
-   * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
    * @dataProvider denormalizeInvalidResourceProvider
    */
   public function testDenormalizeInvalidResource($data, $field_name) {
@@ -139,6 +141,7 @@ class EntityReferenceFieldNormalizerTest extends UnitTestCase {
       'related' => $field_name,
       'target_entity' => $this->prophesize(FieldableEntityInterface::class)->reveal(),
     ];
+    $this->setExpectedException(BadRequestHttpException::class);
     $this->normalizer->denormalize($data, NULL, 'api_json', $context);
   }
 
@@ -150,9 +153,37 @@ class EntityReferenceFieldNormalizerTest extends UnitTestCase {
    */
   public function denormalizeInvalidResourceProvider() {
     return [
-      [['data' => [['type' => 'invalid', 'id' => '4e6cb61d-4f04-437f-99fe-42c002393658']]], 'field_dummy'],
-      [['data' => ['type' => 'lorem', 'id' => '4e6cb61d-4f04-437f-99fe-42c002393658']], 'field_dummy'],
-      [['data' => [['type' => 'lorem', 'id' => '4e6cb61d-4f04-437f-99fe-42c002393658']]], 'field_dummy_single'],
+      [
+        [
+          'data' => [
+            [
+              'type' => 'invalid',
+              'id' => '4e6cb61d-4f04-437f-99fe-42c002393658',
+            ],
+          ],
+        ],
+        'field_dummy',
+      ],
+      [
+        [
+          'data' => [
+            'type' => 'lorem',
+            'id' => '4e6cb61d-4f04-437f-99fe-42c002393658',
+          ],
+        ],
+        'field_dummy',
+      ],
+      [
+        [
+          'data' => [
+            [
+              'type' => 'lorem',
+              'id' => '4e6cb61d-4f04-437f-99fe-42c002393658',
+            ],
+          ],
+        ],
+        'field_dummy_single',
+      ],
     ];
   }
 

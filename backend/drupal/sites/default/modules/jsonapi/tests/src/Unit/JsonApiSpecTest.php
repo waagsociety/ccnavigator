@@ -8,10 +8,14 @@ use Drupal\Tests\UnitTestCase;
 /**
  * @coversDefaultClass \Drupal\jsonapi\JsonApiSpec
  * @group jsonapi
+ *
+ * @internal
  */
 class JsonApiSpecTest extends UnitTestCase {
 
   /**
+   * Ensures that member names are properly validated.
+   *
    * @dataProvider providerTestIsValidMemberName
    * @covers ::isValidMemberName
    */
@@ -19,6 +23,9 @@ class JsonApiSpecTest extends UnitTestCase {
     $this->assertSame($expected, JsonApiSpec::isValidMemberName($member_name));
   }
 
+  /**
+   * Data provider for testIsValidMemberName.
+   */
   public function providerTestIsValidMemberName() {
     // Copied from http://jsonapi.org/format/upcoming/#document-member-names.
     $data = [];
@@ -87,6 +94,8 @@ class JsonApiSpecTest extends UnitTestCase {
   }
 
   /**
+   * Provides test cases.
+   *
    * @dataProvider providerTestIsValidCustomQueryParameter
    * @covers ::isValidCustomQueryParameter
    * @covers ::isValidMemberName
@@ -95,6 +104,9 @@ class JsonApiSpecTest extends UnitTestCase {
     $this->assertSame($expected, JsonApiSpec::isValidCustomQueryParameter($custom_query_parameter));
   }
 
+  /**
+   * Data provider for testIsValidCustomQueryParameter.
+   */
   public function providerTestIsValidCustomQueryParameter() {
     $data = $this->providerTestIsValidMemberName();
 

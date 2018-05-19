@@ -3,6 +3,8 @@
 namespace Drupal\jsonapi\Normalizer;
 
 use Drupal\Core\Access\AccessibleInterface;
+use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -10,13 +12,17 @@ use Drupal\jsonapi\ResourceType\ResourceTypeRepositoryInterface;
 use Drupal\jsonapi\Resource\EntityCollection;
 
 /**
+ * Represents a relationship between resources.
+ *
  * Use this class to create a relationship in your normalizer without having an
  * entity reference field: allows for "virtual" relationships that are not
  * backed by a stored entity reference.
  *
  * @internal
  */
-class Relationship implements AccessibleInterface {
+class Relationship implements AccessibleInterface, CacheableDependencyInterface {
+
+  use CacheableDependencyTrait;
 
   /**
    * Cardinality.
@@ -60,23 +66,29 @@ class Relationship implements AccessibleInterface {
    *   The JSON API resource type repository.
    * @param string $field_name
    *   The name of the relationship.
-   * @param int $cardinality
-   *   The relationship cardinality.
    * @param \Drupal\jsonapi\Resource\EntityCollection $entities
    *   A collection of entities.
    * @param \Drupal\Core\Entity\EntityInterface $host_entity
    *   The host entity.
+   * @param \Drupal\Core\Access\AccessResultInterface $view_access
+   *   The 'view' field access result. (This value object is only ever used for
+   *   normalization, and hence only for 'view' access.
+   * @param int $cardinality
+   *   The relationship cardinality.
    * @param string $target_key
    *   The property name of the relationship id.
    * @param array $entity_list_metadata
    *   An array of additional properties stored by the field and that will be
    *   added to the meta in the relationship.
    */
-  public function __construct(ResourceTypeRepositoryInterface $resource_type_repository, $field_name, $cardinality = FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED, EntityCollection $entities, EntityInterface $host_entity, $target_key = 'target_id', array $entity_list_metadata = []) {
+  public function __construct(ResourceTypeRepositoryInterface $resource_type_repository, $field_name, EntityCollection $entities, EntityInterface $host_entity, AccessResultInterface $view_access, $cardinality = FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED, $target_key = 'target_id', array $entity_list_metadata = []) {
     $this->resourceTypeRepository = $resource_type_repository;
     $this->propertyName = $field_name;
     $this->cardinality = $cardinality;
     $this->hostEntity = $host_entity;
+
+    $this->setCacheability($view_access);
+
     $this->items = [];
     foreach ($entities as $key => $entity) {
       $this->items[] = new RelationshipItem(
@@ -93,6 +105,7 @@ class Relationship implements AccessibleInterface {
    * Gets the cardinality.
    *
    * @return mixed
+   *   The cardinality of this relationship field.
    */
   public function getCardinality() {
     return $this->cardinality;
@@ -102,6 +115,7 @@ class Relationship implements AccessibleInterface {
    * Gets the host entity.
    *
    * @return \Drupal\Core\Entity\EntityInterface
+   *   The entity which contains this relationship.
    */
   public function getHostEntity() {
     return $this->hostEntity;
@@ -111,6 +125,7 @@ class Relationship implements AccessibleInterface {
    * Sets the host entity.
    *
    * @param \Drupal\Core\Entity\EntityInterface $hostEntity
+   *   The host entity.
    */
   public function setHostEntity(EntityInterface $hostEntity) {
     $this->hostEntity = $hostEntity;
@@ -128,6 +143,7 @@ class Relationship implements AccessibleInterface {
    * Gets the field name.
    *
    * @return string
+   *   The name of the relationship property.
    */
   public function getPropertyName() {
     return $this->propertyName;
@@ -137,6 +153,7 @@ class Relationship implements AccessibleInterface {
    * Gets the items.
    *
    * @return \Drupal\jsonapi\Normalizer\RelationshipItem[]
+   *   The relationship items.
    */
   public function getItems() {
     return $this->items;

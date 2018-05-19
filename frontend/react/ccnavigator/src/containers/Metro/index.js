@@ -96,7 +96,7 @@ class Metro extends React.Component {
 }
 
 /**
- * update when language changes
+ * update when language or filters change
  */
 const mapStateToProps = (state, ownProps) => ({
   language: state.language,

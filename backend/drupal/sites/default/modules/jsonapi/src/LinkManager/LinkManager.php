@@ -3,9 +3,9 @@
 namespace Drupal\jsonapi\LinkManager;
 
 use Drupal\Core\Routing\UrlGeneratorInterface;
+use Drupal\Core\Url;
 use Drupal\jsonapi\ResourceType\ResourceType;
-use Drupal\jsonapi\Routing\Param\OffsetPage;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Drupal\jsonapi\Query\OffsetPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
@@ -13,16 +13,11 @@ use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 /**
  * Class to generate links and queries for entities.
  *
- * @api
+ * @deprecated
+ *
+ * @todo Make this take cacheability into account in https://www.drupal.org/project/jsonapi/issues/2952714.
  */
 class LinkManager {
-
-  /**
-   * Used to determine the route from a given request.
-   *
-   * @var \Symfony\Component\Routing\Matcher\RequestMatcherInterface
-   */
-  protected $router;
 
   /**
    * Used to generate a link to a jsonapi representation of an entity.
@@ -34,13 +29,12 @@ class LinkManager {
   /**
    * Instantiates a LinkManager object.
    *
-   * @param \Symfony\Component\Routing\Matcher\RequestMatcherInterface $router
-   *   The router.
+   * @param \Symfony\Component\Routing\Matcher\RequestMatcherInterface|null $_router
+   *   Unused. Kept for backwards compatibility.
    * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
    *   The Url generator.
    */
-  public function __construct(RequestMatcherInterface $router, UrlGeneratorInterface $url_generator) {
-    $this->router = $router;
+  public function __construct(RequestMatcherInterface $_router = NULL, UrlGeneratorInterface $url_generator) {
     $this->urlGenerator = $url_generator;
   }
 
@@ -57,10 +51,14 @@ class LinkManager {
    * @param string $key
    *   A key to build the route identifier.
    *
-   * @return string
-   *   The URL string.
+   * @return string|null
+   *   The URL string, or NULL if the given entity is not locatable.
    */
   public function getEntityLink($entity_id, ResourceType $resource_type, array $route_parameters, $key) {
+    if (!$resource_type->isLocatable()) {
+      return NULL;
+    }
+
     $route_parameters += [
       $resource_type->getEntityTypeId() => $entity_id,
     ];
@@ -81,17 +79,12 @@ class LinkManager {
    *   The full URL.
    */
   public function getRequestLink(Request $request, $query = NULL) {
-    $query = $query ?: (array) $request->query->getIterator();
-    $result = $this->router->matchRequest($request);
-    $route_name = $result[RouteObjectInterface::ROUTE_NAME];
-    /* @var \Symfony\Component\HttpFoundation\ParameterBag $raw_variables */
-    $raw_variables = $result['_raw_variables'];
-    $route_parameters = $raw_variables->all();
-    $options = [
-      'absolute' => TRUE,
-      'query' => $query,
-    ];
-    return $this->urlGenerator->generateFromRoute($route_name, $route_parameters, $options);
+    if ($query === NULL) {
+      return $request->getUri();
+    }
+
+    $uri_without_query_string = $request->getSchemeAndHttpHost() . $request->getBaseUrl() . $request->getPathInfo();
+    return Url::fromUri($uri_without_query_string)->setOption('query', $query)->toString();
   }
 
   /**
@@ -116,14 +109,14 @@ class LinkManager {
     }
     $params = $request->get('_json_api_params');
     if ($page_param = $params[OffsetPage::KEY_NAME]) {
-      /* @var \Drupal\jsonapi\Routing\Param\OffsetPage $page_param */
+      /* @var \Drupal\jsonapi\Query\OffsetPage $page_param */
       $offset = $page_param->getOffset();
       $size = $page_param->getSize();
     }
     else {
       // Apply the defaults.
-      $offset = 0;
-      $size = OffsetPage::$maxSize;
+      $offset = OffsetPage::DEFAULT_OFFSET;
+      $size = OffsetPage::SIZE_MAX;
     }
     if ($size <= 0) {
       throw new BadRequestHttpException(sprintf('The page size needs to be a positive integer.'));
