@@ -26,6 +26,7 @@ class Theme extends React.Component {
 
   componentDidMount() {
     var entityId = this.props.match.params.id;
+    console.log("****", entityId);
     //get hierarchy path of this term
     ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
       //console.log(term)
@@ -38,8 +39,8 @@ class Theme extends React.Component {
     }.bind(this));
     //full info on all nodes that have this term
     var filter = {};
-    filter["field_category.uuid"] = entityId;
-    filter["field_group_size.uuid"] = "1dce75e9-929d-4071-a91e-a5d6db08d2f5";
+    //filter["field_category.uuid"] = entityId;
+    //filter["field_group_size.uuid"] = "1dce75e9-929d-4071-a91e-a5d6db08d2f5";
     ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
       //console.log("node entities", nodeEntities);
       this.setState({nodeEntities: nodeEntities});
