@@ -82,24 +82,14 @@ class Zone extends React.Component {
 
           var	boxes = this.state.termHierachy.children.map((term, index) => {
 
-            // if (term.nodes.length > 0) {
-            //   themeTools = term.nodes.map((node) => {
-            //     var fullNode = this.state.nodeEntities.filter(function(f){ return f.id  === node.id})[0]
-            //     return (
-            //       <span key={node.id} className="zone-tool" style={{backgroundColor: categoryColor}}>
-            //         {fullNode.attributes.title}
-            //       </span>
-            //     )
-            //   })
-            // } else {
-            //   themeTools = 'no tools yet...' // todo: make translatable
-            // }
+            // TODO FILTERS: als filter actief toevoeging aan titeltje
+            var toolsNote = (true ? <small>(matching current filters)</small> : null)
 
             //list the tools in this subcategory
             var content = (
-              <div className="zone-theme">
+              <div className="box-body">
                 <p>{term.attributes.field_subtitle}</p>
-                <div><Label value={`${term.nodes.length} tools`} size={'0.7em'} color={categoryColor} /></div>
+                <div><Label value={`${term.nodes.length} tools`} size={'0.7em'} color={categoryColor} /> {toolsNote}</div>
               </div>
             ) // todo: make translatable
 

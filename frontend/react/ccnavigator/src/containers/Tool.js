@@ -73,8 +73,8 @@ class Tool extends React.Component {
       case "application/pdf":
         filename = (item.attributes || {}).filename;
         url = (item.attributes || {}).url;
-        var label = (meta.description) ? meta.description : 'download';
-        return <a className="button" key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank">{label}</a>
+        var label = (meta.description) ? meta.description : 'download tool';
+        return <a className="button button-download" key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank">{label}</a>
       default:
         console.log("entity mime not supported:", mime);
         break;
@@ -146,19 +146,19 @@ class Tool extends React.Component {
       var description = (
         <div>
           <div className="tool-metas">
-            <div className="tool-meta">
+            <div className="tool-meta group_size">
               <span className="tool-meta-name">group size:</span>
               <span className="tool-meta-value">0-5</span>
             </div>
-            <div className="tool-meta">
+            <div className="tool-meta duration">
               <span className="tool-meta-name">duration:</span>
               <span className="tool-meta-value">30-120 min</span>
             </div>
-            <div className="tool-meta">
+            <div className="tool-meta facilitator_participant">
               <span className="tool-meta-name">facilitator / participant:</span>
               <span className="tool-meta-value">1/5</span>
             </div>
-            <div className="tool-meta">
+            <div className="tool-meta experience_level_facilitator">
               <span className="tool-meta-name">experience level facilitator:</span>
               <span className="tool-meta-value">2</span>
             </div>

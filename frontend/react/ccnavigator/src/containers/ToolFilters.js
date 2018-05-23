@@ -1,5 +1,5 @@
 import React from 'react';
-import ApiClient from 'client/ApiClient';
+//import ApiClient from 'client/ApiClient';
 import ApiHelper from 'client/ApiHelper';
 import { connect } from 'react-redux';
 import { addToolFilter, removeToolFilter, clearToolFilters } from 'actions'
@@ -9,7 +9,8 @@ class ToolFilter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filters:[]
+      filters:[],
+      toggled: false
     };
   }
 
@@ -65,27 +66,42 @@ class ToolFilter extends React.Component {
     //ApiHelper.instance().buildFilter();
   }
 
+  onToggleFiltersDisplay() {
+    this.setState({
+      toggled: !this.state.toggled
+    })
+  }
+
   onToggleTool(uuid) {
-    if(this.props.filtersSelected.find((f) => f === uuid   )) {
+    if(this.props.filtersSelected.find((f) => f === uuid)) {
       this.props.dispatch(removeToolFilter(uuid));
       console.log("remove", uuid)
     } else {
       console.log("add", uuid)
       this.props.dispatch(addToolFilter(uuid));
     }
+  }
 
+  onClearAll() {
+    this.props.filtersSelected.forEach((uuid) => {
+      this.props.dispatch(removeToolFilter(uuid));
+    })
   }
 
   render() {
 
+    var clearButton = (this.props.filtersSelected.length ? <a className="button-small button-clear" onClick={() => {this.onClearAll()}}>clear all filters</a> : null)
+
     //individual filters with options
     var filterBoxes = this.state.filters.map((filter) => {
+
+      var className = "tool-filter " + filter.vid
       var opts = filter.options.map(opt => {
           var className = this.props.filtersSelected.indexOf(opt.uuid) !== -1 ? "selected" : null;
           return <li className={className} key={opt.uuid} onClick={(evt) => {this.onToggleTool(opt.uuid)}}>{opt.name}</li>
       });
       return (
-        <div className="tool-filter" key={filter.uuid}>
+        <div className={className} key={filter.uuid}>
           <h4>{filter.name}</h4>
           <ul className="tool-filter-options">
             {opts}
@@ -94,11 +110,17 @@ class ToolFilter extends React.Component {
       );
     });
 
-    //
+    var className = "tool-filters toggle"
+    if(this.state.toggled) {
+      className += " toggled"
+    }
     return (
-      <div className="tool-filters">
-        <h3><span className="icon"></span>tool display filters</h3>
-        {filterBoxes}
+      <div className={className}>
+        <h3 className="toggle-button" onClick={() => {this.onToggleFiltersDisplay()}}><span className="icon"></span>tool display filters</h3>
+        {clearButton}
+        <div className="toggle-content">
+          {filterBoxes}
+        </div>
       </div>
     );
   }

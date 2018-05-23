@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { setLanguage } from '../../actions'
+import { setLanguage } from '../actions'
 
 class LanguageSelector extends React.Component {
 

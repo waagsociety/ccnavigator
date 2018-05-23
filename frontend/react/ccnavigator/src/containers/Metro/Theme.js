@@ -33,7 +33,7 @@ class CategoryLabel extends React.Component {
     return (
       <Link className="theme-label" to={`/navigator/theme/${this.props.uuid}`}>
         <span className="theme-label-text">{displayName}</span>
-        <Label value={this.props.count ? this.props.count : " " } color={this.props.count ? this.props.color : "lightgray"} size={'1em'} />
+        <Label value={this.props.count ? this.props.count : "0" } color={this.props.count ? this.props.color : "lightgray"} size={'1em'} />
       </Link>
     );
   }

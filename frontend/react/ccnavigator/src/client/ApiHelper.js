@@ -180,7 +180,7 @@ class ApiHelper {
     }
     //fetch and process the data
     this.buildFilter((filter) => {
-      console.log("f", filter);
+      //console.log("f", filter);
       ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "weight"], null, function(vocabulary) {
         if(vocabulary) {
           //get all tool nodes
@@ -188,7 +188,7 @@ class ApiHelper {
           //filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
 
           ApiClient.instance().fetchContentAll("node--tool", filter, ["title", "field_category"], null, function(toolData) {
-            console.log("tooldata", toolData)
+            //console.log("tooldata", toolData)
             if(toolData) {
               //restructure / extend the vocabulary data
               var vocabularyWithNodeRefs = ApiHelper.instance()._extendVocabularyWithNodeReferences(vocabulary, toolData, "field_category");

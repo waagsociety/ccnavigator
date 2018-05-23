@@ -2118,7 +2118,8 @@ h1, h2, h3, h4, h5 {
   margin: 0; }
   h1 .icon, h2 .icon, h3 .icon, h4 .icon, h5 .icon {
     font-family: "FontAwesome";
-    margin-right: 0.5em; }
+    margin-right: 0.5em;
+    vertical-align: middle; }
 
 h1, h2 {
   line-height: 1.25em; }
@@ -2152,22 +2153,275 @@ a {
   transition: color 100ms ease;
   user-select: none;
   cursor: pointer; }
-  a.button {
-    display: inline-block;
-    margin: 0 1em 1em 0;
-    line-height: 1.5em;
-    padding: 0.25em 0.5em 0;
-    background-color: #2FB6BC;
-    color: #FFF;
-    text-decoration: none;
-    text-transform: lowercase;
-    border-radius: 2px; }
-    a.button:hover {
-      opacity: 0.85; }
 
-button {
+.button,
+button,
+input[type=submit],
+input[type=button] {
+  position: relative;
+  display: inline-block;
+  line-height: 1.65em;
+  margin-bottom: 0.2rem;
+  margin-right: 0.5rem;
+  padding: 0.15em 0.6em 0.125em;
+  background: #2FB6BC;
+  border: none;
+  border-radius: 2px;
+  color: #FFF;
+  font-family: "Maax", sans-serif;
+  font-size: 1rem;
+  vertical-align: top;
+  font-weight: 400;
+  user-select: none;
   cursor: pointer;
-  user-select: none; }
+  text-decoration: none; }
+  .button:hover,
+  button:hover,
+  input[type=submit]:hover,
+  input[type=button]:hover {
+    text-decoration: none; }
+  .button:focus,
+  button:focus,
+  input[type=submit]:focus,
+  input[type=button]:focus {
+    box-shadow: 0 0 0.25rem 0 rgba(0, 0, 0, 0.5); }
+  .button:after,
+  button:after,
+  input[type=submit]:after,
+  input[type=button]:after {
+    content: " ";
+    position: absolute;
+    left: 0%;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: #258f93;
+    border-radius: 0 0 2px 2px;
+    transition: width 0ms ease; }
+  .button:hover:after, .button:focus:after,
+  button:hover:after,
+  button:focus:after,
+  input[type=submit]:hover:after,
+  input[type=submit]:focus:after,
+  input[type=button]:hover:after,
+  input[type=button]:focus:after {
+    width: 100%;
+    transition: all 200ms ease; }
+
+.button-small {
+  position: relative;
+  display: inline-block;
+  line-height: 1.55em;
+  padding: 0.15em 0.5em;
+  background: #2FB6BC;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 0.8rem;
+  vertical-align: top;
+  font-weight: 400;
+  user-select: none;
+  cursor: pointer; }
+  .button-small:hover {
+    text-decoration: none; }
+  .button-small:after {
+    content: " ";
+    position: absolute;
+    left: 0%;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: #258f93;
+    border-radius: 0 0 2px 2px;
+    transition: width 0ms ease; }
+  .button-small:hover:after {
+    width: 100%;
+    transition: all 200ms ease; }
+
+.button-link {
+  position: relative;
+  display: inline-block;
+  text-decoration: none; }
+  .button-link:hover {
+    text-decoration: none; }
+  .button-link:after {
+    content: " ";
+    position: absolute;
+    left: 0%;
+    bottom: 0;
+    height: 1px;
+    width: 0;
+    background-color: #258f93;
+    transition: width 0ms ease; }
+  .button-link:hover:after {
+    width: 100%;
+    transition: all 100ms ease; }
+
+.button-inline {
+  margin-right: -1em; }
+
+.button:before,
+.button-link:before,
+.button-small:before,
+button:before,
+input[type=submit]:before,
+input[type=button]:before {
+  font-family: "FontAwesome";
+  margin-right: 0.35rem;
+  line-height: 1rem;
+  vertical-align: middle;
+  font-size: 0.75em; }
+
+.button.button-false,
+.button-link.button-false,
+.button-small.button-false,
+button.button-false,
+input[type=submit].button-false,
+input[type=button].button-false {
+  background-color: #DA0812 !important; }
+  .button.button-false:after,
+  .button-link.button-false:after,
+  .button-small.button-false:after,
+  button.button-false:after,
+  input[type=submit].button-false:after,
+  input[type=button].button-false:after {
+    background-color: #a9060e !important; }
+
+.button.button-check:before,
+.button-link.button-check:before,
+.button-small.button-check:before,
+button.button-check:before,
+input[type=submit].button-check:before,
+input[type=button].button-check:before {
+  content: ""; }
+
+.button.button-reject:before,
+.button-link.button-reject:before,
+.button-small.button-reject:before,
+button.button-reject:before,
+input[type=submit].button-reject:before,
+input[type=button].button-reject:before {
+  content: ""; }
+
+.button.button-add:before,
+.button-link.button-add:before,
+.button-small.button-add:before,
+button.button-add:before,
+input[type=submit].button-add:before,
+input[type=button].button-add:before {
+  content: ""; }
+
+.button.button-lock:before,
+.button-link.button-lock:before,
+.button-small.button-lock:before,
+button.button-lock:before,
+input[type=submit].button-lock:before,
+input[type=button].button-lock:before {
+  content: ""; }
+
+.button.button-unlock:before,
+.button-link.button-unlock:before,
+.button-small.button-unlock:before,
+button.button-unlock:before,
+input[type=submit].button-unlock:before,
+input[type=button].button-unlock:before {
+  content: ""; }
+
+.button.button-done:before,
+.button-link.button-done:before,
+.button-small.button-done:before,
+button.button-done:before,
+input[type=submit].button-done:before,
+input[type=button].button-done:before {
+  content: ""; }
+
+.button.button-prev:before,
+.button-link.button-prev:before,
+.button-small.button-prev:before,
+button.button-prev:before,
+input[type=submit].button-prev:before,
+input[type=button].button-prev:before {
+  content: ""; }
+
+.button.button-next:before,
+.button-link.button-next:before,
+.button-small.button-next:before,
+button.button-next:before,
+input[type=submit].button-next:before,
+input[type=button].button-next:before {
+  content: ""; }
+
+.button.button-save:before,
+.button-link.button-save:before,
+.button-small.button-save:before,
+button.button-save:before,
+input[type=submit].button-save:before,
+input[type=button].button-save:before {
+  content: ""; }
+
+.button.button-edit:before,
+.button-link.button-edit:before,
+.button-small.button-edit:before,
+button.button-edit:before,
+input[type=submit].button-edit:before,
+input[type=button].button-edit:before {
+  content: ""; }
+
+.button.button-info:before,
+.button-link.button-info:before,
+.button-small.button-info:before,
+button.button-info:before,
+input[type=submit].button-info:before,
+input[type=button].button-info:before {
+  content: ""; }
+
+.button.button-export:before,
+.button-link.button-export:before,
+.button-small.button-export:before,
+button.button-export:before,
+input[type=submit].button-export:before,
+input[type=button].button-export:before {
+  content: ""; }
+
+.button.button-refresh:before,
+.button-link.button-refresh:before,
+.button-small.button-refresh:before,
+button.button-refresh:before,
+input[type=submit].button-refresh:before,
+input[type=button].button-refresh:before {
+  content: ""; }
+
+.button.button-calendar:before,
+.button-link.button-calendar:before,
+.button-small.button-calendar:before,
+button.button-calendar:before,
+input[type=submit].button-calendar:before,
+input[type=button].button-calendar:before {
+  content: ""; }
+
+.button.button-delete:before,
+.button-link.button-delete:before,
+.button-small.button-delete:before,
+button.button-delete:before,
+input[type=submit].button-delete:before,
+input[type=button].button-delete:before {
+  content: ""; }
+
+.button.button-download:before,
+.button-link.button-download:before,
+.button-small.button-download:before,
+button.button-download:before,
+input[type=submit].button-download:before,
+input[type=button].button-download:before {
+  content: ""; }
+
+.button.button-clear:before,
+.button-link.button-clear:before,
+.button-small.button-clear:before,
+button.button-clear:before,
+input[type=submit].button-clear:before,
+input[type=button].button-clear:before {
+  content: ""; }
 
 input {
   font-family: "Maax", sans-serif;
@@ -2222,7 +2476,7 @@ button {
   position: relative;
   width: 55rem;
   max-width: 100%;
-  padding: 0.75rem;
+  padding: 1em;
   text-align: left; }
 
 .modal-header {
@@ -2309,16 +2563,30 @@ button {
 .label-bar {
   padding: 0 0.65em; }
 
-.toggle {
+.toggle .toggle-button {
   position: relative;
-  padding-right: 1.25em; }
-  .toggle:after {
-    content: "";
+  padding-right: 1.25em;
+  cursor: pointer;
+  user-select: none; }
+  .toggle .toggle-button:after {
+    content: "";
     font-family: "FontAwesome";
     position: absolute;
     top: 0;
     right: 0;
     cursor: pointer; }
+
+.toggle.toggled .toggle-button:after {
+  content: ""; }
+
+.toggle .toggle-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 100ms ease; }
+
+.toggle.toggled .toggle-content {
+  max-height: 600px;
+  transition: all 200ms ease; }
 
 .button-back {
   font-family: "FontAwesome";
@@ -2408,6 +2676,13 @@ button {
   .boxes .box-title {
     font-size: 1.15em;
     text-transform: lowercase; }
+  .boxes .box-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+    .boxes .box-body p:last-of-type {
+      margin-bottom: 1rem; }
 
 .header-container {
   display: flex;
@@ -2571,12 +2846,6 @@ button {
     margin-bottom: -0.05rem;
     transition: all 0ms ease; }
 
-.zone-theme {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; }
-
 .zone-tool {
   display: inline-block;
   margin: 0.5em 0.5em 0 0;
@@ -2616,25 +2885,29 @@ button {
     border-radius: 1em 0 0 1em;
     font-weight: 500; }
 
-.short-tool-metas {
-  display: flex;
-  flex-direction: row;
-  font-size: 1rem; }
-
-.short-tool-meta {
-  margin-right: 1.5em; }
-
-.short-tool-meta-icon {
-  font-family: "FontAwesome";
-  margin-right: 0.25em;
-  color: #2FB6BC; }
-
 .tool-metas {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 3rem;
   font-size: 0.9rem; }
+
+.tool-meta:before {
+  font-family: "FontAwesome";
+  margin-right: 0.25em;
+  vertical-align: middle; }
+
+.tool-meta.group_size:before {
+  content: ""; }
+
+.tool-meta.duration:before {
+  content: ""; }
+
+.tool-meta.facilitator_participant:before {
+  content: ""; }
+
+.tool-meta.experience_level_facilitator:before {
+  content: ""; }
 
 .tool-meta-name {
   display: inline-block;
@@ -2656,9 +2929,49 @@ button {
   transition: all 75ms ease;
   font-size: 0.8em; }
 
+.short-tool-metas {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.9rem;
+  flex-wrap: wrap; }
+
+.short-tool-meta {
+  margin-top: 0.5em;
+  margin-right: 1.25em; }
+  .short-tool-meta:before {
+    font-family: "FontAwesome";
+    margin-right: 0.25em;
+    color: #2FB6BC; }
+  .short-tool-meta.group_size:before {
+    content: ""; }
+  .short-tool-meta.duration:before {
+    content: ""; }
+  .short-tool-meta.facilitator_participant:before {
+    content: ""; }
+  .short-tool-meta.experience_level_facilitator:before {
+    content: ""; }
+
+.tool-filters h3 {
+  margin-bottom: 0.5em; }
+
 .tool-filter {
   margin-top: 1rem;
   margin-bottom: 1rem; }
+  .tool-filter h4 {
+    text-transform: lowercase;
+    font-size: 0.85em; }
+    .tool-filter h4:before {
+      font-family: "FontAwesome";
+      margin-right: 0.5em;
+      vertical-align: middle; }
+  .tool-filter.group_size h4:before {
+    content: ""; }
+  .tool-filter.duration h4:before {
+    content: ""; }
+  .tool-filter.facilitator_participant h4:before {
+    content: ""; }
+  .tool-filter.experience_level_facilitator h4:before {
+    content: ""; }
 
 .tool-filter-options li {
   background: #F2F2F2;
@@ -2673,8 +2986,12 @@ button {
   white-space: nowrap;
   transition: all 75ms ease;
   display: inline-block;
-  margin: 0.2em 0.4em 0.2em 0; }
-  .tool-filter-options li:hover, .tool-filter-options li.selected {
+  margin: 0.2em 0.4em 0.2em 0;
+  cursor: pointer; }
+  .tool-filter-options li:hover {
+    background-color: #000;
+    color: #FFF; }
+  .tool-filter-options li.selected {
     background-color: #2FB6BC;
     color: #FFF; }
 

@@ -19,13 +19,14 @@ class Header extends React.Component {
 
   render() {
 
+    // TODO: apply current class when current
     var navigation = (
       <nav id="site-navigation">
         <ul>
           <li>
             <Link to="/">on co-creation</Link>
           </li>
-          <li>
+          <li className="current">
             <Link to="/navigator">the navigator</Link>
           </li>
           <li>

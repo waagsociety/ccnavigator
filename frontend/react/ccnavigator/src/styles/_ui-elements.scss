@@ -1,18 +1,39 @@
 // TOGGLE
 .toggle {
-  position: relative;
-  padding-right: 1.25em;
 
-  &:after {
-    content: "";
-    font-family: "FontAwesome";
-    position: absolute;
-    top: 0;
-    right: 0;
+  .toggle-button {
+    position: relative;
+    padding-right: 1.25em;
     cursor: pointer;
+    user-select: none;
+
+    &:after {
+      content: $fa-var-angle-up;
+      font-family: "FontAwesome";
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
+  }
+  &.toggled .toggle-button:after {
+    content: $fa-var-angle-down;
+  }
+
+
+  .toggle-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 100ms ease;
+  }
+
+  &.toggled .toggle-content {
+    max-height: 600px;
+    transition: all 200ms ease;
   }
 }
 
+// ui buttons
 .button-back {
   font-family: "FontAwesome";
   position: absolute;

@@ -6,6 +6,19 @@
   font-size: 0.9rem;
 }
 
+.tool-meta {
+  &:before {
+    font-family: "FontAwesome";
+    margin-right: 0.25em;
+    vertical-align: middle;
+  }
+
+  &.group_size:before                   { content: $fa-var-child; }
+  &.duration:before                     { content: $fa-var-clock-o; }
+  &.facilitator_participant:before      { content: $fa-var-users; }
+  &.experience_level_facilitator:before { content: $fa-var-star; }
+}
+
 .tool-meta-name {
   display: inline-block;
   white-space: nowrap;
@@ -16,4 +29,29 @@
 .tool-meta-value {
   @include label($color-turquoise, #FFF);
   font-size: 0.8em;
+}
+
+
+
+.short-tool-metas {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.short-tool-meta {
+  margin-top: 0.5em;
+  margin-right: 1.25em;
+
+  &:before {
+    font-family: "FontAwesome";
+    margin-right: 0.25em;
+    color: $color-turquoise;
+  }
+
+  &.group_size:before                   { content: $fa-var-child; }
+  &.duration:before                     { content: $fa-var-clock-o; }
+  &.facilitator_participant:before      { content: $fa-var-users; }
+  &.experience_level_facilitator:before { content: $fa-var-star; }
 }

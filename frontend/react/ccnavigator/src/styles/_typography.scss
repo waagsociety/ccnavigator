@@ -2,7 +2,7 @@
 body {
   margin: 0;
   background-color: $color-background;
-  font-family: "Maax", sans-serif;
+  font-family: $font-family;
   font-size: 16px;
 
   @media (min-width: 600px) {
@@ -24,6 +24,7 @@ h1, h2, h3, h4, h5 {
   .icon {
     font-family: "FontAwesome";
     margin-right: 0.5em;
+    vertical-align: middle;
   }
 }
 h1, h2 {

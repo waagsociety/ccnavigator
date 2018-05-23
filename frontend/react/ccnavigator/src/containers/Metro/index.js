@@ -59,7 +59,7 @@ class Metro extends React.Component {
    * get the vocabulary with category labels to display on the map
    */
   update() {
-    console.log("rebuild map");
+    //console.log("rebuild map");
     ApiHelper.instance().clearCaches();
     ApiHelper.instance().buildContentHierarchy(function(hierarchy){
       this.setState({

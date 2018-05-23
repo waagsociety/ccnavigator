@@ -94,40 +94,31 @@ class Theme extends React.Component {
       var description = (this.state.termEntity.attributes.description || {}).value || ""
       description = buildJSXFromHTML(description)
 
-      var boxesTitle
       var boxes = this.state.nodeEntities.map((node) => {
 
         var description = node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
         var metaData = (
           <div className="short-tool-metas">
-            <div className="short-tool-meta">
-              <span className="short-tool-meta-icon"></span>
-              <span className="short-tool-meta-value">0-5</span>
-            </div>
-            <div className="short-tool-meta">
-              <span className="short-tool-meta-icon"></span>
-              <span className="short-tool-meta-value">30-120 min</span>
-            </div>
-            <div className="short-tool-meta">
-              <span className="short-tool-meta-icon"></span>
-              <span className="short-tool-meta-value">1/5</span>
-            </div>
-            <div className="short-tool-meta">
-              <span className="short-tool-meta-icon"></span>
-              <span className="short-tool-meta-value">2</span>
-            </div>
+            <span className="short-tool-meta group_size">0-5</span>
+            <span className="short-tool-meta duration">30-120 min</span>
+            <span className="short-tool-meta facilitator_participant">1/5</span>
+            <span className="short-tool-meta experience_level_facilitator">2</span>
           </div>
         )
 
         return {
           link: `/navigator/tool/${node.id}`,
           title: node.attributes.title,
-          content: <div>{description}{metaData}</div>
+          content: <div className="box-body">{description}{metaData}</div>
         }
       })
-      if (boxes.length > 0) {
-        boxesTitle = 'tools:'
+
+      var boxesTitle = (boxes.length > 0 ? "tools" : "no tools")
+      // TODO FILTERS: als filter actief toevoeging aan titeltje
+      if(true) {
+        boxesTitle += " (matching current tool filters)"
       }
+
 
       modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
     }
