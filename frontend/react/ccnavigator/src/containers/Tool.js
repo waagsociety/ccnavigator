@@ -144,7 +144,7 @@ class Tool extends React.Component {
 
       //body part
       var description = (
-        <div>
+        <div className="tool">
           <div className="tool-metas">
             <div className="tool-meta group_size">
               <span className="tool-meta-name">group size:</span>
