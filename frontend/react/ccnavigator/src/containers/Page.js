@@ -18,13 +18,13 @@ class Page extends React.Component {
   }
 
   componentDidMount() {
-    var path = this.props.match.path
+    var path = this.props.remotePath || this.props.match.path
 
     //full info on this node including relationships
     ApiClient.instance().fetchContent("node--page", {field_path:path}, null, null, 0, function(node, included) {
       //set content
       this.setState({
-        nodeEntity: node,
+        nodeEntity: node[0],
         includedEntities: included
       });
     }.bind(this));
@@ -45,12 +45,12 @@ class Page extends React.Component {
       //console.log(this.state.nodeEntity)
 
       //make header
-      var title =  this.state.nodeEntity[0].attributes.title || "";
-
+      var title =  this.state.nodeEntity.attributes.title || "";
+      console.log("tn", this.state.nodeEntity)
       modalHeader = <ModalHeader title={title} />
 
       //make description
-      var body = (this.state.nodeEntity[0].attributes.body || {}).value || "";
+      var body = (this.state.nodeEntity.attributes.body || {}).value || "";
       var jsx = buildJSXFromHTML(body);
 
       //body part

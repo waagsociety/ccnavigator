@@ -83,9 +83,7 @@ class App extends React.Component {
               <Footer />
             </div>
             <Switch>
-              <Route exact path="/" />
-              <Route path="/navigator" component={Metro} />
-              <Route path="*" render={() => notFound } status={404}/>
+              <Route exact path="/navigator" component={Metro} />
             </Switch>
           </MediaQuery>
 
@@ -94,23 +92,27 @@ class App extends React.Component {
               <Header />
             </div>
             <Switch>
-              <Route exact path="/" />
-              <Route path="/navigator" component={Metro} />
-              <Route path="*" render={() => notFound } status={404}/>
+              <Route exact path="/navigator" component={Metro} />
             </Switch>
             <div className="panel">
               <Footer />
             </div>
           </MediaQuery>
 
+
+
           <Switch>
-            <Route exact path="/navigator/" />
-            <Route path="/navigator/about" component={Page} />
+            <Route exact path="/navigator" />
+            //all modals render regardsless of media query
+            <Route exact path="/" render={() => <Page key="home" remotePath={"/homea"} />} />
+            <Route exact path="/about" render={() => <Page key="about" remotePath={"/about"} />} />
             <Route path="/navigator/theme/:id" component={Theme} />
             <Route path="/navigator/zone/:id" component={Zone} />
             <Route path="/navigator/tool/:id" component={Tool} />
             <Route path="/navigator/*/taxonomy/term/:id" component={GlossaryItem} />
+            <Route path="*" render={() => notFound } status={404}/>
           </Switch>
+
         </div>
       </Router>
     );
