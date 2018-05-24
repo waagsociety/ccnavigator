@@ -8,7 +8,7 @@ import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import Loading from 'components/Loading'
 import { buildJSXFromHTML} from "util/utility"
-
+import { Constants } from 'config/Constants.js'
 
 class Tool extends React.Component {
 
@@ -24,7 +24,9 @@ class Tool extends React.Component {
   componentDidMount() {
     var entityId = this.props.match.params.id;
     //full info on this node including relationships
-    ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image", "field_download"], 0, function(node, included) {
+    var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"];
+    ApiClient.instance().fetchContent("node--tool", entityId, null, includes, 0, function(node, included) {
+      console.log("tool", included)
       //set content
       this.setState({
         nodeEntity: node,
@@ -82,9 +84,19 @@ class Tool extends React.Component {
     return null;
   }
 
-
   closeModal() {
     this.props.history.push('/navigator/')
+  }
+
+  resolveRelationship(tool, relationshipName, includes) {
+    var uuidRelated = (((tool["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
+    if(uuidRelated) {
+      var found = (includes || []).find((el) => {
+        return (el || {}).id === uuidRelated;
+      });
+      return (found.attributes || {}).name;
+    }
+    return null;
   }
 
   render() {
@@ -148,19 +160,19 @@ class Tool extends React.Component {
           <div className="tool-metas">
             <div className="tool-meta group_size">
               <span className="tool-meta-name">group size:</span>
-              <span className="tool-meta-value">0-5</span>
+              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_group_size",this.state.includedEntities)}</span>
             </div>
             <div className="tool-meta duration">
               <span className="tool-meta-name">duration:</span>
-              <span className="tool-meta-value">30-120 min</span>
+              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_duration",this.state.includedEntities)}</span>
             </div>
             <div className="tool-meta facilitator_participant">
               <span className="tool-meta-name">facilitator / participant:</span>
-              <span className="tool-meta-value">1/5</span>
+              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_facilitator_participant",this.state.includedEntities)}</span>
             </div>
             <div className="tool-meta experience_level_facilitator">
               <span className="tool-meta-name">experience level facilitator:</span>
-              <span className="tool-meta-value">2</span>
+              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_experience_level",this.state.includedEntities)}</span>
             </div>
           </div>
           <div className="columns">

@@ -7,6 +7,7 @@ import ModalHeader from 'components/ModalHeader'
 import ModalBody from 'components/ModalBody'
 import Loading from 'components/Loading'
 import Label from 'components/Label'
+import { connect } from 'react-redux'
 import { Constants } from 'config/Constants.js'
 
 
@@ -25,6 +26,14 @@ class Zone extends React.Component {
   }
 
   componentDidMount() {
+    this.update();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.update();
+  }
+
+  update() {
     var entityId = this.props.match.params.id;
     //get hierarchy path of this term
     ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
@@ -32,18 +41,15 @@ class Zone extends React.Component {
     }.bind(this));
     //full info on this entity
     ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, 0, function(termEntity) {
-      //console.log("full term data", termEntity);
       this.setState({termEntity: termEntity});
     }.bind(this));
     //full info on all nodes that have this term its child terms as term
-    //var filter = {};
-    //filter["field_category.parent.uuid"] = entityId;
-    //filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
-
-    ApiClient.instance().fetchContent("node--tool", null, null, null, 0, function(nodeEntities) {
-      //console.log("node entities", nodeEntities);
-      this.setState({nodeEntities: nodeEntities});
-    }.bind(this));
+    ApiHelper.instance().buildFilter((filter) => {
+      filter["field_category.parent.uuid"] = entityId;
+      ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
+        this.setState({nodeEntities: nodeEntities});
+      }.bind(this));
+    });
   }
 
   closeModal() {
@@ -57,9 +63,6 @@ class Zone extends React.Component {
 
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
-
-
-
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
       var categoryColor = Constants.colors[Constants.zones[path].color]
@@ -68,22 +71,18 @@ class Zone extends React.Component {
       var title =  this.state.termEntity.attributes.name || ""
       var subTitle = this.state.termEntity.attributes.field_subtitle || ""
       modalHeader = <ModalHeader color={categoryColor} labels={labels} title={title} subTitle={subTitle} />
-
       //make content
       var description = (this.state.termEntity.attributes.description || {}).value || ""
       description = buildJSXFromHTML(description)
-
       //use the concise term with hierarchy to build the term box
       var	boxesTitle
-
       // if not grandparent, do boxes..
       if (this.state.termHierachy.children.length > 0) {
         if (this.state.termHierachy.children[0].children.length === 0) {
-
           var	boxes = this.state.termHierachy.children.map((term, index) => {
 
-            // TODO FILTERS: als filter actief toevoeging aan titeltje
-            var toolsNote = (true ? <small>(matching current filters)</small> : null)
+            //als filter actief toevoeging aan titeltje
+            var toolsNote = ((this.props.filtersSelected || []).length > 0 ? <small>(matching current filters)</small> : null)
 
             //list the tools in this subcategory
             var content = (
@@ -92,13 +91,11 @@ class Zone extends React.Component {
                 <div><Label value={`${term.nodes.length} tools`} size={'0.7em'} color={categoryColor} /> {toolsNote}</div>
               </div>
             ) // todo: make translatable
-
             return {
               link: `/navigator/theme/${term.id}`,
               title: term.attributes.name,
               content: content
             }
-
           });
           if (boxes.length > 0) {
             boxesTitle = 'themes:'
@@ -121,5 +118,16 @@ class Zone extends React.Component {
   }
 
 }
+
+/**
+ * update when language or filters change
+ */
+const mapStateToProps = (state, ownProps) => ({
+  language: state.language,
+  filtersSelected: state.toolFiltersApplied
+})
+
+Zone = connect(mapStateToProps)(Zone)
+
 
 export default Zone;
