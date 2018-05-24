@@ -72,7 +72,7 @@ class Theme extends React.Component {
   resolveRelationship(tool, relationshipName, includes) {
     var uuidRelated = (((tool["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
     if(uuidRelated) {
-      var found = (this.state.includedEntities || []).find((el) => {
+      var found = (includes || []).find((el) => {
         return (el || {}).id === uuidRelated;
       });
       return (found.attributes || {}).name;
@@ -88,20 +88,8 @@ class Theme extends React.Component {
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
 
-      /*var tool = this.state.nodeEntities[0]
-      if(tool) {
-        var uuidRelated = (((tool["relationships"] || {})["field_duration"] || {})["data"] || {})["id"]
-        var found = (this.state.includedEntities || []).find((el) => {
-          return (el || {}).id === uuidRelated;
-        });
-        console.log("found", (found.attributes || {}).name);
-      }*/
-
-
-
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
-
       var categoryColor
       if (Constants.zones[path]) {
         categoryColor = Constants.colors[Constants.zones[path].color]
@@ -140,8 +128,7 @@ class Theme extends React.Component {
       })
 
       var boxesTitle = (boxes.length > 0 ? "tools" : "no tools")
-      // TODO FILTERS: als filter actief toevoeging aan titeltje
-      if(true) {
+      if((this.props.filtersSelected || []).length > 0) {
         boxesTitle += " (matching current tool filters)"
       }
 
