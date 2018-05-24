@@ -104,7 +104,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/navigator" />
             //all modals render regardsless of media query
-            <Route exact path="/" render={() => <Page key="home" remotePath={"/homea"} />} />
+            <Route exact path="/" render={() => <Page key="home" remotePath={"/home"} />} />
             <Route exact path="/about" render={() => <Page key="about" remotePath={"/about"} />} />
             <Route path="/navigator/theme/:id" component={Theme} />
             <Route path="/navigator/zone/:id" component={Zone} />
