@@ -83,7 +83,7 @@ class App extends React.Component {
               <Footer />
             </div>
             <Switch>
-              <Route exact path="/navigator" component={Metro} />
+              <Route exact path="/navigator/" component={Metro} />
             </Switch>
           </MediaQuery>
 
@@ -92,7 +92,7 @@ class App extends React.Component {
               <Header />
             </div>
             <Switch>
-              <Route exact path="/navigator" component={Metro} />
+              <Route exact path="/navigator/" component={Metro} />
             </Switch>
             <div className="panel">
               <Footer />
@@ -102,7 +102,7 @@ class App extends React.Component {
 
 
           <Switch>
-            <Route exact path="/navigator" />
+            <Route exact path="/navigator/" />
             //all modals render regardsless of media query
             <Route exact path="/" render={() => <Page key="home" remotePath={"/home"} />} />
             <Route exact path="/about" render={() => <Page key="about" remotePath={"/about"} />} />

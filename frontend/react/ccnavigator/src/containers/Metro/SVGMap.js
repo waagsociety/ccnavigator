@@ -61,9 +61,9 @@ class SVGMap extends React.Component {
   //
   handleLocationChange = (location) => {
     //console.log("location")
-    if(location.pathname !== "/navigator" ) {
+    if(location.pathname !== "/navigator/" ) {
       if(this.state.didDrag) {
-        this.props.history.push("/navigator")
+        this.props.history.push("/navigator/")
       }
     }
   }
@@ -285,8 +285,6 @@ const mapStateToProps = (state, ownProps) => ({
   zoomLevelHigh: state.zoomLevelHigh
 })
 SVGMap = connect(mapStateToProps)(SVGMap, null, null, { withRef: true })
-
 SVGMap = withRouter(SVGMap)
-//export default withRouter(SVGMap);
 
 export default SVGMap;
