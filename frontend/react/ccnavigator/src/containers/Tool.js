@@ -24,7 +24,8 @@ class Tool extends React.Component {
   componentDidMount() {
     var entityId = this.props.match.params.id;
     //full info on this node including relationships
-    ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image", "field_download"], 0, function(node, included) {
+    ApiClient.instance().fetchContent("node--tool", entityId, null, ["field_image", "field_download", "field_duration"], 0, function(node, included) {
+      console.log("tool", included)
       //set content
       this.setState({
         nodeEntity: node,

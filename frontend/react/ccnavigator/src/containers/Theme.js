@@ -20,7 +20,8 @@ class Theme extends React.Component {
     this.state = {
       termHierachy:null,
       termEntity:null,
-      nodeEntities:null
+      nodeEntities:null,
+      includedEntities:null
     };
   }
 
@@ -37,20 +38,23 @@ class Theme extends React.Component {
     console.log("****", entityId);
     //get hierarchy path of this term
     ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
-      //console.log(term)
       this.setState({termHierachy: term});
     }.bind(this));
     //full info on this entity
     ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, 0, function(termEntity) {
-      //console.log("full term data", termEntity);
       this.setState({termEntity: termEntity});
     }.bind(this));
     //full info on all nodes that have this term
     ApiHelper.instance().buildFilter((filter) => {
       filter["field_category.uuid"] = entityId;
-      ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
-        //console.log("node entities", nodeEntities);
-        this.setState({nodeEntities: nodeEntities});
+      ApiClient.instance().fetchContent("node--tool", filter, null, Object.values(Constants.filterFieldMapping), 0, function(nodeEntities, included) {
+        console.log("fetch", nodeEntities)
+        console.log("inc", included);
+        //connect relationships to include in entity
+        this.setState({
+          nodeEntities: nodeEntities,
+          includedEntities: included
+        });
       }.bind(this));
     });
   }
@@ -65,6 +69,17 @@ class Theme extends React.Component {
     this.props.history.push('/navigator/')
   }
 
+  resolveRelationship(tool, relationshipName, includes) {
+    var uuidRelated = (((tool["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
+    if(uuidRelated) {
+      var found = (this.state.includedEntities || []).find((el) => {
+        return (el || {}).id === uuidRelated;
+      });
+      return (found.attributes || {}).name;
+    }
+    return null;
+  }
+
   render() {
     //show loading till we have fetched all
     var modalHeader
@@ -72,6 +87,17 @@ class Theme extends React.Component {
 
     //build content view when we have all data
     if(this.state.termHierachy && this.state.termEntity && this.state.nodeEntities) {
+
+      /*var tool = this.state.nodeEntities[0]
+      if(tool) {
+        var uuidRelated = (((tool["relationships"] || {})["field_duration"] || {})["data"] || {})["id"]
+        var found = (this.state.includedEntities || []).find((el) => {
+          return (el || {}).id === uuidRelated;
+        });
+        console.log("found", (found.attributes || {}).name);
+      }*/
+
+
 
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
@@ -99,10 +125,10 @@ class Theme extends React.Component {
         var description = node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
         var metaData = (
           <div className="short-tool-metas">
-            <span className="short-tool-meta group_size">0-5</span>
-            <span className="short-tool-meta duration">30-120 min</span>
-            <span className="short-tool-meta facilitator_participant">1/5</span>
-            <span className="short-tool-meta experience_level_facilitator">2</span>
+            <span className="short-tool-meta group_size">{this.resolveRelationship(node,"field_group_size",this.state.includedEntities)}</span>
+            <span className="short-tool-meta duration">{this.resolveRelationship(node,"field_duration",this.state.includedEntities)}</span>
+            <span className="short-tool-meta facilitator_participant">{this.resolveRelationship(node,"field_facilitator_participant",this.state.includedEntities)}</span>
+            <span className="short-tool-meta experience_level_facilitator">{this.resolveRelationship(node,"field_experience_level",this.state.includedEntities)}</span>
           </div>
         )
 
