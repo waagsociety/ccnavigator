@@ -27,13 +27,13 @@ class Home extends React.Component {
         content_1_i: included
       });
     }.bind(this));
-    ApiClient.instance().fetchContent("node--page", {field_path:"/home-2-1"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
+    ApiClient.instance().fetchContent("node--page", {field_path:"/the-society-as-research-laboratorium"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
       this.setState({
         content_2_1: node,
         content_2_1_i: included
       });
     }.bind(this));
-    ApiClient.instance().fetchContent("node--page", {field_path:"/home-2-2"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
+    ApiClient.instance().fetchContent("node--page", {field_path:"/the-power-of-co-creation"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
       this.setState({
         content_2_2: node,
         content_2_2_i: included
@@ -88,7 +88,7 @@ class Home extends React.Component {
                 <div className="pane-text">
                   <h2>{content_2_1_title}</h2>
                   <p>{content_2_1_body} [...]</p>
-                  <Link className="button-link button-go" to="/home-2-1">read more</Link>
+                  <Link className="button-link button-go" to="/the-society-as-research-laboratorium">read more</Link>
                 </div>
               </div>
 
@@ -97,7 +97,7 @@ class Home extends React.Component {
                 <div className="pane-text">
                   <h2>{content_2_2_title}</h2>
                   <p>{content_2_2_body} [...]</p>
-                  <Link className="button-link button-go" to="/home-2-2">read more</Link>
+                  <Link className="button-link button-go" to="/the-power-of-co-creation">read more</Link>
                 </div>
               </div>
             </div>

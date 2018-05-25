@@ -71,6 +71,8 @@ class App extends React.Component {
             </div>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route path="/the-society-as-research-laboratorium" component={Page} />
+              <Route path="/the-power-of-co-creation" component={Page} />
               <Route path="/navigator" component={Metro} />
               <Route path="/about" component={Page} />
               <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
@@ -83,6 +85,8 @@ class App extends React.Component {
             </div>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route path="/the-society-as-research-laboratorium" component={Page} />
+              <Route path="/the-power-of-co-creation" component={Page} />
               <Route path="/navigator" component={Metro} />
               <Route path="/about" component={Page} />
               <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
