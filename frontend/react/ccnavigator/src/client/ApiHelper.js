@@ -1,6 +1,6 @@
 import ApiClient from 'client/ApiClient'
 import Constants from 'config/Constants'
-import {flattenArray} from 'util/utility'
+//import {flattenArray} from 'util/utility'
 var _ = require('lodash');
 
 let instance = null;
@@ -38,7 +38,7 @@ class ApiHelper {
   onStoreChanged() {
     var lang = this.store.getState().language;
     if(ApiClient.instance().language !== lang) {
-      console.log("APIHelper: language changed", lang);
+      //console.log("APIHelper: language changed", lang);
       ApiClient.instance().language = lang;
       this.clearCaches();
     }

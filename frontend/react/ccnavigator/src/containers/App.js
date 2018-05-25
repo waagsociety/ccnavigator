@@ -2,7 +2,6 @@ import React from 'react';
 import Header from "containers/Header.js"
 import Footer from "containers/Footer.js"
 import Metro from "containers/Metro"
-import Modal from "components/Modal.js"
 import Home from "containers/Home.js"
 import Page from "containers/Page.js"
 import Theme from "containers/Theme.js"
@@ -10,8 +9,6 @@ import Zone from "containers/Zone.js"
 import Tool from "containers/Tool.js"
 import GlossaryItem from "containers/GlossaryItem.js"
 import MediaQuery from 'react-responsive';
-import ModalHeader from 'components/ModalHeader'
-import ModalBody from 'components/ModalBody'
 import 'styles/styles.css'
 import {
   BrowserRouter as Router,
@@ -50,7 +47,7 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log("new entity", newProps.activeEntity)
+    //console.log("new entity", newProps.activeEntity)
   }
 
   /**
@@ -74,6 +71,8 @@ class App extends React.Component {
             </div>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route path="/the-society-as-research-laboratorium" component={Page} />
+              <Route path="/the-power-of-co-creation" component={Page} />
               <Route path="/navigator" component={Metro} />
               <Route path="/about" component={Page} />
               <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
@@ -86,6 +85,8 @@ class App extends React.Component {
             </div>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route path="/the-society-as-research-laboratorium" component={Page} />
+              <Route path="/the-power-of-co-creation" component={Page} />
               <Route path="/navigator" component={Metro} />
               <Route path="/about" component={Page} />
               <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>

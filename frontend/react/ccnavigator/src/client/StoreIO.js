@@ -46,7 +46,7 @@ class StoreIO {
   }
 
   onStoreChanged() {
-    console.log("StoreIO: store changed", this.store.getState())
+    //console.log("StoreIO: store changed", this.store.getState())
   }
 
 }

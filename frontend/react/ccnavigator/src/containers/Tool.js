@@ -28,12 +28,12 @@ class Tool extends React.Component {
       this.setState({
         filterDefintions: definitions
       });
-      console.log(definitions)
+      //console.log(definitions)
     });
     //full info on this node including relationships
     var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"];
     ApiClient.instance().fetchContent("node--tool", entityId, null, includes, 0, function(node, included) {
-      console.log("tool", included)
+      //console.log("tool", included)
       //set content
       this.setState({
         nodeEntity: node,
@@ -177,7 +177,7 @@ class Tool extends React.Component {
       var metaDataFields = Object.values(Constants.filterFieldMapping).map((fieldName) => {
         var metaData = this.resolveMetaData(fieldName)
         var field  = (
-          <div className={"tool-meta " + fieldName}>
+          <div key={fieldName} className={"tool-meta " + fieldName}>
             <span className="tool-meta-name">{(metaData || {}).name}</span>
             <span className="tool-meta-value">{(metaData || {}).value}</span>
           </div>

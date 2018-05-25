@@ -2,7 +2,7 @@ import React from 'react';
 //import ApiClient from 'client/ApiClient';
 import ApiHelper from 'client/ApiHelper';
 import { connect } from 'react-redux';
-import { addToolFilter, removeToolFilter, clearToolFilters } from 'actions'
+import { addToolFilter, removeToolFilter } from 'actions'
 
 class ToolFilter extends React.Component {
 
@@ -62,7 +62,7 @@ class ToolFilter extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps", nextProps)
+    //console.log("nextProps", nextProps)
     //ApiHelper.instance().buildFilter();
   }
 
@@ -75,9 +75,7 @@ class ToolFilter extends React.Component {
   onToggleTool(uuid) {
     if(this.props.filtersSelected.find((f) => f === uuid)) {
       this.props.dispatch(removeToolFilter(uuid));
-      console.log("remove", uuid)
     } else {
-      console.log("add", uuid)
       this.props.dispatch(addToolFilter(uuid));
     }
   }

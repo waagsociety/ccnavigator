@@ -2119,17 +2119,17 @@ h1, h2, h3, h4, h5 {
     font-family: "FontAwesome";
     margin-right: 0.5em;
     vertical-align: middle; }
-  h1 .subtitle, h2 .subtitle, h3 .subtitle, h4 .subtitle, h5 .subtitle {
+  h1.subtitle, h2.subtitle, h3.subtitle, h4.subtitle, h5.subtitle {
     font-weight: 400; }
 
 h1 {
   font-size: 2em;
   line-height: 1.25em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   text-transform: lowercase; }
 
 h2 {
-  font-size: 1.25em;
+  font-size: 1.4em;
   margin-bottom: 1em;
   line-height: 1.25em; }
 
@@ -2165,7 +2165,6 @@ a {
   cursor: pointer; }
 
 .button,
-button,
 input[type=submit],
 input[type=button] {
   position: relative;
@@ -2186,17 +2185,14 @@ input[type=button] {
   cursor: pointer;
   text-decoration: none; }
   .button:hover,
-  button:hover,
   input[type=submit]:hover,
   input[type=button]:hover {
     text-decoration: none; }
   .button:focus,
-  button:focus,
   input[type=submit]:focus,
   input[type=button]:focus {
     box-shadow: 0 0 0.25rem 0 rgba(0, 0, 0, 0.5); }
   .button:after,
-  button:after,
   input[type=submit]:after,
   input[type=button]:after {
     content: " ";
@@ -2209,8 +2205,6 @@ input[type=button] {
     border-radius: 0 0 2px 2px;
     transition: width 0ms ease; }
   .button:hover:after, .button:focus:after,
-  button:hover:after,
-  button:focus:after,
   input[type=submit]:hover:after,
   input[type=submit]:focus:after,
   input[type=button]:hover:after,
@@ -2251,7 +2245,8 @@ input[type=button] {
 .button-link {
   position: relative;
   display: inline-block;
-  text-decoration: none; }
+  text-decoration: none;
+  color: #2FB6BC; }
   .button-link:hover {
     text-decoration: none; }
   .button-link:after {
@@ -2279,7 +2274,7 @@ input[type=button]:before {
   font-family: "FontAwesome";
   margin-right: 0.35rem;
   line-height: 1rem;
-  vertical-align: middle;
+  vertical-align: baseline;
   font-size: 0.75em; }
 
 .button.button-false,
@@ -2432,6 +2427,14 @@ button.button-clear:before,
 input[type=submit].button-clear:before,
 input[type=button].button-clear:before {
   content: ""; }
+
+.button.button-go:before,
+.button-link.button-go:before,
+.button-small.button-go:before,
+button.button-go:before,
+input[type=submit].button-go:before,
+input[type=button].button-go:before {
+  content: ""; }
 
 input {
   font-family: "Maax", sans-serif;
@@ -2659,6 +2662,24 @@ button {
   .pane .pane-text {
     padding: 1rem; }
 
+.pane-header {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  background-size: cover; }
+  .pane-header:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); }
+  .pane-header > * {
+    position: relative; }
+  .pane-header .pane-text {
+    padding: 3rem; }
+
 .row {
   margin-bottom: 2rem; }
 
@@ -2788,7 +2809,9 @@ a.box {
     color: #444;
     background-color: white;
     border: none;
-    box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1); }
+    box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    user-select: none; }
     .svg-map-zoom-buttons button:hover {
       color: #000; }
 
