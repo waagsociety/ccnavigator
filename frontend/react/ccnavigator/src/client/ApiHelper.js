@@ -1,6 +1,6 @@
 import ApiClient from 'client/ApiClient'
 import Constants from 'config/Constants'
-import {flattenArray} from 'util/utility'
+//import {flattenArray} from 'util/utility'
 var _ = require('lodash');
 
 let instance = null;

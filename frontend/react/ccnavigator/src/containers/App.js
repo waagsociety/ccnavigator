@@ -2,7 +2,6 @@ import React from 'react';
 import Header from "containers/Header.js"
 import Footer from "containers/Footer.js"
 import Metro from "containers/Metro"
-import Modal from "components/Modal.js"
 import Home from "containers/Home.js"
 import Page from "containers/Page.js"
 import Theme from "containers/Theme.js"
@@ -10,8 +9,6 @@ import Zone from "containers/Zone.js"
 import Tool from "containers/Tool.js"
 import GlossaryItem from "containers/GlossaryItem.js"
 import MediaQuery from 'react-responsive';
-import ModalHeader from 'components/ModalHeader'
-import ModalBody from 'components/ModalBody'
 import 'styles/styles.css'
 import {
   BrowserRouter as Router,

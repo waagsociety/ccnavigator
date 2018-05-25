@@ -69,7 +69,7 @@ class Home extends React.Component {
     if((this.state.content_3 || []).length > 0) {
       var content_3_title = this.state.content_3[0].attributes.title || "";
       var content_3_body = (this.state.content_3[0].attributes.body || {}).value || "";
-      var content_3_body = buildJSXFromHTML(content_3_body);
+      content_3_body = buildJSXFromHTML(content_3_body);
     }
 
     return (
@@ -89,7 +89,7 @@ class Home extends React.Component {
           <div className="row">
             <div className="columns">
               <div className="column pane">
-                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/society-as-a-laboratorium.jpg" />
+                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/society-as-a-laboratorium.jpg" alt="" />
                 <div className="pane-text">
                   <h2>{content_2_1_title}</h2>
                   <p>{content_2_1_body} [...]</p>
@@ -98,7 +98,7 @@ class Home extends React.Component {
               </div>
 
               <div className="column pane">
-                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/power-of-co-creation.jpg" />
+                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/power-of-co-creation.jpg" alt="" />
                 <div className="pane-text">
                   <h2>{content_2_2_title}</h2>
                   <p>{content_2_2_body} [...]</p>

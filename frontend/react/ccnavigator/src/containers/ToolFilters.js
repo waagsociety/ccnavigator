@@ -2,7 +2,7 @@ import React from 'react';
 //import ApiClient from 'client/ApiClient';
 import ApiHelper from 'client/ApiHelper';
 import { connect } from 'react-redux';
-import { addToolFilter, removeToolFilter, clearToolFilters } from 'actions'
+import { addToolFilter, removeToolFilter } from 'actions'
 
 class ToolFilter extends React.Component {
 
