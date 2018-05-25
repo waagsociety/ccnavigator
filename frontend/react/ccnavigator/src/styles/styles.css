@@ -2165,7 +2165,6 @@ a {
   cursor: pointer; }
 
 .button,
-button,
 input[type=submit],
 input[type=button] {
   position: relative;
@@ -2186,17 +2185,14 @@ input[type=button] {
   cursor: pointer;
   text-decoration: none; }
   .button:hover,
-  button:hover,
   input[type=submit]:hover,
   input[type=button]:hover {
     text-decoration: none; }
   .button:focus,
-  button:focus,
   input[type=submit]:focus,
   input[type=button]:focus {
     box-shadow: 0 0 0.25rem 0 rgba(0, 0, 0, 0.5); }
   .button:after,
-  button:after,
   input[type=submit]:after,
   input[type=button]:after {
     content: " ";
@@ -2209,8 +2205,6 @@ input[type=button] {
     border-radius: 0 0 2px 2px;
     transition: width 0ms ease; }
   .button:hover:after, .button:focus:after,
-  button:hover:after,
-  button:focus:after,
   input[type=submit]:hover:after,
   input[type=submit]:focus:after,
   input[type=button]:hover:after,
@@ -2815,7 +2809,9 @@ a.box {
     color: #444;
     background-color: white;
     border: none;
-    box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1); }
+    box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    user-select: none; }
     .svg-map-zoom-buttons button:hover {
       color: #000; }
 

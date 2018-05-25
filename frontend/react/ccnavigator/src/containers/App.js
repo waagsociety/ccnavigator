@@ -47,7 +47,7 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log("new entity", newProps.activeEntity)
+    //console.log("new entity", newProps.activeEntity)
   }
 
   /**

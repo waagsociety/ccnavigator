@@ -28,12 +28,12 @@ class Tool extends React.Component {
       this.setState({
         filterDefintions: definitions
       });
-      console.log(definitions)
+      //console.log(definitions)
     });
     //full info on this node including relationships
     var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"];
     ApiClient.instance().fetchContent("node--tool", entityId, null, includes, 0, function(node, included) {
-      console.log("tool", included)
+      //console.log("tool", included)
       //set content
       this.setState({
         nodeEntity: node,

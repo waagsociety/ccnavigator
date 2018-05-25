@@ -50,21 +50,16 @@ class Home extends React.Component {
   render() {
 
     if((this.state.content_1 || []).length > 0) {
-      //console.log(this.state.content_1_i)
       var content_1_title = this.state.content_1[0].attributes.title || "";
       var content_1_body = this.state.content_1[0].attributes.field_short_description || "";
-      //var content_1_body = buildJSXFromHTML(content_1_body);
     }
     if((this.state.content_2_1 || []).length > 0) {
-      console.log(this.state.content_2_1)
       var content_2_1_title = this.state.content_2_1[0].attributes.title || "";
       var content_2_1_body = this.state.content_2_1[0].attributes.field_short_description || "";
-      //var content_2_1_body = buildJSXFromHTML(content_2_1_body);
     }
     if((this.state.content_2_2 || []).length > 0) {
       var content_2_2_title = this.state.content_2_2[0].attributes.title || "";
       var content_2_2_body = this.state.content_2_2[0].attributes.field_short_description || "";
-      //var content_2_2_body = buildJSXFromHTML(content_2_2_body);
     }
     if((this.state.content_3 || []).length > 0) {
       var content_3_title = this.state.content_3[0].attributes.title || "";

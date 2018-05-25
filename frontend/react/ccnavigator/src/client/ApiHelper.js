@@ -38,7 +38,7 @@ class ApiHelper {
   onStoreChanged() {
     var lang = this.store.getState().language;
     if(ApiClient.instance().language !== lang) {
-      console.log("APIHelper: language changed", lang);
+      //console.log("APIHelper: language changed", lang);
       ApiClient.instance().language = lang;
       this.clearCaches();
     }

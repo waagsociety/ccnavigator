@@ -19,7 +19,7 @@ class Header extends React.Component {
 
   //
   handleLocationChange = (location) => {
-    console.log("location", location)
+    //console.log("location", location)
   }
 
   componentWillUpdate(nextProps) {
@@ -29,7 +29,7 @@ class Header extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("need to fetch info about the tools selected")
+    //console.log("need to fetch info about the tools selected")
   }
 
   render() {

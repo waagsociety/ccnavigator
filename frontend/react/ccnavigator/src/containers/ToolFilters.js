@@ -62,7 +62,7 @@ class ToolFilter extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps", nextProps)
+    //console.log("nextProps", nextProps)
     //ApiHelper.instance().buildFilter();
   }
 
@@ -75,9 +75,7 @@ class ToolFilter extends React.Component {
   onToggleTool(uuid) {
     if(this.props.filtersSelected.find((f) => f === uuid)) {
       this.props.dispatch(removeToolFilter(uuid));
-      console.log("remove", uuid)
     } else {
-      console.log("add", uuid)
       this.props.dispatch(addToolFilter(uuid));
     }
   }
