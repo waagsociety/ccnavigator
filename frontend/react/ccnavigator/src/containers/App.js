@@ -3,6 +3,7 @@ import Header from "containers/Header.js"
 import Footer from "containers/Footer.js"
 import Metro from "containers/Metro"
 import Modal from "components/Modal.js"
+import Home from "containers/Home.js"
 import Page from "containers/Page.js"
 import Theme from "containers/Theme.js"
 import Zone from "containers/Zone.js"
@@ -83,8 +84,9 @@ class App extends React.Component {
               <Footer />
             </div>
             <Switch>
-              <Route exact path="/" />
+              <Route exact path="/" component={Home} />
               <Route path="/navigator" component={Metro} />
+              <Route path="/about" component={Page} />
               <Route path="*" render={() => notFound } status={404}/>
             </Switch>
           </MediaQuery>
@@ -94,8 +96,9 @@ class App extends React.Component {
               <Header />
             </div>
             <Switch>
-              <Route exact path="/" />
+              <Route exact path="/" component={Home} />
               <Route path="/navigator" component={Metro} />
+              <Route path="/about" component={Page} />
               <Route path="*" render={() => notFound } status={404}/>
             </Switch>
             <div className="panel">
@@ -105,7 +108,6 @@ class App extends React.Component {
 
           <Switch>
             <Route exact path="/navigator/" />
-            <Route path="/navigator/about" component={Page} />
             <Route path="/navigator/theme/:id" component={Theme} />
             <Route path="/navigator/zone/:id" component={Zone} />
             <Route path="/navigator/tool/:id" component={Tool} />
