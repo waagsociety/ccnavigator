@@ -3,9 +3,24 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ToolSelectedList from './ToolSelectedList'
 import Label from 'components/Label';
+import { withRouter } from 'react-router-dom';
 
 
 class Header extends React.Component {
+
+  componentWillMount() {
+    this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
+  }
+
+  //
+  componentDidUnMount() {
+    if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
+  }
+
+  //
+  handleLocationChange = (location) => {
+    console.log("location", location)
+  }
 
   componentWillUpdate(nextProps) {
     if (nextProps.specificProperty !== this.props.specificProperty) {
@@ -18,18 +33,17 @@ class Header extends React.Component {
   }
 
   render() {
-
-    // TODO: apply current class when current
+    var currentLocation = this.props.location.pathname
     var navigation = (
       <nav id="site-navigation">
         <ul>
-          <li>
+          <li className={currentLocation === "/" ? "current" : null}>
             <Link to="/">on co-creation</Link>
           </li>
-          <li className="current">
-            <Link to="/navigator">the navigator</Link>
+          <li className={currentLocation === "/navigator/" ? "current" : null}>
+            <Link to="/navigator/">the navigator</Link>
           </li>
-          <li>
+          <li className={currentLocation === "/about" ? "current" : null}>
             <Link to="/about">about</Link>
           </li>
         </ul>
@@ -55,5 +69,6 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 Header = connect(mapStateToProps)(Header)
+Header = withRouter(Header)
 
 export default Header;

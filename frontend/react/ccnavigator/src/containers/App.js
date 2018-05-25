@@ -81,7 +81,7 @@ class App extends React.Component {
           <MediaQuery orientation="landscape">
             <div id="panel-left" className="panel" style={{width: '15rem'}}>
               <Header />
-              <Footer />
+              <Route path="*" component={Footer} />
             </div>
             <Switch>
               <Route exact path="/" component={Home} />
@@ -102,9 +102,11 @@ class App extends React.Component {
               <Route path="*" render={() => notFound } status={404}/>
             </Switch>
             <div className="panel">
-              <Footer />
+              <Route path="*" component={Footer} />
             </div>
           </MediaQuery>
+
+
 
           <Switch>
             <Route exact path="/navigator/" />
@@ -112,7 +114,9 @@ class App extends React.Component {
             <Route path="/navigator/zone/:id" component={Zone} />
             <Route path="/navigator/tool/:id" component={Tool} />
             <Route path="/navigator/*/taxonomy/term/:id" component={GlossaryItem} />
+            
           </Switch>
+
         </div>
       </Router>
     );

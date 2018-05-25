@@ -36,6 +36,7 @@ class Zone extends React.Component {
   update() {
     var entityId = this.props.match.params.id;
     //get hierarchy path of this term
+    ApiHelper.instance().clearCaches();
     ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
       this.setState({termHierachy: term});
     }.bind(this));
