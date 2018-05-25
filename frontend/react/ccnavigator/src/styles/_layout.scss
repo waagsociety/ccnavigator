@@ -52,8 +52,11 @@
 
 .pane {
   background-color: #fff;
-  padding: 1rem;
   box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+
+  .pane-text {
+    padding: 1rem;
+  }
 }
 
 
