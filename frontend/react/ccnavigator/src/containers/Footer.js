@@ -4,6 +4,10 @@ import { connect } from 'react-redux'
 // import Logout from "containers/Logout"
 // import LanguageSelector from "containers/LanguageSelector"
 import ToolFilter from "containers/ToolFilters"
+import {
+  Route,
+} from 'react-router-dom'
+
 
 class Footer extends React.Component {
 
@@ -20,8 +24,7 @@ class Footer extends React.Component {
     //<LanguageSelector/>
     return (
       <div>
-
-        <ToolFilter/>
+          <Route path="/navigator/*" component={ToolFilter} />
       </div>
     );
   }
