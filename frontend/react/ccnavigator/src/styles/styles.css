@@ -2928,13 +2928,13 @@ a.box {
     font-family: "FontAwesome";
     margin-right: 0.25em;
     vertical-align: middle; }
-  .tool-meta.group_size:before {
+  .tool-meta.field_group_size:before {
     content: ""; }
-  .tool-meta.duration:before {
+  .tool-meta.field_duration:before {
     content: ""; }
-  .tool-meta.facilitator_participant:before {
+  .tool-meta.field_facilitator_participant:before {
     content: ""; }
-  .tool-meta.experience_level_facilitator:before {
+  .tool-meta.field_experience_level:before {
     content: ""; }
 
 .tool-meta-name {

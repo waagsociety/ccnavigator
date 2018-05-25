@@ -24,10 +24,10 @@
     vertical-align: middle;
   }
 
-  &.group_size:before                   { content: $fa-var-child; }
-  &.duration:before                     { content: $fa-var-clock-o; }
-  &.facilitator_participant:before      { content: $fa-var-users; }
-  &.experience_level_facilitator:before { content: $fa-var-star; }
+  &.field_group_size:before                   { content: $fa-var-child; }
+  &.field_duration:before                     { content: $fa-var-clock-o; }
+  &.field_facilitator_participant:before      { content: $fa-var-users; }
+  &.field_experience_level:before { content: $fa-var-star; }
 }
 
 .tool-meta-name {
