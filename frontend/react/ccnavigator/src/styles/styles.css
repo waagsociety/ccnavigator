@@ -2125,11 +2125,12 @@ h1, h2, h3, h4, h5 {
 h1 {
   font-size: 2em;
   line-height: 1.25em;
-  margin-bottom: 2rem;
+  margin-bottom: 2em;
   text-transform: lowercase; }
 
 h2 {
   font-size: 1.25em;
+  margin-bottom: 1em;
   line-height: 1.25em; }
 
 h3, h4, h5 {
@@ -2654,8 +2655,9 @@ button {
 
 .pane {
   background-color: #fff;
-  padding: 1rem;
   box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.1); }
+  .pane .pane-text {
+    padding: 1rem; }
 
 .row {
   margin-bottom: 2rem; }
@@ -2730,6 +2732,7 @@ a.box {
 
 #site-subtitle {
   font-size: 0.9em;
+  margin-bottom: 0;
   line-height: 1.35em;
   font-weight: 300; }
 

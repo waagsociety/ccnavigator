@@ -26,13 +26,13 @@ class Home extends React.Component {
         content_1_i: included
       });
     }.bind(this));
-    ApiClient.instance().fetchContent("node--page", {field_path:"/home-2-1"}, null, ["field_image"], 0, function(node, included) {
+    ApiClient.instance().fetchContent("node--page", {field_path:"/home-2-1"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
       this.setState({
         content_2_1: node,
         content_2_1_i: included
       });
     }.bind(this));
-    ApiClient.instance().fetchContent("node--page", {field_path:"/home-2-2"}, null, ["field_image"], 0, function(node, included) {
+    ApiClient.instance().fetchContent("node--page", {field_path:"/home-2-2"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
       this.setState({
         content_2_2: node,
         content_2_2_i: included
@@ -49,20 +49,21 @@ class Home extends React.Component {
   render() {
 
     if((this.state.content_1 || []).length > 0) {
-      console.log(this.state.content_1_i)
+      //console.log(this.state.content_1_i)
       var content_1_title = this.state.content_1[0].attributes.title || "";
       var content_1_body = (this.state.content_1[0].attributes.body || {}).value || "";
       var content_1_body = buildJSXFromHTML(content_1_body);
     }
     if((this.state.content_2_1 || []).length > 0) {
+      console.log(this.state.content_2_1)
       var content_2_1_title = this.state.content_2_1[0].attributes.title || "";
-      var content_2_1_body = (this.state.content_2_1[0].attributes.body || {}).value || "";
-      var content_2_1_body = buildJSXFromHTML(content_2_1_body);
+      var content_2_1_body = this.state.content_2_1[0].attributes.field_short_description || "";
+      //var content_2_1_body = buildJSXFromHTML(content_2_1_body);
     }
     if((this.state.content_2_2 || []).length > 0) {
       var content_2_2_title = this.state.content_2_2[0].attributes.title || "";
-      var content_2_2_body = (this.state.content_2_2[0].attributes.body || {}).value || "";
-      var content_2_2_body = buildJSXFromHTML(content_2_2_body);
+      var content_2_2_body = this.state.content_2_2[0].attributes.field_short_description || "";
+      //var content_2_2_body = buildJSXFromHTML(content_2_2_body);
     }
     if((this.state.content_3 || []).length > 0) {
       var content_3_title = this.state.content_3[0].attributes.title || "";
@@ -75,21 +76,29 @@ class Home extends React.Component {
         <div className="wrapper content">
 
           <div className="row">
-            <div className="pane">
-            {content_1_body}
+            <div className="pane pane-bg-image" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }}>
+              <div className="pane-text">
+                {content_1_body}
+              </div>
             </div>
           </div>
 
           <div className="row">
             <div className="columns">
               <div className="column pane">
-                <h2>{content_2_1_title}</h2>
-                {content_2_1_body}
+                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/power-of-co-creation.jpg" />
+                <div className="pane-text">
+                  <h2>{content_2_1_title}</h2>
+                  <p>{content_2_1_body}</p>
+                </div>
               </div>
 
               <div className="column pane">
-                <h2>{content_2_2_title}</h2>
-                {content_2_2_body}
+                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/power-of-co-creation.jpg" />
+                <div className="pane-text">
+                  <h2>{content_2_2_title}</h2>
+                  <p>{content_2_2_body}</p>
+                </div>
               </div>
             </div>
           </div>
