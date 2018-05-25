@@ -26,18 +26,18 @@ h1, h2, h3, h4, h5 {
     vertical-align: middle;
   }
 
-  .subtitle {
+  &.subtitle {
     font-weight: 400;
   }
 }
 h1 {
   font-size: 2em;
   line-height: 1.25em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   text-transform: lowercase;
 }
 h2 {
-  font-size: 1.25em;
+  font-size: 1.4em;
   margin-bottom: 1em;
   line-height: 1.25em;
 }

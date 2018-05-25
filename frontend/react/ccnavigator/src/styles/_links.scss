@@ -91,6 +91,7 @@ input[type=button] {
   position: relative;
   display: inline-block;
   text-decoration: none;
+  color: $color-turquoise;
 
   &:hover {
     text-decoration: none;
@@ -126,7 +127,7 @@ input[type=button] {
     font-family: "FontAwesome";
     margin-right: 0.35rem;
     line-height: 1rem;
-    vertical-align: middle;
+    vertical-align: baseline;
     font-size: 0.75em;
   }
 
@@ -156,5 +157,5 @@ input[type=button] {
 
   &.button-download:before { content: $fa-var-download; }
   &.button-clear:before    { content: $fa-var-times; }
-  
+  &.button-go:before       { content: $fa-var-angle-right; }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import ApiClient from 'client/ApiClient'
 import { buildJSXFromHTML} from "util/utility"
+import { Link } from 'react-router-dom'
 
 class Home extends React.Component {
 
@@ -51,8 +52,8 @@ class Home extends React.Component {
     if((this.state.content_1 || []).length > 0) {
       //console.log(this.state.content_1_i)
       var content_1_title = this.state.content_1[0].attributes.title || "";
-      var content_1_body = (this.state.content_1[0].attributes.body || {}).value || "";
-      var content_1_body = buildJSXFromHTML(content_1_body);
+      var content_1_body = this.state.content_1[0].attributes.field_short_description || "";
+      //var content_1_body = buildJSXFromHTML(content_1_body);
     }
     if((this.state.content_2_1 || []).length > 0) {
       console.log(this.state.content_2_1)
@@ -76,9 +77,11 @@ class Home extends React.Component {
         <div className="wrapper content">
 
           <div className="row">
-            <div className="pane pane-bg-image" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }}>
+            <div className="pane pane-header" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }}>
               <div className="pane-text">
-                {content_1_body}
+                <h1>{content_1_title}</h1>
+                <h2 className="subtitle">{content_1_body}</h2>
+                <Link className="button button-go" to="/navigator">to the navigator!</Link>
               </div>
             </div>
           </div>
@@ -86,10 +89,11 @@ class Home extends React.Component {
           <div className="row">
             <div className="columns">
               <div className="column pane">
-                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/power-of-co-creation.jpg" />
+                <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/society-as-a-laboratorium.jpg" />
                 <div className="pane-text">
                   <h2>{content_2_1_title}</h2>
-                  <p>{content_2_1_body}</p>
+                  <p>{content_2_1_body} [...]</p>
+                  <Link className="button-link button-go" to="/home-2-1">read more</Link>
                 </div>
               </div>
 
@@ -97,7 +101,8 @@ class Home extends React.Component {
                 <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/power-of-co-creation.jpg" />
                 <div className="pane-text">
                   <h2>{content_2_2_title}</h2>
-                  <p>{content_2_2_body}</p>
+                  <p>{content_2_2_body} [...]</p>
+                  <Link className="button-link button-go" to="/home-2-2">read more</Link>
                 </div>
               </div>
             </div>
@@ -105,8 +110,10 @@ class Home extends React.Component {
 
           <div className="row">
             <div className="pane">
-            <h2>{content_3_title}</h2>
-            {content_3_body}
+              <div className="pane-text">
+                <h2>{content_3_title}</h2>
+                {content_3_body}
+              </div>
             </div>
           </div>
 
