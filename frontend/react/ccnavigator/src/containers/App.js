@@ -62,18 +62,7 @@ class App extends React.Component {
     //this.setState({ width: update_width, height: update_height });
   }
 
-  closeModal() {
-    this.props.history.push('/navigator/')
-  }
-
   render() {
-    var notFound = (
-      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
-        <ModalHeader title="Not found 404" />
-        <ModalBody description="Could not navigate to what you were looking for..." />
-      </Modal>
-    )
-
     return (
       <Router>
         <div id="container-app">
@@ -87,7 +76,7 @@ class App extends React.Component {
               <Route exact path="/" component={Home} />
               <Route path="/navigator" component={Metro} />
               <Route path="/about" component={Page} />
-              <Route path="*" render={() => notFound } status={404}/>
+              <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
             </Switch>
           </MediaQuery>
 
@@ -99,14 +88,12 @@ class App extends React.Component {
               <Route exact path="/" component={Home} />
               <Route path="/navigator" component={Metro} />
               <Route path="/about" component={Page} />
-              <Route path="*" render={() => notFound } status={404}/>
+              <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
             </Switch>
             <div className="panel">
               <Route path="*" component={Footer} />
             </div>
           </MediaQuery>
-
-
 
           <Switch>
             <Route exact path="/navigator/" />
@@ -114,7 +101,6 @@ class App extends React.Component {
             <Route path="/navigator/zone/:id" component={Zone} />
             <Route path="/navigator/tool/:id" component={Tool} />
             <Route path="/navigator/*/taxonomy/term/:id" component={GlossaryItem} />
-            
           </Switch>
 
         </div>

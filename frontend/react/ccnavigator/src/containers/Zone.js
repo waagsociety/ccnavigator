@@ -83,7 +83,7 @@ class Zone extends React.Component {
           var	boxes = this.state.termHierachy.children.map((term, index) => {
 
             //als filter actief toevoeging aan titeltje
-            var toolsNote = ((this.props.filtersSelected || []).length > 0 ? <small>(matching current filters)</small> : null)
+            var toolsNote = ((this.props.filtersSelected || []).length > 0 ? <small className="nowrap">(matching current filters)</small> : null)
 
             //list the tools in this subcategory
             var content = (
