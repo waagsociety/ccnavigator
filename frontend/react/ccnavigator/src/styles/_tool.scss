@@ -1,12 +1,23 @@
+.tool {
+  .columns {
+    flex-direction: row-reverse;
+  }
+}
+
+
 .tool-metas {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 3rem;
   font-size: 0.9rem;
+  flex-wrap: wrap;
 }
 
 .tool-meta {
+  margin-right: 1.5em;
+  margin-bottom: 0.75em;
+
   &:before {
     font-family: "FontAwesome";
     margin-right: 0.25em;

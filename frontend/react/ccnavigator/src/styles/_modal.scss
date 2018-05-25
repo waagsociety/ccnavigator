@@ -64,13 +64,11 @@
     }
   }
 
-  .title {
+  .modal-title {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    font-size: 35px;
-    margin: 0 0 1rem 0;
-    text-transform: lowercase;
+    margin-bottom: 1rem;
 
     @media (max-width: 600px) {
       flexDirection: column
@@ -91,10 +89,6 @@
         margin-right: 0
       }
     }
-  }
-  .subtitle {
-    font-size: 23px;
-    font-weight: 400;
   }
 }
 

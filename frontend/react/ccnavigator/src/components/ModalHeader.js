@@ -17,7 +17,7 @@ const ModalHeader = (props) => {
     <div className="modal-header" style={{borderTopColor: props.color}}>
       <Link to="/navigator/" className="button-close">&times;</Link>
       <Back />
-      <h1 className="title">
+      <h1 className="modal-title">
         <div className="labels">{labels}</div>
         {props.title}
       </h1>

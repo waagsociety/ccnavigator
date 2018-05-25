@@ -3,6 +3,7 @@ import Header from "containers/Header.js"
 import Footer from "containers/Footer.js"
 import Metro from "containers/Metro"
 import Modal from "components/Modal.js"
+import Home from "containers/Home.js"
 import Page from "containers/Page.js"
 import Theme from "containers/Theme.js"
 import Zone from "containers/Zone.js"
@@ -61,18 +62,7 @@ class App extends React.Component {
     //this.setState({ width: update_width, height: update_height });
   }
 
-  closeModal() {
-    this.props.history.push('/navigator/')
-  }
-
   render() {
-    var notFound = (
-      <Modal isOpen={true} onRequestClose={ () => { this.closeModal() } }>
-        <ModalHeader title="Not found 404" />
-        <ModalBody description="Could not navigate to what you were looking for..." />
-      </Modal>
-    )
-
     return (
       <Router>
         <div id="container-app">
@@ -80,10 +70,13 @@ class App extends React.Component {
           <MediaQuery orientation="landscape">
             <div id="panel-left" className="panel" style={{width: '15rem'}}>
               <Header />
-              <Footer />
+              <Route path="*" component={Footer} />
             </div>
             <Switch>
-              <Route exact path="/navigator/" component={Metro} />
+              <Route exact path="/" component={Home} />
+              <Route path="/navigator" component={Metro} />
+              <Route path="/about" component={Page} />
+              <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
             </Switch>
           </MediaQuery>
 
@@ -92,25 +85,22 @@ class App extends React.Component {
               <Header />
             </div>
             <Switch>
-              <Route exact path="/navigator/" component={Metro} />
+              <Route exact path="/" component={Home} />
+              <Route path="/navigator" component={Metro} />
+              <Route path="/about" component={Page} />
+              <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
             </Switch>
             <div className="panel">
-              <Footer />
+              <Route path="*" component={Footer} />
             </div>
           </MediaQuery>
 
-
-
           <Switch>
             <Route exact path="/navigator/" />
-            //all modals render regardsless of media query
-            <Route exact path="/" render={() => <Page key="home" remotePath={"/home"} />} />
-            <Route exact path="/about" render={() => <Page key="about" remotePath={"/about"} />} />
             <Route path="/navigator/theme/:id" component={Theme} />
             <Route path="/navigator/zone/:id" component={Zone} />
             <Route path="/navigator/tool/:id" component={Tool} />
             <Route path="/navigator/*/taxonomy/term/:id" component={GlossaryItem} />
-            <Route path="*" render={() => notFound } status={404}/>
           </Switch>
 
         </div>

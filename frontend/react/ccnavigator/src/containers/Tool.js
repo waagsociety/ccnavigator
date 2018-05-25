@@ -187,7 +187,7 @@ class Tool extends React.Component {
 
       //body part
       var description = (
-        <div>
+        <div className="tool">
           <div className="tool-metas">
             {metaDataFields}
           </div>

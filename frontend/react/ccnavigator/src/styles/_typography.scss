@@ -17,7 +17,6 @@ strong, th {
 }
 
 h1, h2, h3, h4, h5 {
-  font-size: 1em;
   font-weight: 500;
   margin: 0;
 
@@ -26,11 +25,23 @@ h1, h2, h3, h4, h5 {
     margin-right: 0.5em;
     vertical-align: middle;
   }
+
+  .subtitle {
+    font-weight: 400;
+  }
 }
-h1, h2 {
-  line-height: 1.25em
+h1 {
+  font-size: 2em;
+  line-height: 1.25em;
+  margin-bottom: 2rem;
+  text-transform: lowercase;
 }
-h3, h4 {
+h2 {
+  font-size: 1.25em;
+  line-height: 1.25em;
+}
+h3, h4, h5 {
+  font-size: 1em;
   line-height: 1.5em
 }
 
