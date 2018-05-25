@@ -116,7 +116,7 @@ class Tool extends React.Component {
         return {name: name, value: value}
       }
     }
-    return {};
+    return null;
   }
 
   render() {
@@ -178,8 +178,8 @@ class Tool extends React.Component {
         var metaData = this.resolveMetaData(fieldName)
         var field  = (
           <div className={"tool-meta " + fieldName}>
-            <span className="tool-meta-name">{metaData.name}</span>
-            <span className="tool-meta-value">{metaData.value}</span>
+            <span className="tool-meta-name">{(metaData || {}).name}</span>
+            <span className="tool-meta-value">{(metaData || {}).value}</span>
           </div>
         )
         return metaData ? field : null;
