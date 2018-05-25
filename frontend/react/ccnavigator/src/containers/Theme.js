@@ -48,8 +48,6 @@ class Theme extends React.Component {
     ApiHelper.instance().buildFilter((filter) => {
       filter["field_category.uuid"] = entityId;
       ApiClient.instance().fetchContent("node--tool", filter, null, Object.values(Constants.filterFieldMapping), 0, function(nodeEntities, included) {
-        console.log("fetch", nodeEntities)
-        console.log("inc", included);
         //connect relationships to include in entity
         this.setState({
           nodeEntities: nodeEntities,
@@ -109,14 +107,18 @@ class Theme extends React.Component {
       description = buildJSXFromHTML(description)
 
       var boxes = this.state.nodeEntities.map((node) => {
-
+        //
         var description = node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
+
+        //metadata fields
+        var metaDataFields = Object.values(Constants.filterFieldMapping).map((fieldName) => {
+          var fieldValue = this.resolveRelationship(node,fieldName,this.state.includedEntities)
+          return (fieldValue ? <span className="short-tool-meta group_size">{fieldValue}</span> : null)
+        });
+
         var metaData = (
           <div className="short-tool-metas">
-            <span className="short-tool-meta group_size">{this.resolveRelationship(node,"field_group_size",this.state.includedEntities)}</span>
-            <span className="short-tool-meta duration">{this.resolveRelationship(node,"field_duration",this.state.includedEntities)}</span>
-            <span className="short-tool-meta facilitator_participant">{this.resolveRelationship(node,"field_facilitator_participant",this.state.includedEntities)}</span>
-            <span className="short-tool-meta experience_level_facilitator">{this.resolveRelationship(node,"field_experience_level",this.state.includedEntities)}</span>
+            {metaDataFields}
           </div>
         )
 

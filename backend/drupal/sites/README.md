@@ -59,7 +59,13 @@ https://www.drupal.org/docs/8/modules/json-api/what-json-api-does-not-do
     http://127.0.0.1/jsonapi/taxonomy_term/duration
     http://127.0.0.1/jsonapi/taxonomy_term/facilitator_participant
     http://127.0.0.1/jsonapi/taxonomy_term/experience_level_facilitator
-  
+
+    nodes that have a related term/tag not set
+    http://127.0.0.1:80/jsonapi/node/tool?filter[a][group][conjunction]=OR&
+    filter[a1][condition][path]=field_group_size.uuid&
+    filter[a1][condition][memberOf]=a&
+    filter[a1][condition][operator]=IS NULL
+
     include relationships like:
     http://l2thel.local/jsonapi/node/tool?include=field_category
     get only title field:

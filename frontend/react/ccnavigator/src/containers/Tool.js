@@ -23,6 +23,13 @@ class Tool extends React.Component {
 
   componentDidMount() {
     var entityId = this.props.match.params.id;
+    //get filter definitions to be able to lookup vocabulary names
+    ApiHelper.instance().getFilterDefintions((definitions) => {
+      this.setState({
+        filterDefintions: definitions
+      });
+      console.log(definitions)
+    });
     //full info on this node including relationships
     var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"];
     ApiClient.instance().fetchContent("node--tool", entityId, null, includes, 0, function(node, included) {
@@ -33,7 +40,7 @@ class Tool extends React.Component {
         includedEntities: included
       });
       //lookup the terms in the hierarchy to get pathnames
-      var categoryIds = (((node.relationships || {}).field_category || {}).data || []).map((cat) => {
+      var categoryIds = ((((node || {}).relationships || {}).field_category || {}).data || []).map((cat) => {
         return cat.id;
       });
       ApiHelper.instance().findTermInContentHierarchy(categoryIds, function(terms) {
@@ -88,15 +95,28 @@ class Tool extends React.Component {
     this.props.history.push('/navigator/')
   }
 
-  resolveRelationship(tool, relationshipName, includes) {
-    var uuidRelated = (((tool["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
-    if(uuidRelated) {
-      var found = (includes || []).find((el) => {
-        return (el || {}).id === uuidRelated;
-      });
-      return (found.attributes || {}).name;
+  //get the term name from the includes for this tool
+  resolveMetaData(relationshipName) {
+    //this.state.nodeEntity, fieldName, this.state.includedEntities
+    if(this.state.nodeEntity && this.state.includedEntities && this.state.filterDefintions) {
+      var uuidRelated = (((this.state.nodeEntity["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
+      if(uuidRelated) {
+        //find term
+        var term = (this.state.includedEntities || []).find((el) => {
+          return (el || {}).id === uuidRelated;
+        });
+        //lookup filter/vocabulary name
+        var vocabularyId = ((((term || {}).relationships || {}).vid || {}).data || {}).id;
+        var filter = (this.state.filterDefintions || []).find((def) => {
+          return def.uuid === vocabularyId;
+        })
+        //return filter/value
+        var name = (filter || {}).name;
+        var value = ((term || {}).attributes || {}).name;
+        return {name: name, value: value}
+      }
     }
-    return null;
+    return {};
   }
 
   render() {
@@ -145,7 +165,6 @@ class Tool extends React.Component {
           return <a className="button" key={key} href={item.uri} target="_blank">{item.title}</a>
         })
 
-
       // make flag or unflag button ##include later
       // let flagButton = null;
       // if(!this.props.flagged) {
@@ -154,26 +173,23 @@ class Tool extends React.Component {
       //   flagButton = <button onClick={this.onUnflag.bind(this)}>unflag</button>
       // }
 
+      //metadata fields
+      var metaDataFields = Object.values(Constants.filterFieldMapping).map((fieldName) => {
+        var metaData = this.resolveMetaData(fieldName)
+        var field  = (
+          <div className={"tool-meta " + fieldName}>
+            <span className="tool-meta-name">{metaData.name}</span>
+            <span className="tool-meta-value">{metaData.value}</span>
+          </div>
+        )
+        return metaData ? field : null;
+      });
+
       //body part
       var description = (
         <div className="tool">
           <div className="tool-metas">
-            <div className="tool-meta group_size">
-              <span className="tool-meta-name">group size:</span>
-              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_group_size",this.state.includedEntities)}</span>
-            </div>
-            <div className="tool-meta duration">
-              <span className="tool-meta-name">duration:</span>
-              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_duration",this.state.includedEntities)}</span>
-            </div>
-            <div className="tool-meta facilitator_participant">
-              <span className="tool-meta-name">facilitator / participant:</span>
-              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_facilitator_participant",this.state.includedEntities)}</span>
-            </div>
-            <div className="tool-meta experience_level_facilitator">
-              <span className="tool-meta-name">experience level facilitator:</span>
-              <span className="tool-meta-value">{this.resolveRelationship(this.state.nodeEntity,"field_experience_level",this.state.includedEntities)}</span>
-            </div>
+            {metaDataFields}
           </div>
           <div className="columns">
             <div className="column">
