@@ -63,7 +63,7 @@ class Page extends React.Component {
     return (
       <div id="container-page">
         <div className="wrapper">
-          <div className="pane">
+          <div className="pane" style={{padding: "2em"}}>
             <h1>{title}</h1>
             {jsx}
           </div>
