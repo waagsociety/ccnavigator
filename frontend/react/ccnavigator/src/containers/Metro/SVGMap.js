@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setZoomLevelHigh} from 'actions'
-import { withRouter } from 'react-router-dom';
+import { withRouter, matchPath } from 'react-router-dom';
 
 class SVGMap extends React.Component {
 
@@ -17,29 +17,7 @@ class SVGMap extends React.Component {
       startX: 0,
       starty: 0
     }
-
-    //console.log("svg map next props a", this.props)
   }
-
-  /*
-
-  componentDidMount() {
-    this.update();
-    this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
-  }
-
-  componentDidUnMount() {
-    if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
-  }
-
-  handleLocationChange = (location) => {
-    if(location.pathname !== "/" ) {
-      this.props.history.push("/")
-    }
-  }
-
-  */
-
 
   componentDidMount() {
     if((this.props.width > 900) && (this.props.height > 900)) {
@@ -60,12 +38,13 @@ class SVGMap extends React.Component {
 
   //
   handleLocationChange = (location) => {
-    //console.log("location")
-    if(location.pathname !== "/navigator/" ) {
-      if(this.state.didDrag) {
+    if(this.state.didDrag) {
+      var match = matchPath(location.pathname, {path:"/navigator/*"});
+      if(match && match.url !== "/navigator/") {
         this.props.history.push("/navigator/")
       }
     }
+
   }
 
   componentDidUpdate() {
@@ -140,7 +119,6 @@ class SVGMap extends React.Component {
 
   onMouseReleased(e) {
     this.setState({ buttonHeld: false, didDrag: this.state.dragging, dragging: false });
-
   }
 
   /**

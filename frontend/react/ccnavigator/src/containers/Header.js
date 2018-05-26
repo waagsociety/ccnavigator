@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ToolSelectedList from './ToolSelectedList'
 import Label from 'components/Label';
-import { withRouter } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
+import { withRouter, matchPath } from 'react-router-dom';
 
 
 class Header extends React.Component {
@@ -63,7 +63,7 @@ class Header extends React.Component {
           <li className={currentLocation === "/" ? "current" : null}>
             <Link to="/">on co-creation</Link>
           </li>
-          <li className={currentLocation === "/navigator/" ? "current" : null}>
+          <li className={matchPath(currentLocation, {path:"/navigator/*"}) ? "current" : null}>
             <Link to="/navigator/">the navigator</Link>
           </li>
           <li className={currentLocation === "/about" ? "current" : null}>

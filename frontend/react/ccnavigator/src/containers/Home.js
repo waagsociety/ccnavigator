@@ -76,7 +76,7 @@ class Home extends React.Component {
               <div className="pane-text">
                 <h1>{content_1_title}</h1>
                 <h2 className="subtitle">{content_1_body}</h2>
-                <Link className="button button-go" to="/navigator">to the navigator!</Link>
+                <Link className="button button-go" to="/navigator/">to the navigator!</Link>
               </div>
             </div>
           </div>
