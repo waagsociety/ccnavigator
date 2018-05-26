@@ -2,6 +2,7 @@ import React from 'react';
 import ApiClient from 'client/ApiClient'
 import { buildJSXFromHTML} from "util/utility"
 import { Link } from 'react-router-dom'
+import Label from 'components/Label';
 
 class Home extends React.Component {
 
@@ -74,7 +75,7 @@ class Home extends React.Component {
           <div className="row">
             <div className="pane pane-header" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }}>
               <div className="pane-text">
-                <h1>{content_1_title}</h1>
+                <h1>{content_1_title} <Label value="beta" color="#2FB6BC" size="0.3em" align="text-top"/></h1>
                 <h2 className="subtitle">{content_1_body}</h2>
                 <Link className="button button-go" to="/navigator/">to the navigator!</Link>
               </div>
