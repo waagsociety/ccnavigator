@@ -113,7 +113,8 @@ class Theme extends React.Component {
         //metadata fields
         var metaDataFields = Object.values(Constants.filterFieldMapping).map((fieldName) => {
           var fieldValue = this.resolveRelationship(node,fieldName,this.state.includedEntities)
-          return (fieldValue ? <span key={fieldName} className="short-tool-meta group_size">{fieldValue}</span> : null)
+          var className = "short-tool-meta " + fieldName.slice(6)
+          return (fieldValue ? <span key={fieldName} className={className}>{fieldValue}</span> : null)
         });
 
         var metaData = (

@@ -177,7 +177,7 @@ class Tool extends React.Component {
       var metaDataFields = Object.values(Constants.filterFieldMapping).map((fieldName) => {
         var metaData = this.resolveMetaData(fieldName)
         var field  = (
-          <div key={fieldName} className={"tool-meta " + fieldName}>
+          <div key={fieldName} className={"tool-meta " + fieldName.slice(6)}>
             <span className="tool-meta-name">{(metaData || {}).name}</span>
             <span className="tool-meta-value">{(metaData || {}).value}</span>
           </div>

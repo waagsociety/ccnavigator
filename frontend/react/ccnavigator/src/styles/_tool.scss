@@ -24,10 +24,10 @@
     vertical-align: middle;
   }
 
-  &.field_group_size:before                   { content: $fa-var-child; }
-  &.field_duration:before                     { content: $fa-var-clock-o; }
-  &.field_facilitator_participant:before      { content: $fa-var-users; }
-  &.field_experience_level:before { content: $fa-var-star; }
+  &.group_size:before                   { content: $fa-var-child; }
+  &.duration:before                     { content: $fa-var-clock-o; }
+  &.facilitator_participant:before      { content: $fa-var-users; }
+  &.experience_level:before { content: $fa-var-star; }
 }
 
 .tool-meta-name {
@@ -35,6 +35,7 @@
   white-space: nowrap;
   margin-right: 0.5em;
   margin-bottom: 0.25em;
+  text-transform: lowercase;
 }
 
 .tool-meta-value {

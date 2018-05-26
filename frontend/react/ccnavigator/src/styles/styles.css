@@ -2992,20 +2992,21 @@ a.box {
     font-family: "FontAwesome";
     margin-right: 0.25em;
     vertical-align: middle; }
-  .tool-meta.field_group_size:before {
+  .tool-meta.group_size:before {
     content: ""; }
-  .tool-meta.field_duration:before {
+  .tool-meta.duration:before {
     content: ""; }
-  .tool-meta.field_facilitator_participant:before {
+  .tool-meta.facilitator_participant:before {
     content: ""; }
-  .tool-meta.field_experience_level:before {
+  .tool-meta.experience_level:before {
     content: ""; }
 
 .tool-meta-name {
   display: inline-block;
   white-space: nowrap;
   margin-right: 0.5em;
-  margin-bottom: 0.25em; }
+  margin-bottom: 0.25em;
+  text-transform: lowercase; }
 
 .tool-meta-value {
   background: #2FB6BC;
