@@ -16,10 +16,10 @@
 
 #site-title {
   font-size: 1.5em;
+  margin-bottom: 0.5em;
 
   @media (orientation: landscape) {
     font-size: 1.4em;
-    margin-bottom: 0.5em;
   }
 }
 
@@ -32,12 +32,9 @@
 
 
 #site-navigation {
-  margin-top: 1.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #CCC;
 
   li {
-    margin-top: 1rem;
+    
 
     a {
       position: relative;
@@ -58,4 +55,52 @@
       right: 0;
     }
   }
+
+  @media (orientation: landscape) {
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #CCC;
+
+    li {
+      margin-top: 1rem;
+    }
+  }
+
+  @media (orientation: portrait) {
+    margin-top: 1rem;
+
+    #nav-toggle {
+      padding-bottom: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    ul {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 200ms ease;
+      background-color: #FFF;
+      box-shadow: 0 10px 0.75rem 0 rgba(0,0,0,0.1);
+    }
+
+    &.nav-toggled ul {
+      max-height: 400px;
+    }
+
+    li {
+      margin: 0.5rem;
+    }
+
+    a {
+      padding: 0.5rem;
+    }
+  }
+
 }
+
+
+

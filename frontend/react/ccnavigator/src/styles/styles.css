@@ -2118,7 +2118,8 @@ h1, h2, h3, h4, h5 {
   h1 .icon, h2 .icon, h3 .icon, h4 .icon, h5 .icon {
     font-family: "FontAwesome";
     margin-right: 0.5em;
-    vertical-align: middle; }
+    vertical-align: middle;
+    font-size: 0.9em; }
   h1.subtitle, h2.subtitle, h3.subtitle, h4.subtitle, h5.subtitle {
     font-weight: 400; }
 
@@ -2638,13 +2639,19 @@ button {
   z-index: 100;
   flex-grow: 0;
   background-color: white;
-  padding: 1rem;
-  overflow: hidden;
   box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.1); }
+  .panel .panel-content {
+    width: 100%;
+    padding: 0.5rem 1rem; }
 
 #panel-header {
-  padding: 0.75rem 1rem;
   flex-shrink: 0; }
+
+#panel-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; }
 
 #panel-left {
   display: flex;
@@ -2654,7 +2661,10 @@ button {
 
 .wrapper {
   max-width: 960px;
-  padding: 2rem; }
+  padding: 1rem; }
+  @media (min-width: 600px) {
+    .wrapper {
+      padding: 2rem; } }
 
 .pane {
   background-color: #fff;
@@ -2745,11 +2755,11 @@ a.box {
       flex-direction: row; } }
 
 #site-title {
-  font-size: 1.5em; }
+  font-size: 1.5em;
+  margin-bottom: 0.5em; }
   @media (orientation: landscape) {
     #site-title {
-      font-size: 1.4em;
-      margin-bottom: 0.5em; } }
+      font-size: 1.4em; } }
 
 #site-subtitle {
   font-size: 0.9em;
@@ -2757,25 +2767,53 @@ a.box {
   line-height: 1.35em;
   font-weight: 300; }
 
-#site-navigation {
-  margin-top: 1.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #CCC; }
-  #site-navigation li {
+#site-navigation li a {
+  position: relative;
+  display: block;
+  text-decoration: none; }
+
+#site-navigation li:hover a,
+#site-navigation li.current a {
+  color: #2FB6BC; }
+
+#site-navigation li.current a:after {
+  content: "";
+  font-family: "FontAwesome";
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+@media (orientation: landscape) {
+  #site-navigation {
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #CCC; }
+    #site-navigation li {
+      margin-top: 1rem; } }
+
+@media (orientation: portrait) {
+  #site-navigation {
     margin-top: 1rem; }
-    #site-navigation li a {
-      position: relative;
-      display: block;
-      text-decoration: none; }
-    #site-navigation li:hover a,
-    #site-navigation li.current a {
-      color: #2FB6BC; }
-    #site-navigation li.current a:after {
-      content: "";
-      font-family: "FontAwesome";
+    #site-navigation #nav-toggle {
+      padding-bottom: 0.5rem;
+      cursor: pointer;
+      user-select: none; }
+    #site-navigation ul {
       position: absolute;
-      top: 0;
-      right: 0; }
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 200ms ease;
+      background-color: #FFF;
+      box-shadow: 0 10px 0.75rem 0 rgba(0, 0, 0, 0.1); }
+    #site-navigation.nav-toggled ul {
+      max-height: 400px; }
+    #site-navigation li {
+      margin: 0.5rem; }
+    #site-navigation a {
+      padding: 0.5rem; } }
 
 .content ul {
   margin: 1.5em 0;

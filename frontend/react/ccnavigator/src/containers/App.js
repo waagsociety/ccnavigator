@@ -91,7 +91,7 @@ class App extends React.Component {
               <Route path="/about" component={Page} />
               <Route path="*" component={props => <Page remotePath="/404"/>} status={404}/>
             </Switch>
-            <div className="panel">
+            <div id="panel-footer" className="panel">
               <Route path="*" component={Footer} />
             </div>
           </MediaQuery>

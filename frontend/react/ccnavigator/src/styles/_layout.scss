@@ -29,13 +29,22 @@
   z-index: 100;
   flex-grow: 0;
   background-color: white;
-  padding: 1rem;
-  overflow: hidden;
+  //overflow: hidden;
   box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+
+  .panel-content {
+    width: 100%;
+    padding: 0.5rem 1rem;
+  }
 }
 #panel-header {
-  padding: 0.75rem 1rem;
   flex-shrink: 0;
+}
+#panel-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 #panel-left {
   display: flex;
@@ -47,7 +56,11 @@
 
 .wrapper {
   max-width: 960px;
-  padding: 2rem;
+  padding: 1rem;
+
+  @media (min-width: 600px) {
+    padding: 2rem;
+  }
 }
 
 .pane {

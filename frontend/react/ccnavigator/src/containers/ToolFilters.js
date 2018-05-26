@@ -108,7 +108,7 @@ class ToolFilter extends React.Component {
       );
     });
 
-    var className = "tool-filters toggle"
+    var className = "panel-content tool-filters toggle"
     if(this.state.toggled) {
       className += " toggled"
     }
