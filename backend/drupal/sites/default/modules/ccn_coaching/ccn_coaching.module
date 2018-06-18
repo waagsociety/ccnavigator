@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Logs and displays content statistics for a site.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\statistics\StatisticsViewsResult;
+
+
+
+/**
+ * Implements hook_cron().
+ */
+function ccn_coaching_cron() {
+  $query = \Drupal::entityQuery('ccn_message')
+      ->condition('langcode', 'en')
+      ->accessCheck(FALSE);
+  $entity_ids = $query->execute();
+  dd($entity_ids, "cron");
+
+  if(count($entity_ids)) {
+    $m = entity_load('ccn_message', $entity_ids[1]);
+    dd($m, "cron");
+  }
+
+
+}

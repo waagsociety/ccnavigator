@@ -1,0 +1,58 @@
+# This file brings everything together.
+
+# Route name can be used in several places; e.g. links, redirects, and local
+# actions.
+entity.ccn_message.canonical:
+  path: '/ccn_coaching/message/{ccn_message}'
+  defaults:
+  # Calls the view controller, defined in the annotation of the ccn_message entity
+    _entity_view: 'ccn_message'
+    _title: 'CCN message content'
+  requirements:
+  # Calls the access controller of the entity, $operation 'view'
+    _entity_access: 'ccn_message.view'
+
+entity.ccn_message.collection:
+  path: '/ccn_coaching/message/list'
+  defaults:
+  # Calls the list controller, defined in the annotation of the ccn_message entity.
+    _entity_list: 'ccn_message'
+    _title: 'Message list'
+  requirements:
+  # Checks for permission directly.
+    _permission: 'administer site configuration'
+
+entity.ccn_message.add_form:
+  path: '/ccn_coaching/message/add'
+  defaults:
+  # Calls the form.add controller, defined in the ccn_message entity.
+    _entity_form: ccn_message.add
+    _title: 'Add message'
+  requirements:
+    _entity_create_access: 'ccn_message'
+
+entity.ccn_message.edit_form:
+  path: '/ccn_coaching/message/{ccn_message}/edit'
+  defaults:
+  # Calls the form.edit controller, defined in the ccn_message entity.
+    _entity_form: ccn_message.edit
+    _title: 'Edit message'
+  requirements:
+    _entity_access: 'ccn_message.edit'
+
+entity.ccn_message.delete_form:
+  path: '/ccn_coaching/message/{ccn_message}/delete'
+  defaults:
+    # Calls the form.delete controller, defined in the ccn_message entity.
+    _entity_form: ccn_message.delete
+    _title: 'Delete message'
+  requirements:
+    _entity_access: 'ccn_message.delete'
+
+entity.ccn_message.admin_form:
+  path: '/admin/structure/ccn_message_settings'
+  defaults:
+    _form: '\Drupal\ccn_coaching\Form\CCNMessageSettingsForm'
+    _title: 'CCN Message settings'
+  requirements:
+    _permission: 'administer site configuration'
