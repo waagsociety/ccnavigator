@@ -37,15 +37,17 @@ https://www.drupal.org/docs/8/modules/json-api/what-json-api-does-not-do
     data:
     {
       "data": {
-        "id": "af6506c2-9d19-4d1c-b22b-a12bc5168753",
+        "type":"user--user",
+        "id": "0e20a953-d880-4193-a18e-12716ed37a76",
         "attributes": {
-          "field_preferences": "bla"
+          "field_data": "bla"
         }
       }
     }
     Headers:
     Accept: application/vnd.api+json
     Content-Type:application/vnd.api+json
+    X-CSRF-Token: M-EkIYBQ8GwE8oFmpVMZ8oqkUhFhwIMZKs44e08CUzc
 
 ## JSON API examples
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import ToolSelectedList from './ToolSelectedList'
+//import ToolSelectedList from './ToolSelectedList'
 import Label from 'components/Label';
 import MediaQuery from 'react-responsive';
 import { withRouter, matchPath } from 'react-router-dom';

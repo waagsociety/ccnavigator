@@ -34,9 +34,9 @@ use Drupal\Core\Entity\EntityChangedTrait;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/ccn_coaching/message/{message}",
- *     "edit-form" = "/ccn_coaching/message/{message}/edit",
- *     "delete-form" = "/ccn_coaching/message/{message}/delete",
+ *     "canonical" = "/ccn_coaching/message/{ccn_message}",
+ *     "edit-form" = "/ccn_coaching/message/{ccn_message}/edit",
+ *     "delete-form" = "/ccn_coaching/message/{ccn_message}/delete",
  *     "collection" = "/ccn_coaching/message/list"
  *   },
  *   field_ui_base_route = "entity.ccn_message.admin_form",

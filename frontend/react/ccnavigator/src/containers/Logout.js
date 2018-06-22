@@ -12,6 +12,7 @@ class Logout extends React.Component {
   }
 
   componentDidMount() {
+    console.debug("mount Logout")
     ApiClient.instance().loginStatus(function(status){
       if(status === true) {
         //load user data
@@ -34,7 +35,7 @@ class Logout extends React.Component {
     ApiClient.instance().getUser(function(user){
       if(user) {
         //get the field with json data stored from redux by this very client and put it into redux
-        var reduxStored = ((user.data || {}).attributes || {}).field_data;
+        var reduxStored = (user.attributes || {}).field_data;
         StoreIO.instance().importData(reduxStored);
         this.props.dispatch(setUser(user));
       }
@@ -82,11 +83,11 @@ class Logout extends React.Component {
         {indicator}
         {user}
         <input type="submit" value="logout" onClick={ this.onLogout.bind(this)} />
-        <div>
+        {/*<div>
           <input type="text" ref={(elem) => { this.userInfoField = elem; }} />
           <input type="submit" value="save user data" onClick={ this.onSaveUser.bind(this)}  />
           <input type="submit" value="add tool" onClick={ this.onAddTool.bind(this)}  />
-        </div>
+        </div>*/}
       </div>
     );
   }
