@@ -1,0 +1,5 @@
+name: CCN Coaching
+type: module
+description: 'Authoring tool for coaching script for Co-creation navigator'
+package: custom
+core: 8.x

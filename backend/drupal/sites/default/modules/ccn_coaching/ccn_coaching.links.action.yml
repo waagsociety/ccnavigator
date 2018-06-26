@@ -1,0 +1,11 @@
+# All action links for this module
+
+entity.ccn_message.add_form:
+  # Which route will be called by the link
+  route_name: entity.ccn_message.add_form:
+  title: 'Add message'
+
+  # Where will the link appear, defined by route name.
+  appears_on:
+    - entity.ccn_message.collection
+    - entity.ccn_message.canonical

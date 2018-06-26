@@ -16,6 +16,7 @@ class Login extends React.Component {
   * get the user status, if the user is logged in this component will be unmount by parent
   */
   componentDidMount() {
+    console.debug("mount Login")
     ApiClient.instance().loginStatus(function(status){
       if(status === true) {
         this.getUser();
@@ -37,7 +38,7 @@ class Login extends React.Component {
     ApiClient.instance().getUser(function(user){
       if(user) {
         //get the field with json data stored from redux by this very client and put it into redux
-        var reduxStored = ((user.data || {}).attributes || {}).field_data;
+        var reduxStored = (user.attributes || {}).field_data;
         StoreIO.instance().importData(reduxStored);
         this.props.dispatch(setUser(user));
       }

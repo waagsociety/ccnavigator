@@ -1,0 +1,15 @@
+ccn_message.page_edit:
+  route_name: entity.ccn_message.edit_form
+  base_route: entity.ccn_message.canonical
+  title: Edit
+
+ccn_message.view:
+  route_name: entity.ccn_message.canonical
+  base_route: entity.ccn_message.canonical
+  title: View
+
+ccn_message.delete_confirm:
+  route_name:  entity.ccn_message.delete_form
+  base_route:  entity.ccn_message.canonical
+  title: Delete
+  weight: 10

@@ -38,23 +38,40 @@ class ApiClient {
 
   //save user tokens of the logged in user
   _persistUser(user) {
-    localStorage.setItem('drupal.user.uid', (user.current_user || {}).uid);
-    localStorage.setItem('drupal.user.uuid', (user.current_user || {}).uuid);
-    localStorage.setItem('drupal.user.csrf_token', user.csrf_token);
-    localStorage.setItem('drupal.user.logout_token', user.logout_token);
+    if(user.uid) {
+      localStorage.setItem('drupal.user.uid', user.uid);
+    }
+    if(user.uuid) {
+      localStorage.setItem('drupal.user.uuid', user.uuid);
+    }
+    if(user.csrf_token) {
+      localStorage.setItem('drupal.user.csrf_token', user.csrf_token);
+    }
+    if(user.logout_token) {
+      localStorage.setItem('drupal.user.logout_token', user.logout_token);
+    }
   }
 
   //load user tokens if their is a user logged in
   _loadUser() {
     var user = {};
-    user.uid = localStorage.getItem('drupal.user.uid');
-    user.uuid = localStorage.getItem('drupal.user.uuid');
-    user.csrf_token = localStorage.getItem('drupal.user.csrf_token');
-    user.logout_token = localStorage.getItem('drupal.user.logout_token');
-    if(user.uid && user.uuid && user.csrf_token && user.logout_token) {
-        return user;
+    var uid = localStorage.getItem('drupal.user.uid');
+    var uuid = localStorage.getItem('drupal.user.uuid');
+    var csrf_token = localStorage.getItem('drupal.user.csrf_token');
+    var logout_token = localStorage.getItem('drupal.user.logout_token');
+    if(uid !== "undefined") {
+      user.uid = uid;
     }
-    return null;
+    if(uuid !== "undefined") {
+      user.uuid = uuid;
+    }
+    if(csrf_token !== "undefined") {
+      user.csrf_token = csrf_token;
+    }
+    if(logout_token !== "undefined") {
+      user.logout_token = logout_token;
+    }
+    return user;
   }
 
   _cleanUser() {
@@ -93,8 +110,8 @@ class ApiClient {
   login(user, pass, resultHandler) {
     //compose url
     var uri = new URI({
-      path: `/user/login`,
-      query: `_format=json`,
+      path: "/user/login",
+      query: "_format=json",
     });
     //post body
     var creds = {};
@@ -104,7 +121,13 @@ class ApiClient {
     this.fetchJSON(uri, function(response){
       if(response.success) {
         var user = response.result;
-        this._persistUser(user);
+        var store = {
+          uid: (user.current_user || {}).uid,
+          uuid: (user.current_user || {}).uuid,
+          csrf_token: user.csrf_token,
+          logout_token: user.logout_token
+        }
+        this._persistUser(store);
         if(resultHandler) {
           resultHandler(true);
         }
@@ -125,19 +148,22 @@ class ApiClient {
     });
 
     this.fetchJSON(uri, function(response){
+      console.log("fetching user status", response)
       if(response.success) {
         //if the server says we are logged in we should have user data
         if((JSON.parse(response.result) === 1)) {
-          if(this._loadUser())
+          var user = this._loadUser()
+          if(user.logout_token)
           {
             if(resultHandler) {
               resultHandler(true);
             }
-            else {
-              console.error("user is logged in remotely but has no tokens")
-              if(resultHandler) {
-                resultHandler(null);
-              }
+          }
+          else {
+            //this can happen if we are logged in via drupal normal interface
+            console.warn("user is logged in remotely but has logout token, probably logged in with drupal directly")
+            if(resultHandler) {
+              resultHandler(true);
             }
           }
         } else {
@@ -154,38 +180,54 @@ class ApiClient {
     }.bind(this), null, null, true);
   }
 
-  //logout, return true or null (failure)
+  //logout, return true or try fallback via non REST layout
   logout(resultHandler) {
     //compose url
     var user = this._loadUser();
-    var token = (user || {}).logout_token;
-    if(token) {
+    if(user.logout_token) {
       //compose url
       var uri = new URI({
         path: `/user/logout`,
-        query: `_format=json&token=${token}`,
+        query: `_format=json&token=${user.logout_token}`,
       });
-
       //fetch
       this.fetchPlain(uri, function(response){
         if(response.success) {
+          console.log("logged out successfully");
           this._cleanUser();
           if(resultHandler) {
             resultHandler(true);
           }
         } else {
-          if(resultHandler) {
-            resultHandler(null);
-          }
+          console.error("failed logout, trying /user/logout")
+          this.logout2(resultHandler) //try the other way
         }
       }.bind(this), "POST", null, true); //WTF, moet het nu POST of GET zijn
     } else {
-      //
-      console.error("no logout_token found to do proper REST logout, try /user/logout")
-      if(resultHandler) {
-        resultHandler(null);
-      }
+      console.warn("no logout_token found to do proper REST logout, trying /user/logout")
+      this.logout2(resultHandler)
     }
+  }
+
+  //non REST layout
+  logout2(resultHandler) {
+    var uri = new URI({
+      path: `/user/logout`
+    });
+    this.fetchPlain(uri, function(response){
+      if(response.success) {
+        console.log("logged out successfully");
+        this._cleanUser();
+        if(resultHandler) {
+          resultHandler(true);
+        }
+      } else {
+        console.error("failed logout")
+        if(resultHandler) {
+          resultHandler(null);
+        }
+      }
+    }.bind(this), "GET", null, true);
   }
 
   //AJAX request to backend, expect JSON, send JSON (body), wrap into result object
@@ -206,6 +248,10 @@ class ApiClient {
     }
     if(method) {
       opts["method"] = method;
+      if(method === "PATCH") {
+        var user = this._loadUser();
+        opts.headers["X-CSRF-Token"] = user.csrf_token || ""
+      }
     }
     if(body) {
       opts["body"] = JSON.stringify(body);
@@ -215,29 +261,33 @@ class ApiClient {
     }
     //fetch
     console.debug("fetch", localized);
-    fetch(localized, opts)
+    var resp = fetch(localized, opts)
     .then(this._checkStatus)
-    .then(function(response) {
-      return response.json()
+    var payload = resp
+    .then(function(r) {
+      return r.json();
     })
-    .then(function(json) {
+    //split the chain of promises to keep both text and result, seems a bit to complicated
+    Promise
+    .all([resp, payload]).then(function(results) {
       var response = {
         uri: localized,
+        redirectUri: (results[0].redirected ? results[0].url : null),
         success: true,
         error: "",
-        result: json,
+        result: results[1]
       }
       this.cache[localized] = response;
       resultHandler(response);
     }.bind(this))
     .catch (function(exception) {
       var response = {
-        uri: uri,
+        uri: localized,
+        redirectUri: null,
         success: false,
         error: exception,
         result: null
       }
-      console.error(exception);
       resultHandler(response);
     })
   }
@@ -259,25 +309,32 @@ class ApiClient {
     //fetch
     var localized = this._localizePath(uri);
     console.debug("fetch", localized);
-    fetch(localized, opts)
+    var resp = fetch(localized, opts)
     .then(this._checkStatus)
-    .then(function(data) {
+    var payload = resp
+    .then(function(r) {
+        return r.text();
+    })
+    //split the chain of promises to keep both text and result, seems a bit to complicated
+    Promise
+    .all([resp, payload]).then(function(results) {
       var response = {
         uri: localized,
+        redirectUri: (results[0].redirected ? results[0].url : null),
         success: true,
         error: "",
-        result: data,
+        result: results[1]
       }
       resultHandler(response);
     })
     .catch (function(exception) {
       var response = {
-        uri: uri,
+        uri: localized,
+        redirectUri: null,
         success: false,
         error: exception,
         result: null
       }
-      console.error(exception);
       resultHandler(response);
     })
   }
@@ -359,11 +416,6 @@ class ApiClient {
         return [conjunction, ...parts];
       });
       queryParts = flattenArray(parts);
-      /*for(var prop in filter) { OLD SIMPLE VERSION WITHOUT GROUPING
-        var val = filter[prop];
-        var filterQuery = `filter[${prop}][value]=${val}`;
-        queryParts.push(filterQuery);
-      }*/
     }
 
     //get specific fields only
@@ -407,12 +459,9 @@ class ApiClient {
           //console.log("uri", uri)
           //console.log("next", next)
         }
-
         if(resultHandler) {
           resultHandler(data, included, nextOffset);
         }
-
-
       } else {
         if(resultHandler) {
           resultHandler(null);
@@ -422,28 +471,30 @@ class ApiClient {
   }
 
   /**
-    * load information on logged in user
+    * load information on logged in user from server, either by uuid (preferred) or by uid, get csrf_token if not yet known
     */
   getUser(resultHandler) {
+    //check if the data in the field_data is sane
+    var processUser = function(userData, resultHandler) {
+      var prefs = (userData.attributes || {}).field_data || "{}";
+      try {
+        var stored = JSON.parse(prefs);
+        (userData.attributes || {}).field_data = stored;
+      } catch(e) {
+        console.log("could not parse stored user data from server");
+      }
+      resultHandler(userData);
+    };
+    //when we have uuid and token we are fine for the rest of this session
     var user = this._loadUser();
-    var uuid = (user || {}).uuid;
-    if(uuid) {
+    if(user.uuid && user.csrf_token) {
       var uri = new URI({
-        path: `/jsonapi/user/user/${uuid}`
+        path: `/jsonapi/user/user/${user.uuid}`
       });
-
       this.fetchJSON(uri, function(response){
         if(response.success) {
           if(resultHandler) {
-            var userData = response.result.data || {};
-            var prefs = (userData.attributes || {}).field_data || "{}";
-            try {
-              var stored = JSON.parse(prefs);
-              (userData.attributes || {}).field_data = stored;
-            } catch(e) {
-              console.log("could not parse stored user data from server");
-            }
-            resultHandler(response.result);
+            processUser(response.result.data || {}, resultHandler);
           }
         } else {
           if(resultHandler) {
@@ -451,29 +502,96 @@ class ApiClient {
           }
         }
       }, "GET", null, true);
+    //user propably not logged in via REST, resolve uuid and csrf_token via another way, finally get user data from jsonapi
     } else {
-      console.error("could not load info on user, there is no uuid known here");
-      if(resultHandler) {
-        resultHandler(null);
-      }
+      console.log("trying to resolve user info");
+      //fetch user data in two steps
+      var userUrl = new URI({
+        path: `/user`
+      });
+      this.fetchPlain(userUrl, function(response){
+        //if we are logged in we get a redirect to canonical user path
+        if(response.success) {
+          if(response.redirectUri) {
+            var redirectUri = new URI(response.redirectUri)
+            //retrieve the uid from the redirect path
+            var uid = parseInt(redirectUri.filename(), 10)
+            console.debug("found uid", uid)
+            if(!isNaN(uid)) {
+              var uri = new URI({
+                path: `/jsonapi/user/user?filter[uid][value]=${uid}`
+              });
+              //fetch full user data
+              this.fetchJSON(uri, function(response){
+                if(response.success) {
+                  var userData = (response.result.data || [])[0] || {}
+                  this._persistUser({
+                    "uid" : (userData.attributes || {}).uid,
+                    "uuid" : (userData.attributes || {}).uuid
+                  })
+                  if(resultHandler) {
+                    processUser(userData || [], resultHandler);
+                  }
+                } else {
+                  if(resultHandler) {
+                    resultHandler(null);
+                  }
+                }
+              }.bind(this), "GET", null, true);
+            } else {
+              console.error("unexpected uid from response", uri)
+              if(resultHandler) {
+                resultHandler(null);
+              }
+            }
+          } else {
+            console.error("unexpected response from uri:", uri)
+            if(resultHandler) {
+              resultHandler(null);
+            }
+          }
+        } else {
+          console.error("unexpected response from uri:", uri)
+          if(resultHandler) {
+            resultHandler(null);
+          }
+        }
+      }.bind(this), "GET", null, true);
+      //fetch token
+      var sessionUrl = new URI({
+        path: `/session/token`
+      });
+      this.fetchPlain(sessionUrl, function(response){
+        if(response.success && response.result) {
+          console.log("session", response.result);
+          this._persistUser({
+            csrf_token : response.result
+          })
+        } else {
+          console.error("could not get session token, user will no be able to save", response.error);
+        }
+      }.bind(this), "GET", null, true);
     }
   }
 
+
   /**
-    * load information on logged in user
+    * save data for logged in user
     */
   saveUser(data, resultHandler) {
+    //
     var user = this._loadUser();
-    var uuid = (user || {}).uuid;
-    if(uuid) {
+    if(user.uuid) {
       //need to insert id into data
-      (data.data || {}).id = uuid;
+      data.data = data.data || {};
+      data.data.id = user.uuid;
+      data.data.type = "user--user";
       //need to convert preferences to string
       var obj = ((data.data || {}).attributes || {}).field_data;
       ((data.data || {}).attributes || {}).field_data = JSON.stringify(obj)
       //store it
       var uri = new URI({
-        path: `/jsonapi/user/user/${uuid}`,
+        path: `/jsonapi/user/user/${user.uuid}`,
       });
       this.fetchJSON(uri, function(response){
         if(response.success) {
@@ -481,6 +599,7 @@ class ApiClient {
             resultHandler(true);
           }
         } else {
+          console.error("response", response);
           if(resultHandler) {
             resultHandler(null);
           }
