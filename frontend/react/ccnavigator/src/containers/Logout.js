@@ -83,11 +83,11 @@ class Logout extends React.Component {
         {indicator}
         {user}
         <input type="submit" value="logout" onClick={ this.onLogout.bind(this)} />
-        {/*<div>
+        <div>
           <input type="text" ref={(elem) => { this.userInfoField = elem; }} />
           <input type="submit" value="save user data" onClick={ this.onSaveUser.bind(this)}  />
           <input type="submit" value="add tool" onClick={ this.onAddTool.bind(this)}  />
-        </div>*/}
+        </div>
       </div>
     );
   }

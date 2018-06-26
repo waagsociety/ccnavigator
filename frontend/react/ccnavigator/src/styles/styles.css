@@ -2144,7 +2144,8 @@ p {
   p :last-child {
     margin-bottom: 0; }
 
-small {
+small,
+.small {
   font-size: 0.8em;
   line-height: 1.35em; }
 
@@ -2459,7 +2460,7 @@ button {
   display: flex;
   flex-direction: column;
   max-width: 14rem;
-  margin-top: 2rem; }
+  margin: 1rem 0; }
 
 .modal-loading {
   color: #FFF;
