@@ -62,8 +62,8 @@
     color: $color-turquoise;
   }
 
-  &.group_size:before                   { content: $fa-var-child; }
-  &.duration:before                     { content: $fa-var-clock-o; }
-  &.facilitator_participant:before      { content: $fa-var-users; }
-  &.experience_level:before             { content: $fa-var-star; }
+  &.group_size:before              { content: $fa-var-child; }
+  &.duration:before                { content: $fa-var-clock-o; }
+  &.facilitator_participant:before { content: $fa-var-users; }
+  &.experience_level:before        { content: $fa-var-star; }
 }

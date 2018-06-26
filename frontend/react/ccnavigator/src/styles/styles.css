@@ -3041,7 +3041,7 @@ a.box {
     content: ""; }
   .short-tool-meta.facilitator_participant:before {
     content: ""; }
-  .short-tool-meta.experience_level_facilitator:before {
+  .short-tool-meta.experience_level:before {
     content: ""; }
 
 .tool-filters h3 {
@@ -3063,7 +3063,7 @@ a.box {
     content: ""; }
   .tool-filter.facilitator_participant h4:before {
     content: ""; }
-  .tool-filter.experience_level_facilitator h4:before {
+  .tool-filter.experience_level h4:before {
     content: ""; }
 
 .tool-filter-options li {
