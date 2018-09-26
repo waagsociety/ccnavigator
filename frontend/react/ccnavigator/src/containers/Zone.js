@@ -84,12 +84,13 @@ class Zone extends React.Component {
 
             //als filter actief toevoeging aan titeltje
             var toolsNote = ((this.props.filtersSelected || []).length > 0 ? <small className="nowrap">(matching current filters)</small> : null)
+            var label = (term.nodes.length === 1 ? 'tool' : 'tools')
 
             //list the tools in this subcategory
             var content = (
               <div className="box-body">
                 <p>{term.attributes.field_subtitle}</p>
-                <div><Label value={`${term.nodes.length} tools`} size={'0.7em'} color={categoryColor} /> {toolsNote}</div>
+                <div><Label value={`${term.nodes.length} ${label}`} size={'0.7em'} color={categoryColor} /> {toolsNote}</div>
               </div>
             ) // todo: make translatable
             return {

@@ -84,7 +84,7 @@ class Metro extends React.Component {
         <div id="container-map" style={{width:"100%", height:"100%"}} >
           <SVGMap width={this.props.size.width} height={this.props.size.height} >
             <MetroMap/>
-            {categoryBoxes}
+            <g transform="translate(0,0)">{categoryBoxes}</g>
           </SVGMap>
         </div>
 

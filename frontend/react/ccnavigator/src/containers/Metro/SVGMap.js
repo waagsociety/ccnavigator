@@ -6,10 +6,11 @@ import { withRouter, matchPath } from 'react-router-dom';
 class SVGMap extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
+    window.svgmap = this
     this.state = {
       matrix: [1, 0, 0, 1, 0, 0],
-      viewBox: [100, -100, 1100, 950], /* default view box */
+      viewBox: [0, 0, 1000, 960], /* default view box */
       buttonHeld: false,
       dragging: false,
       didDrag: false,
@@ -20,10 +21,10 @@ class SVGMap extends React.Component {
   }
 
   componentDidMount() {
-    if((this.props.width > 900) && (this.props.height > 900)) {
+    if((this.props.width > 1000) && (this.props.height > 1000)) {
       //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
       var s = Math.min(this.props.width,this.props.height)
-      var z = 900 / s
+      var z = 1000 / s
       //console.log(z)
       this.zoomWith(z)
     }
@@ -86,15 +87,19 @@ class SVGMap extends React.Component {
 
     // double click
     if((stamp - prevStamp) < 400) {
-      //var viewRect = this.svgElement.getBoundingClientRect();
-      //var viewX = e.clientX - viewRect.x;
-      //var viewY = e.clientY - viewRect.y;
       // click location is ignored
-      this.animateZoom2();
-    }
+      //this.animateZoom2();
 
-    //
-    //e.preventDefault();
+      // attemp to not ingore click location (:
+      const box = this.svgElement.getBoundingClientRect();
+
+      const toZoom = this.props.width / this.state.viewBox[2] * 1.4
+      // how to get click location within map? (this is wrong)
+      const toX = (startX - box.x) / 1000 * (this.state.viewBox[0] + this.state.viewBox[2])
+      const toY = (startY - box.y) / 960 * (this.state.viewBox[1] + this.state.viewBox[3])
+
+      this.animateZoom(toZoom, [toX, toY])
+    }
   }
 
   onMouseMove(e) {
@@ -136,46 +141,34 @@ class SVGMap extends React.Component {
   /**
    * animate zoom to a specified center
    */
-  /*
-  animateZoom(targetCenter) {
-    //
-    var targetZoom = 2;
+  /**/
+  animateZoom(targetZoom, targetCenter) {
+    clearInterval(this.runningInterval)
 
-    //transform click coordinates to svgmap coordinates respecting current viewbox
-    var cz = this.props.width / this.state.viewBox[2]; //vertical en horizontal zoom are the same
-    var mapX = (targetCenter[0] / cz) + this.state.viewBox[0];
-    var mapY = (targetCenter[1] / cz) + this.state.viewBox[1];
     //calc the current center map coordinate
-    const beginZoom = this.props.width / this.state.viewBox[2];
-    const beginX = this.state.viewBox[0] + this.state.viewBox[2] * 0.5;
-    const beginY = this.state.viewBox[1] + this.state.viewBox[3] * 0.5;
-    //calc the distance in map coordinates to travel
-    const dx = mapX - beginX;
-    const dy = mapY - beginY;
+    const beginZoom = this.props.width / this.state.viewBox[2]
+    const beginX = this.state.viewBox[0] + this.state.viewBox[2] * 0.5
+    const beginY = this.state.viewBox[1] + this.state.viewBox[3] * 0.5
+
+    const steps = 10
+    const stepZoom = (targetZoom - beginZoom) / steps
+    const stepX = (targetCenter[0] - beginX) / steps
+    const stepY = (targetCenter[1] - beginY) / steps
+
     //animate to new center
+    var step = 1
     this.runningInterval = setInterval(function(){
-      var currentZoom = this.props.width / this.state.viewBox[2];
-      var progress = (currentZoom - beginZoom) / (targetZoom - beginZoom);
-      var x = beginX + dx * progress;
-      var y = beginY + dy * progress;
-      var z = 1;
-      if(currentZoom === targetZoom) {
-        clearInterval(this.runningInterval);
-      } else if(currentZoom < targetZoom) {
-        z = 1.1;
-        if(z * currentZoom >= targetZoom) { //stop if interval if next zoom level reaches target
-          clearInterval(this.runningInterval);
-        }
-      } else if(currentZoom > targetZoom) {
-        z = 0.90;
-        if(z * currentZoom <= targetZoom) { //stop if interval if next zoom level reaches target
-          clearInterval(this.runningInterval);
-        }
-      }
-      this.zoomPanTo(z * currentZoom, [x,y])
-    }.bind(this), 50);
+      if(step === steps) clearInterval(this.runningInterval)
+
+      var toZoom = beginZoom + step * stepZoom
+      var toX = beginX + step * stepX
+      var toY = beginY + step * stepY
+
+      this.zoomPanTo(toZoom, [toX,toY])
+
+      step++
+    }.bind(this), 25);
   }
-  */
 
   /**
    * the svg will have the full size of its container, view box determines crop

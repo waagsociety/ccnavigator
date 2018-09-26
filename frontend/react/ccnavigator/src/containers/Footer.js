@@ -25,7 +25,6 @@ class Footer extends React.Component {
     return (
       <div>
           <Route path="/navigator/*" component={ToolFilter} />
-          {userform}
       </div>
     );
   }

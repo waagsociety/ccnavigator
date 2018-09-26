@@ -9,6 +9,7 @@ import Zone from "containers/Zone.js"
 import Tool from "containers/Tool.js"
 import GlossaryItem from "containers/GlossaryItem.js"
 import MediaQuery from 'react-responsive';
+import { Constants } from 'config/Constants.js';
 import 'styles/styles.css'
 import {
   BrowserRouter as Router,
@@ -29,6 +30,10 @@ class App extends React.Component {
     }
     this.updateDimensions = this.updateDimensions.bind(this);
     window.addEventListener("resize", this.updateDimensions.bind(this));
+
+
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+    window.addEventListener("keyup", this.handleKeyUp.bind(this));
   }
 
   componentDidMount() {
@@ -58,6 +63,21 @@ class App extends React.Component {
     //let update_height = window.innerHeight;
     //this.setState({ width: update_width, height: update_height });
   }
+
+  handleKeyUp(e) {
+    if(["1", "2", "3", "4", "5"].indexOf(e.key) > -1) {
+      window.svgmap.animateZoom(1.75, [Constants.zones[e.key].x,Constants.zones[e.key].y])
+    }
+
+    if(e.key === "w") {
+      window.svgmap.animateZoom(1.4, [645,577.5])
+    }
+
+    if(e.key === "z") {
+      window.svgmap.animateZoom(1, [500,480])
+    }
+  }
+
 
   render() {
     return (

@@ -43,7 +43,7 @@ class CategoryBox extends React.Component {
       zoneClass += ' sub-zone'
     }
 
-    var categoryWidth = 250
+    var categoryWidth = 230
     if(path.length > 1){
       categoryWidth = 170
     }
