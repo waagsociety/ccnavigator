@@ -199,3 +199,10 @@ export const flattenArray = function(arr) {
     return flat.concat(Array.isArray(toFlatten) ? flattenArray(toFlatten) : toFlatten);
   }, []);
 }
+
+export const ease = function(step, steps) {
+  step = step/steps
+  step = step<.5 ? 2*step*step : -1+(4-2*step)*step //easeInOutQuad
+  step = step*steps
+  return step
+}

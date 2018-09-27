@@ -1,7 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { setZoomLevelHigh} from 'actions'
-import { withRouter, matchPath } from 'react-router-dom';
+import React from 'react'
+import { connect } from 'react-redux'
+import { setZoomLevelHigh } from 'actions'
+import { withRouter, matchPath } from 'react-router-dom'
+import { ease } from "util/utility"
 
 class SVGMap extends React.Component {
 
@@ -160,9 +161,11 @@ class SVGMap extends React.Component {
     this.runningInterval = setInterval(function(){
       if(step === steps) clearInterval(this.runningInterval)
 
-      var toZoom = beginZoom + step * stepZoom
-      var toX = beginX + step * stepX
-      var toY = beginY + step * stepY
+      const stepSize = ease(step, steps)
+
+      var toZoom = beginZoom + stepSize * stepZoom
+      var toX = beginX + stepSize * stepX
+      var toY = beginY + stepSize * stepY
 
       this.zoomPanTo(toZoom, [toX,toY])
 
