@@ -31,7 +31,6 @@ class App extends React.Component {
     this.updateDimensions = this.updateDimensions.bind(this);
     window.addEventListener("resize", this.updateDimensions.bind(this));
 
-
     this.handleKeyUp = this.handleKeyUp.bind(this);
     window.addEventListener("keyup", this.handleKeyUp.bind(this));
   }
