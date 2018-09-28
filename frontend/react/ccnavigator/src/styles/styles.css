@@ -2669,9 +2669,17 @@ button {
 
 .pane {
   background-color: #fff;
-  box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.1); }
+  box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.05); }
   .pane .pane-text {
     padding: 1rem; }
+
+a.pane {
+  display: block;
+  text-decoration: none; }
+  a.pane:hover {
+    box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.2); }
+    a.pane:hover h2 {
+      text-decoration: underline; }
 
 .pane-header {
   position: relative;

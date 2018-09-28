@@ -73,34 +73,34 @@ class Home extends React.Component {
         <div className="wrapper content">
 
           <div className="row">
-            <div className="pane pane-header" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }}>
+            <Link className="pane pane-header" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }} to="/navigator/">
               <div className="pane-text">
                 <h1>{content_1_title} <Label value="beta" color="#2FB6BC" size="0.3em" align="text-top"/></h1>
                 <h2 className="subtitle">{content_1_body}</h2>
-                <Link className="button button-go" to="/navigator/">to the navigator!</Link>
+                <span className="button button-go">to the navigator!</span>
               </div>
-            </div>
+            </Link>
           </div>
 
           <div className="row">
             <div className="columns">
-              <div className="column pane">
+              <Link className="column pane" to="/the-society-as-research-laboratorium">
                 <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/society-as-a-laboratorium.jpg" alt="" />
                 <div className="pane-text">
                   <h2>{content_2_1_title}</h2>
                   <p>{content_2_1_body} [...]</p>
-                  <Link className="button-link button-go" to="/the-society-as-research-laboratorium">read more</Link>
+                  <span className="button-link button-go">read more</span>
                 </div>
-              </div>
+              </Link>
 
-              <div className="column pane">
+              <Link className="column pane" to="/the-power-of-co-creation">
                 <img src="https://ccn.waag.org/drupal/sites/default/files/2018-05/power-of-co-creation.jpg" alt="" />
                 <div className="pane-text">
                   <h2>{content_2_2_title}</h2>
                   <p>{content_2_2_body} [...]</p>
-                  <Link className="button-link button-go" to="/the-power-of-co-creation">read more</Link>
+                  <span className="button-link button-go">read more</span>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
 

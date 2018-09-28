@@ -65,12 +65,26 @@
 
 .pane {
   background-color: #fff;
-  box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+  box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.05);
 
   .pane-text {
     padding: 1rem;
   }
 }
+
+a.pane {
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.2);
+
+    h2 {
+      text-decoration: underline;
+    }
+  }
+}
+
 
 .pane-header {
   position: relative;
