@@ -82,15 +82,27 @@ class Zone extends React.Component {
         if (this.state.termHierachy.children[0].children.length === 0) {
           var	boxes = this.state.termHierachy.children.map((term, index) => {
 
-            //als filter actief toevoeging aan titeltje
-            var toolsNote = ((this.props.filtersSelected || []).length > 0 ? <small className="nowrap">(matching current filters)</small> : null)
-            var label = (term.nodes.length === 1 ? 'tool' : 'tools')
+            if (term.nodes.length > 0) {
+              var toolNodes = term.nodes.slice(0,5)
+              var tools = toolNodes.map(tool => {
+                return <Label key={tool.id} value={tool.attributes.title} size={'0.7em'} color={categoryColor} />
+              })
+              if (term.nodes.length > 5) {
+                tools.push(<Label key="more" value={`...and ${term.nodes.length - 5} more`} size={'0.7em'} color={categoryColor} />);
+              }
+            } else {
+              var tools = <Label value="no tools" size={'0.7em'} color={categoryColor} />
+            }
 
-            //list the tools in this subcategory
+            var toolsNote = ((this.props.filtersSelected || []).length > 0 ? <small className="nowrap">(matching current filters)</small> : null)
+
+            //var label = (term.nodes.length === 1 ? 'tool' : 'tools')
+            //<div><Label value={`${term.nodes.length} ${label}`} size={'0.7em'} color={categoryColor} /> {toolsNote}</div>
             var content = (
               <div className="box-body">
                 <p>{term.attributes.field_subtitle}</p>
-                <div><Label value={`${term.nodes.length} ${label}`} size={'0.7em'} color={categoryColor} /> {toolsNote}</div>
+                <div>{tools} {toolsNote}</div>
+                
               </div>
             ) // todo: make translatable
             return {
@@ -106,7 +118,7 @@ class Zone extends React.Component {
       }
 
       //compose body of modal
-      modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
+      modalBody = <ModalBody description={description} boxesType="themes" boxesTitle={boxesTitle} boxes={boxes} />
     }
 
     //return the content in a modal view

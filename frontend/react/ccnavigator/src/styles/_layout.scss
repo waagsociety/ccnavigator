@@ -151,10 +151,23 @@ a.pane {
   padding: 1rem;
   background-color: #fff;
 
+}
+
+.tools .box {
+  border-left: 3px solid $color-turquoise;
+
+
   @media (orientation: landscape) {
+    border-left: none;
+    border-top: 3px solid $color-turquoise;
     width: calc(50% - 1rem);
   }
 }
+
+.themes .box {
+  border-left: 3px solid $color-turquoise;
+}
+
 
 a.box {
   text-decoration: none;

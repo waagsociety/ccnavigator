@@ -7,7 +7,7 @@ class Back extends React.Component {
   }
 
   render() {
-    return <span className="button-back" onClick={this.context.router.history.goBack}></span>
+    return <span className="button-back" onClick={this.context.router.history.goBack}><span className="fa-icon"></span> back</span>
   }
 }
 

@@ -28,7 +28,7 @@ const ModalBody = (props) => {
     <div className="modal-body">
       <div className="content">{description}</div>
       <h3>{props.boxesTitle}</h3>
-      <div className="boxes">{boxes}</div>
+      <div className={`boxes ${props.boxesType}`}>{boxes}</div>
     </div>
   )
 }

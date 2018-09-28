@@ -35,6 +35,10 @@
   max-width: 100%;
   padding: 1em;
   text-align: left;
+
+  @media (max-width: 600px) {
+    padding: 0.5em;
+  }
 }
 
 
@@ -95,7 +99,7 @@
 .modal-body {
   background: $color-background;
   min-height: 20rem;
-  padding: 1.25rem;
+  padding: 1rem;
 
   @media (orientation: landscape) {
     padding: 2rem;

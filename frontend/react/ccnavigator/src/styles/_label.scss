@@ -16,18 +16,30 @@
   &:first-child {
     margin-right: 0.5em;
   }
+
   &:last-child {
     margin-left: 0.5em;
   }
+
   &:first-child:last-child {
     margin-left: 0em;
     margin-right: 0em;
   }
+
+  .themes .box & {
+    margin-right: 0.5em;
+    margin-left: 0em;
+  }
+
 }
+
+
+
 .label-circle {
   width: 1.5em;
   text-align: center;
 }
+
 .label-bar {
   padding: 0 0.65em;
 }

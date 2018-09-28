@@ -35,20 +35,20 @@
 
 // ui buttons
 .button-back {
-  font-family: "FontAwesome";
+  //font-family: "FontAwesome";
   position: absolute;
-  left: 0rem;
+  left: 0.5rem;
   top: -1.5rem;
-  width: 1.5em;
+  //width: 1.5em;
   text-align: center;
   color: #FFF;
-  font-size: 1.15rem;
+  font-size: 1rem;
   line-height: 1.15rem;
   user-select: none;
   cursor: pointer;
   transition: all 100ms ease;
 
-  &:hover {
-    transform: translateX(-2px);
+  &:hover .fa-icon {
+    transform: translateX(-1px);
   }
 }

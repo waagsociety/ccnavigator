@@ -136,7 +136,7 @@ class Theme extends React.Component {
       }
 
 
-      modalBody = <ModalBody description={description} boxesTitle={boxesTitle} boxes={boxes} />
+      modalBody = <ModalBody description={description} boxesType="tools" boxesTitle={boxesTitle} boxes={boxes} />
     }
 
 

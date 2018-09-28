@@ -2159,6 +2159,11 @@ small,
   background: #000;
   color: #FFF; }
 
+.fa-icon {
+  display: inline-block;
+  font-family: "FontAwesome";
+  transition: all 100ms ease; }
+
 a {
   box-sizing: border-box;
   color: #000;
@@ -2496,6 +2501,9 @@ button {
   max-width: 100%;
   padding: 1em;
   text-align: left; }
+  @media (max-width: 600px) {
+    .modal-content {
+      padding: 0.5em; } }
 
 .modal-header {
   position: relative;
@@ -2539,7 +2547,7 @@ button {
 .modal-body {
   background: #F2F2F2;
   min-height: 20rem;
-  padding: 1.25rem; }
+  padding: 1rem; }
   @media (orientation: landscape) {
     .modal-body {
       padding: 2rem; } }
@@ -2568,6 +2576,9 @@ button {
   .label:first-child:last-child {
     margin-left: 0em;
     margin-right: 0em; }
+  .themes .box .label {
+    margin-right: 0.5em;
+    margin-left: 0em; }
 
 .label-circle {
   width: 1.5em;
@@ -2602,20 +2613,18 @@ button {
   transition: all 200ms ease; }
 
 .button-back {
-  font-family: "FontAwesome";
   position: absolute;
-  left: 0rem;
+  left: 0.5rem;
   top: -1.5rem;
-  width: 1.5em;
   text-align: center;
   color: #FFF;
-  font-size: 1.15rem;
+  font-size: 1rem;
   line-height: 1.15rem;
   user-select: none;
   cursor: pointer;
   transition: all 100ms ease; }
-  .button-back:hover {
-    transform: translateX(-2px); }
+  .button-back:hover .fa-icon {
+    transform: translateX(-1px); }
 
 #container-app {
   display: flex;
@@ -2733,9 +2742,17 @@ a.pane {
   margin: 0.5rem;
   padding: 1rem;
   background-color: #fff; }
+
+.tools .box {
+  border-left: 3px solid #2FB6BC; }
   @media (orientation: landscape) {
-    .box {
+    .tools .box {
+      border-left: none;
+      border-top: 3px solid #2FB6BC;
       width: calc(50% - 1rem); } }
+
+.themes .box {
+  border-left: 3px solid #2FB6BC; }
 
 a.box {
   text-decoration: none; }
