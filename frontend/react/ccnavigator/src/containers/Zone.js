@@ -82,16 +82,17 @@ class Zone extends React.Component {
         if (this.state.termHierachy.children[0].children.length === 0) {
           var	boxes = this.state.termHierachy.children.map((term, index) => {
 
+            var tools
             if (term.nodes.length > 0) {
               var toolNodes = term.nodes.slice(0,5)
-              var tools = toolNodes.map(tool => {
+              tools = toolNodes.map(tool => {
                 return <Label key={tool.id} value={tool.attributes.title} size={'0.7em'} color={categoryColor} />
               })
               if (term.nodes.length > 5) {
                 tools.push(<Label key="more" value={`...and ${term.nodes.length - 5} more`} size={'0.7em'} color={categoryColor} />);
               }
             } else {
-              var tools = <Label value="no tools" size={'0.7em'} color={categoryColor} />
+              tools = <Label value="no tools" size={'0.7em'} color={categoryColor} />
             }
 
             var toolsNote = ((this.props.filtersSelected || []).length > 0 ? <small className="nowrap">(matching current filters)</small> : null)

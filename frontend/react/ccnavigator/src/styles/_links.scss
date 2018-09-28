@@ -28,13 +28,10 @@ input[type=button] {
   font-size: 1rem;
   vertical-align: top;
   font-weight: 400;
+  text-decoration: none;
   user-select: none;
   cursor: pointer;
-  text-decoration: none;
 
-  &:hover {
-    text-decoration: none;
-  }
   &:focus {
     box-shadow: 0 0 0.25rem 0 rgba(0,0,0,0.5);
   }
@@ -68,12 +65,10 @@ input[type=button] {
   font-size: 0.8rem;
   vertical-align: top;
   font-weight: 400;
+  text-decoration: none;
   user-select: none;
   cursor: pointer;
 
-  &:hover {
-    text-decoration: none;
-  }
   &:after {
     content: " ";
     position: absolute;

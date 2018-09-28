@@ -2191,13 +2191,9 @@ input[type=button] {
   font-size: 1rem;
   vertical-align: top;
   font-weight: 400;
+  text-decoration: none;
   user-select: none;
-  cursor: pointer;
-  text-decoration: none; }
-  .button:hover,
-  input[type=submit]:hover,
-  input[type=button]:hover {
-    text-decoration: none; }
+  cursor: pointer; }
   .button:focus,
   input[type=submit]:focus,
   input[type=button]:focus {
@@ -2234,10 +2230,9 @@ input[type=button] {
   font-size: 0.8rem;
   vertical-align: top;
   font-weight: 400;
+  text-decoration: none;
   user-select: none;
   cursor: pointer; }
-  .button-small:hover {
-    text-decoration: none; }
   .button-small:after {
     content: " ";
     position: absolute;

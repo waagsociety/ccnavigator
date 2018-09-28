@@ -134,32 +134,32 @@ class MetroMap extends React.Component {
   render() {
 
     // make land
-    var teamAreaClosed = CurvedPolyline.closeLine(MetroLayout.teamArea.points)
-    var teamArea = <path d={CurvedPolyline.smoothPolyline(teamAreaClosed, 20)} className="area" />
-    var communityAreaClosed = CurvedPolyline.closeLine(MetroLayout.communityArea.points)
-    var communityArea = <path d={CurvedPolyline.smoothPolyline(communityAreaClosed, 20)} className="area" />
-    var navigatorAreaClosed = CurvedPolyline.closeLine(MetroLayout.navigatorArea.points)
-    var navigatorArea = <path d={CurvedPolyline.smoothPolyline(navigatorAreaClosed, 20)} className="area" />
+    //var teamAreaClosed = CurvedPolyline.closeLine(MetroLayout.teamArea.points)
+    //var teamArea = <path d={CurvedPolyline.smoothPolyline(teamAreaClosed, 20)} className="area" />
+    //var communityAreaClosed = CurvedPolyline.closeLine(MetroLayout.communityArea.points)
+    //var communityArea = <path d={CurvedPolyline.smoothPolyline(communityAreaClosed, 20)} className="area" />
+    //var navigatorAreaClosed = CurvedPolyline.closeLine(MetroLayout.navigatorArea.points)
+    //var navigatorArea = <path d={CurvedPolyline.smoothPolyline(navigatorAreaClosed, 20)} className="area" />
 
-    var cityAreaClosed = CurvedPolyline.closeLine(MetroLayout.cityArea.points)
-    var cityArea = <path d={CurvedPolyline.smoothPolyline(cityAreaClosed, 20)} className="wide-area" />
+    //var cityAreaClosed = CurvedPolyline.closeLine(MetroLayout.cityArea.points)
+    //var cityArea = <path d={CurvedPolyline.smoothPolyline(cityAreaClosed, 20)} className="wide-area" />
 
-    var zone2Closed = CurvedPolyline.closeLine(MetroLayout.zone2.points)
-    var zone2 = <path d={CurvedPolyline.smoothPolyline(zone2Closed, 20)} className="inner-area" />
+    //var zone2Closed = CurvedPolyline.closeLine(MetroLayout.zone2.points)
+    //var zone2 = <path d={CurvedPolyline.smoothPolyline(zone2Closed, 20)} className="inner-area" />
 
 
     //var innerAreaClosed = CurvedPolyline.closeLine(MetroLayout.innerArea.points)
     //var innerArea = <path d={CurvedPolyline.smoothPolyline(innerAreaClosed, 20)} className="inner-area" />
 
-    var centralAreaClosed = CurvedPolyline.closeLine(MetroLayout.centralArea.points)
-    var centralArea = <path d={CurvedPolyline.smoothPolyline(centralAreaClosed, 20)} className="central-area" />
+    //var centralAreaClosed = CurvedPolyline.closeLine(MetroLayout.centralArea.points)
+    //var centralArea = <path d={CurvedPolyline.smoothPolyline(centralAreaClosed, 20)} className="central-area" />
 
-    var islandClosed = CurvedPolyline.closeLine(MetroLayout.island.points)
-    var island = <path d={CurvedPolyline.smoothPolyline(islandClosed, 20)} className="area" />
+    //var islandClosed = CurvedPolyline.closeLine(MetroLayout.island.points)
+    //var island = <path d={CurvedPolyline.smoothPolyline(islandClosed, 20)} className="area" />
 
     // make river
-    var closedRiver = CurvedPolyline.closeLine(MetroLayout.river.points)
-    var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className="river" />
+    //var closedRiver = CurvedPolyline.closeLine(MetroLayout.river.points)
+    //var river = <path d={CurvedPolyline.smoothPolyline(closedRiver, 20)} className="river" />
 
 
     // generate the main line and start/end stations
@@ -206,7 +206,7 @@ class MetroMap extends React.Component {
       return <rect key={index} x={point[0] - 5} y={point[1] - 5} width="10" height="10" rx="5" ry="5" className="station" />
     })
 
-    //{innerArea}
+    // {innerArea}
     // {island}
     // {teamArea}
     // {communityArea}
@@ -215,14 +215,16 @@ class MetroMap extends React.Component {
     // {zone2}
     // {centralArea}
     // {river}
-    // {mainLine}
-    // {mainLineArrows}
+
+    //<path d="M80,490,346.46,223.54A13.91,13.91,0,0,1,355,220H485a13.91,13.91,0,0,1,8.54,3.54L636.46,366.46A13.91,13.91,0,0,1,640,375V615a13.91,13.91,0,0,1-3.54,8.54L373.54,886.46A13.91,13.91,0,0,1,365,890H245a13.91,13.91,0,0,1-8.54-3.54L80,730" fill="none" stroke="#29bdbe" strokeMiterlimit="10" strokeWidth="6"/>
 
     //the composed metro map
     return (
       <g>
-        <g transform="translate(0,0)"><path d="M170-240c5.5,0,13.18,3.18,17.07,7.07L412.93-7.07C416.82-3.18,420,4.5,420,10V310c0,5.5-3.18,13.18-7.07,17.07l-85.86,85.86C323.18,416.82,320,424.5,320,430V950c0,5.5,3.18,13.18,7.07,17.07l85.86,85.86c3.89,3.89,7.07,11.57,7.07,17.07v280c0,5.5-3.18,13.18-7.07,17.07L187.07,1592.93c-3.89,3.89-11.57,7.07-17.07,7.07H-290c-5.5,0-13.18-3.18-17.07-7.07l-225.86-225.86c-3.89-3.89-7.07-11.57-7.07-17.07V10c0-5.5,3.18-13.18,7.07-17.07l225.86-225.86c3.89-3.89,11.57-7.07,17.07-7.07Zm540,0c-5.5,0-13.18,3.18-17.07,7.07L467.07-7.07C463.18-3.18,460,4.5,460,10V330c0,5.5-3.18,13.18-7.07,17.07l-85.86,85.86C363.18,436.82,360,444.5,360,450V930c0,5.5,3.18,13.18,7.07,17.07l85.86,85.86c3.89,3.89,7.07,11.57,7.07,17.07v300c0,5.5,3.18,13.18,7.07,17.07l225.86,225.86c3.89,3.89,11.57,7.07,17.07,7.07h460c5.5,0,13.18-3.18,17.07-7.07l225.86-225.86c3.89-3.89,7.07-11.57,7.07-17.07V1070c0-5.5-3.18-13.18-7.07-17.07l-85.86-85.86c-3.89-3.89-7.07-11.57-7.07-17.07V430c0-5.5,3.18-13.18,7.07-17.07l85.86-85.86c3.89-3.89,7.07-11.57,7.07-17.07V10c0-5.5-3.18-13.18-7.07-17.07L1187.07-232.93c-3.89-3.89-11.57-7.07-17.07-7.07Zm760,0a10,10,0,0,0-10,10V1590a10,10,0,0,0,10,10h520a10,10,0,0,0,10-10V410a10,10,0,0,1,10-10h20a10,10,0,0,1,10,10V1590a10,10,0,0,0,10,10h520a10,10,0,0,0,10-10V-30c0-5.5-3.18-13.18-7.07-17.07L2387.07-232.93c-3.89-3.89-11.57-7.07-17.07-7.07ZM282.5-2663.33a10,10,0,0,0-7.27,12.13l13.34,53.3a10,10,0,0,0,12.13,7.27L354-2604a10,10,0,0,0,7.27-12.13l-13.34-53.3a10,10,0,0,0-12.13-7.27Z" fill="#f2f2f2"/><path d="M-10,190c0-5.5,3.18-13.18,7.07-17.07L152.93,17.07C156.82,13.18,164.5,10,170,10H840c5.5,0,13.08,3.28,16.85,7.28l146.3,155.44c3.77,4,6.85,11.78,6.85,17.28V710c0,5.5-3.18,13.18-7.07,17.07L827.07,902.93C823.18,906.82,815.5,910,810,910H205c-5.5,0-13.22-3.14-17.16-7L-2.84,717C-6.78,713.14-10,705.5-10,700Z" fill="#e5e5e5"/><path d="M750,20c5.5,0,13.18,3.18,17.07,7.07L992.93,252.93c3.89,3.89,7.07,11.57,7.07,17.07V705c0,5.5-3.18,13.18-7.07,17.07L822.07,892.93C818.18,896.82,810.5,900,805,900H240c-5.5,0-13.18-3.18-17.07-7.07L67.07,737.07A9.87,9.87,0,0,1,67.16,723L222.29,572c4-3.84,11.67-7,17.17-7H330a10,10,0,0,0,10-10V440c0-5.5,3.18-13.18,7.07-17.07l85.86-85.86c3.89-3.89,2.57-7.07-2.93-7.07H330c-5.5,0-13.18-3.18-17.07-7.07L172.07,182.07a10,10,0,0,1,0-14.14L312.93,27.07C316.82,23.18,324.5,20,330,20Z" fill="#dbdbdb"/><path d="M982.93,342.93C986.82,346.82,990,354.5,990,360V700c0,5.5-3.18,13.18-7.07,17.07L817.07,882.93C813.18,886.82,805.5,890,800,890H380a10,10,0,0,1-10-10V455c0-5.5,3.18-13.18,7.07-17.07L537.93,277.07C541.82,273.18,549.5,270,555,270H900c5.5,0,13.18,3.18,17.07,7.07Z" fill="#ccc"/><path d="M460,330c0,5.5-3.18,13.18-7.07,17.07l-85.86,85.86C363.18,436.82,360,444.5,360,450V930c0,5.5,3.18,13.18,7.07,17.07l85.86,85.86c3.89,3.89,7.07,11.57,7.07,17.07V2130a10,10,0,0,1-10,10H430a10,10,0,0,1-10-10V1070c0-5.5-3.18-13.18-7.07-17.07l-85.86-85.86C323.18,963.18,320,955.5,320,950V430c0-5.5,3.18-13.18,7.07-17.07l85.86-85.86C416.82,323.18,420,315.5,420,310V-650a10,10,0,0,1,10-10h20a10,10,0,0,1,10,10Z" fill="#bbd5ea"/><path d="M80,490,346.46,223.54A13.91,13.91,0,0,1,355,220H485a13.91,13.91,0,0,1,8.54,3.54L636.46,366.46A13.91,13.91,0,0,1,640,375V615a13.91,13.91,0,0,1-3.54,8.54L373.54,886.46A13.91,13.91,0,0,1,365,890H245a13.91,13.91,0,0,1-8.54-3.54L80,730" fill="none" stroke="#29bdbe" strokeMiterlimit="10" strokeWidth="6"/></g>
-      <g transform="translate(0,0)">
+        <g><path d="M170-240c5.5,0,13.18,3.18,17.07,7.07L412.93-7.07C416.82-3.18,420,4.5,420,10V310c0,5.5-3.18,13.18-7.07,17.07l-85.86,85.86C323.18,416.82,320,424.5,320,430V950c0,5.5,3.18,13.18,7.07,17.07l85.86,85.86c3.89,3.89,7.07,11.57,7.07,17.07v280c0,5.5-3.18,13.18-7.07,17.07L187.07,1592.93c-3.89,3.89-11.57,7.07-17.07,7.07H-290c-5.5,0-13.18-3.18-17.07-7.07l-225.86-225.86c-3.89-3.89-7.07-11.57-7.07-17.07V10c0-5.5,3.18-13.18,7.07-17.07l225.86-225.86c3.89-3.89,11.57-7.07,17.07-7.07Zm540,0c-5.5,0-13.18,3.18-17.07,7.07L467.07-7.07C463.18-3.18,460,4.5,460,10V330c0,5.5-3.18,13.18-7.07,17.07l-85.86,85.86C363.18,436.82,360,444.5,360,450V930c0,5.5,3.18,13.18,7.07,17.07l85.86,85.86c3.89,3.89,7.07,11.57,7.07,17.07v300c0,5.5,3.18,13.18,7.07,17.07l225.86,225.86c3.89,3.89,11.57,7.07,17.07,7.07h460c5.5,0,13.18-3.18,17.07-7.07l225.86-225.86c3.89-3.89,7.07-11.57,7.07-17.07V1070c0-5.5-3.18-13.18-7.07-17.07l-85.86-85.86c-3.89-3.89-7.07-11.57-7.07-17.07V430c0-5.5,3.18-13.18,7.07-17.07l85.86-85.86c3.89-3.89,7.07-11.57,7.07-17.07V10c0-5.5-3.18-13.18-7.07-17.07L1187.07-232.93c-3.89-3.89-11.57-7.07-17.07-7.07Zm760,0a10,10,0,0,0-10,10V1590a10,10,0,0,0,10,10h520a10,10,0,0,0,10-10V410a10,10,0,0,1,10-10h20a10,10,0,0,1,10,10V1590a10,10,0,0,0,10,10h520a10,10,0,0,0,10-10V-30c0-5.5-3.18-13.18-7.07-17.07L2387.07-232.93c-3.89-3.89-11.57-7.07-17.07-7.07ZM282.5-2663.33a10,10,0,0,0-7.27,12.13l13.34,53.3a10,10,0,0,0,12.13,7.27L354-2604a10,10,0,0,0,7.27-12.13l-13.34-53.3a10,10,0,0,0-12.13-7.27Z" fill="#f2f2f2"/><path d="M-10,190c0-5.5,3.18-13.18,7.07-17.07L152.93,17.07C156.82,13.18,164.5,10,170,10H840c5.5,0,13.08,3.28,16.85,7.28l146.3,155.44c3.77,4,6.85,11.78,6.85,17.28V710c0,5.5-3.18,13.18-7.07,17.07L827.07,902.93C823.18,906.82,815.5,910,810,910H205c-5.5,0-13.22-3.14-17.16-7L-2.84,717C-6.78,713.14-10,705.5-10,700Z" fill="#e5e5e5"/><path d="M750,20c5.5,0,13.18,3.18,17.07,7.07L992.93,252.93c3.89,3.89,7.07,11.57,7.07,17.07V705c0,5.5-3.18,13.18-7.07,17.07L822.07,892.93C818.18,896.82,810.5,900,805,900H240c-5.5,0-13.18-3.18-17.07-7.07L67.07,737.07A9.87,9.87,0,0,1,67.16,723L222.29,572c4-3.84,11.67-7,17.17-7H330a10,10,0,0,0,10-10V440c0-5.5,3.18-13.18,7.07-17.07l85.86-85.86c3.89-3.89,2.57-7.07-2.93-7.07H330c-5.5,0-13.18-3.18-17.07-7.07L172.07,182.07a10,10,0,0,1,0-14.14L312.93,27.07C316.82,23.18,324.5,20,330,20Z" fill="#dbdbdb"/><path d="M982.93,342.93C986.82,346.82,990,354.5,990,360V700c0,5.5-3.18,13.18-7.07,17.07L817.07,882.93C813.18,886.82,805.5,890,800,890H380a10,10,0,0,1-10-10V455c0-5.5,3.18-13.18,7.07-17.07L537.93,277.07C541.82,273.18,549.5,270,555,270H900c5.5,0,13.18,3.18,17.07,7.07Z" fill="#ccc"/><path d="M460,330c0,5.5-3.18,13.18-7.07,17.07l-85.86,85.86C363.18,436.82,360,444.5,360,450V930c0,5.5,3.18,13.18,7.07,17.07l85.86,85.86c3.89,3.89,7.07,11.57,7.07,17.07V2130a10,10,0,0,1-10,10H430a10,10,0,0,1-10-10V1070c0-5.5-3.18-13.18-7.07-17.07l-85.86-85.86C323.18,963.18,320,955.5,320,950V430c0-5.5,3.18-13.18,7.07-17.07l85.86-85.86C416.82,323.18,420,315.5,420,310V-650a10,10,0,0,1,10-10h20a10,10,0,0,1,10,10Z" fill="#bbd5ea"/></g>
+      <g>
+        {mainLine}
+        {mainLineArrows}
         {startStation}
         {endStation}
         {linesNE}

@@ -65,15 +65,19 @@ class App extends React.Component {
 
   handleKeyUp(e) {
     if(["1", "2", "3", "4", "5"].indexOf(e.key) > -1) {
-      window.svgmap.animateZoom(1.75, [Constants.zones[e.key].x + 75,Constants.zones[e.key].y + 25])
+      window.svgmap.animateZoomPan(1.75, [Constants.zones[e.key].x + 75,Constants.zones[e.key].y + 25])
     }
 
     if(e.key === "w") {
-      window.svgmap.animateZoom(1.4, [645,577.5])
+      window.svgmap.animateZoomPan(1.4, [645,577.5])
     }
 
     if(e.key === "z") {
-      window.svgmap.animateZoom(1, [500,480])
+      window.svgmap.animateZoomPan(1, [500,480])
+    }
+
+    if(e.key === "m") {
+      window.svgmap.animateZoomPan(1, [500,480])
     }
   }
 

@@ -17,28 +17,24 @@ class SVGMap extends React.Component {
       didDrag: false,
       mousePressedStamp: 0,
       startX: 0,
-      starty: 0
+      starty: 0,
+      centerX: 1 / 2
     }
   }
 
   componentDidMount() {
-    if((this.props.width > 1000) && (this.props.height > 1000)) {
-      //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
-      var s = Math.min(this.props.width,this.props.height)
-      var z = 1000 / s
-      //console.log(z)
-      this.zoomWith(z)
+    //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
+    if((this.props.width > 1000) && (this.props.height > 960)) {
+      this.zoomWith(1000 / (Math.min(this.props.width,this.props.height)))
     }
     //subscribe to location change to be able to block links when dragging
     this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
   }
 
-  //
   componentDidUnMount() {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
 
-  //
   handleLocationChange = (location) => {
     if(this.state.didDrag) {
       var match = matchPath(location.pathname, {path:"/navigator/*"});
@@ -52,10 +48,11 @@ class SVGMap extends React.Component {
   componentDidUpdate() {
     //var zoomLevel = (this.state.viewBox[2] / 1100) * (this.state.viewBox[2] / this.props.width)
     //var zoomIsHigh = (zoomLevel < 0.7)
-    var zoomIsHigh = true
-    if(zoomIsHigh !== this.props.zoomLevelHigh) {
-      this.props.dispatch(setZoomLevelHigh(zoomIsHigh))
-    }
+    //if(zoomIsHigh !== this.props.zoomLevelHigh) {
+    //  this.props.dispatch(setZoomLevelHigh(zoomIsHigh))
+    //}
+
+    this.props.dispatch(setZoomLevelHigh(true))
   }
 
   onZoomIn() {
@@ -66,8 +63,8 @@ class SVGMap extends React.Component {
   }
 
   onMousePressed(e) {
-    if(this.state.buttonHeld) {console.log("held");}
-    if(this.state.dragging) {console.log("dragging");}
+    //if(this.state.buttonHeld) {console.log("held");}
+    //if(this.state.dragging) {console.log("dragging");}
 
     // find start position of drag based on touch/mouse coordinates.
     const startX = typeof e.clientX === 'undefined' ? e.changedTouches[0].clientX : e.clientX;
@@ -89,17 +86,14 @@ class SVGMap extends React.Component {
     // double click
     if((stamp - prevStamp) < 400) {
       // click location is ignored
-      //this.animateZoom2();
+      this.animateZoom();
 
-      // attemp to not ingore click location (:
-      const box = this.svgElement.getBoundingClientRect();
-
-      const toZoom = this.props.width / this.state.viewBox[2] * 1.4
-      // how to get click location within map? (this is wrong)
-      const toX = (startX - box.x) / 1000 * (this.state.viewBox[0] + this.state.viewBox[2])
-      const toY = (startY - box.y) / 960 * (this.state.viewBox[1] + this.state.viewBox[3])
-
-      this.animateZoom(toZoom, [toX, toY])
+      // attemp to not ingore click location (this is wrong :) (:
+      // const box = this.svgElement.getBoundingClientRect();
+      // const toZoom = this.props.width / this.state.viewBox[2] * 1.4
+      // const toX = (startX - box.x) / 1000 * (this.state.viewBox[0] + this.state.viewBox[2])
+      // const toY = (startY - box.y) / 960 * (this.state.viewBox[1] + this.state.viewBox[3])
+      // this.animateZoomPan(toZoom, [toX, toY])
     }
   }
 
@@ -130,7 +124,7 @@ class SVGMap extends React.Component {
   /**
    * animate zoom to a specified center
    */
-  animateZoom2(targetCenter) {
+  animateZoom(targetCenter) {
     //zoom in n steps to 1.25 times the current zoomlevel
     var n = 5;
     var step = Math.pow(1.5, (1.0/n));
@@ -143,12 +137,12 @@ class SVGMap extends React.Component {
    * animate zoom to a specified center
    */
   /**/
-  animateZoom(targetZoom, targetCenter) {
+  animateZoomPan(targetZoom, targetCenter) {
     clearInterval(this.runningInterval)
 
     //calc the current center map coordinate
     const beginZoom = this.props.width / this.state.viewBox[2]
-    const beginX = this.state.viewBox[0] + this.state.viewBox[2] * 0.5
+    const beginX = this.state.viewBox[0] + this.state.viewBox[2] * this.state.centerX
     const beginY = this.state.viewBox[1] + this.state.viewBox[3] * 0.5
 
     const steps = 10
@@ -224,7 +218,7 @@ class SVGMap extends React.Component {
 
     const nw = this.state.viewBox[2] / scale;
     const nh = this.state.viewBox[3] / scale;
-    const nx = this.state.viewBox[0] + (this.state.viewBox[2] - nw) * 0.5;
+    const nx = this.state.viewBox[0] + (this.state.viewBox[2] - nw) * this.state.centerX;
     const ny = this.state.viewBox[1] + (this.state.viewBox[3] - nh) * 0.5;
     this.setState({ viewBox: [nx, ny, nw, nh]});
   }
@@ -233,7 +227,7 @@ class SVGMap extends React.Component {
     if(zoom <= 0) return;
     const nw = this.props.width * 1/zoom;
     const nh = this.props.height * 1/zoom;
-    const nx = center[0] - nw * 0.5;
+    const nx = center[0] - nw * this.state.centerX;
     const ny = center[1] - nh * 0.5;
     this.setState({ viewBox: [nx, ny, nw, nh]});
   }
