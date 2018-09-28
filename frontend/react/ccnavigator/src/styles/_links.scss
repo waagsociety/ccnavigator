@@ -4,6 +4,11 @@ a {
   transition: color 100ms ease;
   user-select: none;
   cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .button,
