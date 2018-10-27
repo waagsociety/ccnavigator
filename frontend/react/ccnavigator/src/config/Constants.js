@@ -8,6 +8,10 @@ export const Constants = {
   //   'yellow': '#F6A500',
   //   'purple': '#522E90'
   // },
+  'infoPanel': {
+    'width': 440,
+    'breakpoint': 760
+  },
   'zones': {
     '1' : {
       x : 30,

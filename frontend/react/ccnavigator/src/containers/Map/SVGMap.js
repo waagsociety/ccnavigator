@@ -34,9 +34,19 @@ class SVGMap extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(this.props.infoPanel !== nextProps.infoPanel) {
       this.setState({ infoPanel: nextProps.infoPanel })
+
+      // if(nextProps.infoPanel === false) {
+      //   this.panWith(-Constants.infoPanel.width/2, 0)
+      // }
+      // if(nextProps.infoPanel === true) {
+      //   this.panWith(Constants.infoPanel.width/2, 0)
+      // }
     }
     if(this.props.zone !== nextProps.zone && nextProps.zone !== '') {
-      this.animateZoomPan(1.5, [Constants['zones'][nextProps.zone]['x'] + 75, Constants['zones'][nextProps.zone]['y'] + 15])
+      // only if larger than info panel breakpoint ($info-panel-breakpoint in scss)
+      if(window.innerWidth > Constants.infoPanel.breakpoint) {
+        this.animateZoomPan(1.5, [Constants['zones'][nextProps.zone]['x'] + 75, Constants['zones'][nextProps.zone]['y'] + 15])
+      }
     }
   }
 
@@ -46,7 +56,7 @@ class SVGMap extends React.Component {
 
   getCenterX() {
     if(this.state.infoPanel) {
-      return 440 / window.innerWidth + (window.innerWidth - 440) / window.innerWidth / 2
+      return Constants.infoPanel.width / window.innerWidth + (window.innerWidth - Constants.infoPanel.width) / window.innerWidth / 2
     } else {
       return 0.5
     }
@@ -121,9 +131,7 @@ class SVGMap extends React.Component {
     this.setState({ buttonHeld: false, didDrag: this.state.dragging, dragging: false })
   }
 
-  /**
-   * animate zoom to a specified center
-   */
+  // animate zoom to a specified center
   animateZoom(targetCenter) {
     //zoom in n steps to 1.25 times the current zoomlevel
     var n = 5
@@ -133,9 +141,7 @@ class SVGMap extends React.Component {
     }
   }
 
-  /**
-   * animate zoom to a specified center
-   */
+  // animate zoom to a specified center
   animateZoomPan(targetZoom, targetCenter) {
     clearInterval(this.runningInterval)
 
@@ -166,9 +172,7 @@ class SVGMap extends React.Component {
     }.bind(this), 25)
   }
 
-  /**
-   * the svg will have the full size of its container, view box determines crop
-   */
+  // the svg will have the full size of its container, view box determines crop
   render() {
     //matrix zoom works in ie only if we edit the content of the svg when we modify the transform
     return (
@@ -198,7 +202,6 @@ class SVGMap extends React.Component {
     )
   }
 
-  //
   onWheel(e) {
     if (e.deltaY < 0) {
       this.zoomWith(1.05)
