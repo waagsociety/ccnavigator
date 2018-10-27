@@ -7,11 +7,9 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-
-  @media (orientation: portrait) {
-    flex-direction: column;
-  }
+  flex-direction: column;
 }
+
 #container-map {
   flex-grow: 1;
   overflow: hidden;
@@ -24,38 +22,33 @@
   overflow-y: scroll;
 }
 
+.panels {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  width: 240px;
+}
+
 .panel {
   position: relative;
   z-index: 100;
   flex-grow: 0;
   background-color: white;
-  //overflow: hidden;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
   box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+}
 
-  .panel-content {
-    width: 100%;
-    padding: 0.5rem 1rem;
-  }
-}
-#panel-header {
-  flex-shrink: 0;
-}
 #panel-footer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
 }
-#panel-left {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  justify-content: space-between;
-}
-
 
 .wrapper {
-  max-width: 960px;
+  max-width: 1080px;
+  margin: 0 auto;
   padding: 1rem;
 
   @media (min-width: 600px) {
@@ -85,19 +78,22 @@ a.pane {
   }
 }
 
-
 .pane-header {
   position: relative;
   text-align: center;
   color: #fff;
+  background-position: center;
   background-size: cover;
+  min-height: 36vh;
+  display: flex !important;
+  align-items: center;
 
   &:before {
     content: "";
     position: absolute;
     left: 0; right: 0;
     top: 0; bottom: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.75);
   }
 
   > * {
@@ -105,9 +101,15 @@ a.pane {
   }
 
   .pane-text {
+    max-width: 880px;
     padding: 3rem;
   }
 }
+
+.pane-border {
+  border-top: 0.2rem $color-turquoise solid;
+}
+
 
 
 // COLUMNS
@@ -137,52 +139,39 @@ a.pane {
 }
 
 // BOXES
-.boxes {
+.items {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -0.5rem;
+  margin: 0 -1.5rem;
 }
 
-.box {
+.item {
   display: flex;
   flex-direction: column;
   width: calc(100% - 1rem);
   margin: 0.5rem;
   padding: 1rem;
-  background-color: #fff;
-
-}
-
-.tools .box {
-  border-left: 3px solid $color-turquoise;
-
-
-  @media (orientation: landscape) {
-    border-left: none;
-    border-top: 3px solid $color-turquoise;
-    width: calc(50% - 1rem);
-  }
-}
-
-.themes .box {
-  border-left: 3px solid $color-turquoise;
+  background-color: $color-background;
+  //border-top: 3px solid $color-turquoise;
+  transition: all 200ms ease;
 }
 
 
-a.box {
+a.item {
   text-decoration: none;
 
   &:hover {
-    box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+    background-color: darken($color-background, 2%);
+    //box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
   }
 }
 
-.box-title {
+.item-title {
   font-size: 1.15em;
   text-transform: lowercase;
 }
 
-.box-body {
+.item-body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;

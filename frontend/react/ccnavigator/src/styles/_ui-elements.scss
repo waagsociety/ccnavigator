@@ -14,11 +14,24 @@
       top: 0;
       right: 0;
       cursor: pointer;
+      transition: transform 0ms ease;
+    }
+
+    &:hover:after {
+      transform: translateY(-1px);
+      transition-duration: 75ms;
     }
   }
-  &.toggled .toggle-button:after {
-    content: $fa-var-angle-down;
+  &.toggled .toggle-button {
+    &:after {
+      content: $fa-var-angle-down;
+    }
+    &:hover:after {
+      transform: translateY(1px);
+    }
   }
+
+
 
 
   .toggle-content {
@@ -35,13 +48,9 @@
 
 // ui buttons
 .button-back {
-  //font-family: "FontAwesome";
   position: absolute;
-  left: 0.5rem;
-  top: -1.5rem;
-  //width: 1.5em;
   text-align: center;
-  color: #FFF;
+  color: #000;
   font-size: 1rem;
   line-height: 1.15rem;
   user-select: none;

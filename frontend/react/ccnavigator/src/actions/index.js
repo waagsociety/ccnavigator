@@ -21,10 +21,22 @@ export const setLanguage = (lang) => ({
   language: lang
 })
 
-//regarding zoomlevel of the map
-export const setZoomLevelHigh = (high) => ({
-  type: 'SET_ZOOM_LEVEL_HIGH',
-  zoomLevelHigh: high
+//regarding drag status of the map
+export const setDidDrag = (status) => ({
+  type: 'SET_DID_DRAG',
+  didDrag: status
+})
+
+//regarding status of the info panel
+export const setInfoPanel = (status) => ({
+  type: 'SET_INFO_PANEL',
+  infoPanel: status
+})
+
+//regarding zone status
+export const setZone = (number) => ({
+  type: 'SET_ZONE',
+  zone: number
 })
 
 //regarding filters on content (tools) on meta data (taxonomy terms)

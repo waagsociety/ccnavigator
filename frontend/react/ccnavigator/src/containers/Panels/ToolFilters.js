@@ -4,7 +4,7 @@ import ApiHelper from 'client/ApiHelper';
 import { connect } from 'react-redux';
 import { addToolFilter, removeToolFilter } from 'actions'
 
-class ToolFilter extends React.Component {
+class ToolFilters extends React.Component {
 
   constructor(props) {
     super(props);
@@ -88,7 +88,7 @@ class ToolFilter extends React.Component {
 
   render() {
 
-    var clearButton = (this.props.filtersSelected.length ? <a className="button-small button-clear" onClick={() => {this.onClearAll()}}>clear all filters</a> : null)
+    var clearButton = (this.props.filtersSelected.length ? <span className="button-small button-clear" onClick={() => {this.onClearAll()}}>clear all filters</span> : null)
 
     //individual filters with options
     var filterBoxes = this.state.filters.map((filter) => {
@@ -108,7 +108,7 @@ class ToolFilter extends React.Component {
       );
     });
 
-    var className = "panel-content tool-filters toggle"
+    var className = "panel tool-filters toggle"
     if(this.state.toggled) {
       className += " toggled"
     }
@@ -129,6 +129,6 @@ class ToolFilter extends React.Component {
 const mapStateToProps = (state, ownProps) => ({
   filtersSelected: state.toolFiltersApplied
 })
-ToolFilter = connect(mapStateToProps)(ToolFilter)
+ToolFilters = connect(mapStateToProps)(ToolFilters)
 
-export default ToolFilter
+export default ToolFilters

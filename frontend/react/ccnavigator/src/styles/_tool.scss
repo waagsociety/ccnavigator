@@ -1,15 +1,9 @@
-.tool {
-  .columns {
-    flex-direction: row-reverse;
-  }
-}
-
 
 .tool-metas {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   font-size: 0.9rem;
   flex-wrap: wrap;
 }
@@ -27,7 +21,7 @@
   &.group_size:before                   { content: $fa-var-child; }
   &.duration:before                     { content: $fa-var-clock-o; }
   &.facilitator_participant:before      { content: $fa-var-users; }
-  &.experience_level:before { content: $fa-var-star; }
+  &.experience_level:before             { content: $fa-var-star; }
 }
 
 .tool-meta-name {
@@ -41,9 +35,12 @@
 .tool-meta-value {
   @include label($color-turquoise, #FFF);
   font-size: 0.8em;
+
+  .turquoise & { background: $color-turquoise; }
+  .yellow & { background: $color-yellow; }
+  .purple & { background: $color-purple; }
+  .red & { background: $color-red; }
 }
-
-
 
 .short-tool-metas {
   display: flex;
@@ -60,10 +57,23 @@
     font-family: "FontAwesome";
     margin-right: 0.25em;
     color: $color-turquoise;
+
+    .turquoise & { color: $color-turquoise; }
+    .yellow & { color: $color-yellow; }
+    .purple & { color: $color-purple; }
+    .red & { color: $color-red; }
   }
 
-  &.group_size:before              { content: $fa-var-child; }
-  &.duration:before                { content: $fa-var-clock-o; }
-  &.facilitator_participant:before { content: $fa-var-users; }
-  &.experience_level:before        { content: $fa-var-star; }
+  &.group_size:before                   { content: $fa-var-child; }
+  &.duration:before                     { content: $fa-var-clock-o; }
+  &.facilitator_participant:before      { content: $fa-var-users; }
+  &.experience_level:before             { content: $fa-var-star; }
+}
+
+.tool-images {
+  margin: 0 -1rem;
+
+  img {
+    margin-bottom: 1.5rem;
+  }
 }

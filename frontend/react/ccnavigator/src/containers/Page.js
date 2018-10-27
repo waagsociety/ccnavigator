@@ -16,17 +16,22 @@ class Page extends React.Component {
   componentDidMount() {
     var path = this.props.remotePath || this.props.match.path
 
-    //full info on this node including relationships
+    this.update(path)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.match.path !== nextProps.match.path) {
+      this.update(nextProps.match.path)
+    }
+  }
+
+  update(path) {
     ApiClient.instance().fetchContent("node--page", {field_path:path}, null, null, 0, function(node, included) {
       this.setState({
         nodeEntity: node[0],
         includedEntities: included
       });
     }.bind(this));
-  }
-
-  closeModal() {
-    this.props.history.push('/')
   }
 
   render() {
@@ -39,7 +44,7 @@ class Page extends React.Component {
     return (
       <div id="container-page">
         <div className="wrapper">
-          <div className="pane content" style={{padding: "2em"}}>
+          <div className="pane pane-border content" style={{padding: "2em"}}>
             <h1>{title}</h1>
             {jsx}
           </div>

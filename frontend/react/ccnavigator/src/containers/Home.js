@@ -70,18 +70,18 @@ class Home extends React.Component {
 
     return (
       <div id="container-page">
+
+        <div className="row">
+          <Link className="pane pane-header" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }} to="/navigator/">
+            <div className="pane-text wrapper">
+              <h1>{content_1_title} <Label value="beta" color="#2FB6BC" size="0.3em" align="text-top"/></h1>
+              <h2 className="subtitle">{content_1_body}</h2>
+              <span className="button button-go">to the navigator!</span>
+            </div>
+          </Link>
+        </div>
+
         <div className="wrapper content">
-
-          <div className="row">
-            <Link className="pane pane-header" style={{ backgroundImage: "url(https://ccn.waag.org/drupal/sites/default/files/2018-05/ccn-screenshot.png)" }} to="/navigator/">
-              <div className="pane-text">
-                <h1>{content_1_title} <Label value="beta" color="#2FB6BC" size="0.3em" align="text-top"/></h1>
-                <h2 className="subtitle">{content_1_body}</h2>
-                <span className="button button-go">to the navigator!</span>
-              </div>
-            </Link>
-          </div>
-
           <div className="row">
             <div className="columns">
               <Link className="column pane" to="/the-society-as-research-laboratorium">

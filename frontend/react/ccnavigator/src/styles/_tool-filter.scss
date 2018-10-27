@@ -1,6 +1,6 @@
 .tool-filters {
-  h3 {
-    margin-bottom: 0.5em;
+  h3 + .button-clear {
+    margin-top: 0.5em;
   }
 }
 
@@ -19,10 +19,10 @@
     }
   }
 
-  &.group_size              h4:before { content: $fa-var-child; }
-  &.duration                h4:before { content: $fa-var-clock-o; }
-  &.facilitator_participant h4:before { content: $fa-var-users; }
-  &.experience_level        h4:before { content: $fa-var-star; }
+  &.group_size                   h4:before { content: $fa-var-child; }
+  &.duration                     h4:before { content: $fa-var-clock-o; }
+  &.facilitator_participant      h4:before { content: $fa-var-users; }
+  &.experience_level_facilitator h4:before { content: $fa-var-star; }
 }
 
 .tool-filter-options {

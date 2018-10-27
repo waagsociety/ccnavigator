@@ -6,7 +6,7 @@ body {
   font-size: 16px;
 
   @media (min-width: 600px) {
-    font-size: 18px;
+    font-size: 17px;
   }
 }
 em {
@@ -29,6 +29,7 @@ h1, h2, h3, h4, h5 {
 
   &.subtitle {
     font-weight: 400;
+    margin-bottom: 1rem;
   }
 }
 h1 {
@@ -38,7 +39,7 @@ h1 {
   text-transform: lowercase;
 }
 h2 {
-  font-size: 1.4em;
+  font-size: 1.3em;
   margin-bottom: 1em;
   line-height: 1.25em;
 }
@@ -62,6 +63,9 @@ small,
   line-height: 1.35em;
 }
 
+.description {
+  margin-bottom: 2em;
+}
 
 .nowrap {
   white-space: nowrap;

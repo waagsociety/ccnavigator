@@ -1,0 +1,199 @@
+$button-size: 1.8rem;
+$button-icon-size: 0.65rem;
+
+#info-panel {
+
+  #info-panel-buttons {
+    height: $button-size;
+
+    > div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.turquoise #info-panel-buttons > div { background: $color-turquoise; }
+  &.yellow #info-panel-buttons > div { background: $color-yellow; }
+  &.purple #info-panel-buttons > div { background: $color-purple; }
+  &.red #info-panel-buttons > div { background: $color-red; }
+
+
+  @media (max-width: $info-panel-breakpoint) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.5rem;
+    background: rgba(0,0,0,0.8);
+    overflow: auto;
+    text-align: center;
+    z-index: 200;
+
+    &:before {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    #info-panel-inner {
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      background-color: #FFF;
+    }
+
+    #info-panel-buttons {
+      position: relative;
+    }
+  }
+
+  @media (min-width: $info-panel-breakpoint + 1px) {
+    position: absolute;
+    top: 0.75rem;
+    left: 0;
+    bottom: 0.75rem;
+    width: $info-panel-width;
+    z-index: 200;
+    box-shadow: 0 0 0.5rem 0 rgba(0,0,0,0.2);
+    background-color: #FFF;
+    transition: all 200ms ease;
+
+    &.collapsed {
+      transform: translateX(-$info-panel-width);
+    }
+
+    #info-panel-buttons {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 201;
+    }
+
+    &.collapsed #info-panel-buttons {
+      left: $button-size;
+    }
+
+    #info-panel-viewport {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      border-top: $button-size solid transparent;
+
+      &::-webkit-scrollbar { width: 0.4rem; }
+      &::-webkit-scrollbar-thumb { background-color: darken($color-background, 15%); }
+      &::-webkit-scrollbar-track { background-color: $color-background; }
+    }
+
+    &:hover #info-panel-viewport {
+      overflow-y: auto;
+    }
+
+    #info-panel-content {
+      width: $info-panel-width;
+      min-height: 100%;
+    }
+  }
+
+}
+
+
+// BUTTONS
+.button-info-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  height: $button-size;
+  padding: 0 ($button-size - $button-icon-size) / 2;
+  color: #FFF;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+
+  .text {
+    font-size: 0.85em;
+    margin-top: 0.2em;
+    padding: 0 ($button-size - $button-icon-size) / 4;
+  }
+
+  .icon {
+    width: $button-icon-size;
+    transition: all 100ms ease;
+
+    path {
+      fill: #FFF;
+    }
+  }
+}
+
+// back
+.button-back {
+  left: 0;
+
+  &:hover .icon { transform: translateX(-1px); }
+}
+
+// close
+.button-close {
+  right: $button-size;
+  transform: rotate(90deg);
+
+  &:hover .icon { transform: rotate(180deg); }
+
+  @media (max-width: $info-panel-breakpoint) {
+    right: 0;
+  }
+}
+
+// collapse
+.button-collapse {
+  right: 0;
+
+  &:hover .icon { transform: translateX(-1px); }
+
+  .collapsed & {
+    //right: -$button-size;
+    transform: rotate(180deg);
+  }
+
+  @media (max-width: $info-panel-breakpoint) {
+    display: none;
+  }
+}
+
+
+// HEADER
+#info-panel-header {
+  padding: 1rem;
+
+  .info-panel-title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    .label {
+      margin-top: 1rem;
+      margin-right: 0.75rem;
+    }
+  }
+}
+
+// BODY
+#info-panel-body {
+  padding: 1rem;
+}

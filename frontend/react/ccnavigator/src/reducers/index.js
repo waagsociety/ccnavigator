@@ -27,14 +27,33 @@ const entityReducer = (state = null, action) => {
   }
 }
 
-const zoomLevelReducer = (state = false, action) => {
+const didDragReducer = (state = false, action) => {
   switch (action.type) {
-    case 'SET_ZOOM_LEVEL_HIGH':
-      return action.zoomLevelHigh
+    case 'SET_DID_DRAG':
+      return action.didDrag
     default:
       return state;
   }
 }
+
+const infoPanelReducer = (state = false, action) => {
+  switch (action.type) {
+    case 'SET_INFO_PANEL':
+      return action.infoPanel
+    default:
+      return state;
+  }
+}
+
+const zoneReducer = (state = false, action) => {
+  switch (action.type) {
+    case 'SET_ZONE':
+      return action.zone
+    default:
+      return state;
+  }
+}
+
 
 /**
  *
@@ -157,7 +176,9 @@ const CCNavigatorApp = combineReducers({
   language: languageReducer,
   tools: toolsReducer,
   activeEntity: entityReducer,
-  zoomLevelHigh: zoomLevelReducer,
+  didDrag: didDragReducer,
+  infoPanel: infoPanelReducer,
+  zone: zoneReducer,
   toolFiltersApplied: toolFiltersReducer
 })
 

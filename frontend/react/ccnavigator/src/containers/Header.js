@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-//import ToolSelectedList from './ToolSelectedList'
+import { Link, withRouter, matchPath } from 'react-router-dom';
 import Label from 'components/Label';
-import MediaQuery from 'react-responsive';
-import { withRouter, matchPath } from 'react-router-dom';
+//import ToolSelectedList from './ToolSelectedList'
+//import LanguageSelector from "containers/LanguageSelector"
 
 
 class Header extends React.Component {
@@ -20,17 +19,14 @@ class Header extends React.Component {
     this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
   }
 
-  //
   componentDidUnMount() {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
 
-  //
   handleLocationChange = (location) => {
     this.setState({
       nav: false
     })
-    //console.log("location", location)
   }
 
   componentWillUpdate(nextProps) {
@@ -51,36 +47,36 @@ class Header extends React.Component {
 
   render() {
     var currentLocation = this.props.location.pathname
+    var navigation = (
+      <div id="site-navigation">
+        <div id="nav-toggle" onClick={() => {this.onNavToggle()}}><span className="fa icon"></span></div>
+        <nav>
+          <ul>
+            <li className={currentLocation === "/" ? "current" : null}>
+              <Link to="/">on co-creation</Link>
+            </li>
+            <li className={matchPath(currentLocation, {path:"/navigator/*"}) ? "current" : null}>
+              <Link to="/navigator/">the navigator</Link>
+            </li>
+            <li className={currentLocation === "/about" ? "current" : null}>
+              <Link to="/about">about</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    )
 
     var className = (this.state.nav === true ? "nav-toggled" : "")
 
-    var navigation = (
-      <nav id="site-navigation" className={className}>
-        <MediaQuery orientation="portrait">
-          <div id="nav-toggle" onClick={() => {this.onNavToggle()}}><span className="fa icon"></span>&nbsp;menu</div>
-        </MediaQuery>
-        <ul>
-          <li className={currentLocation === "/" ? "current" : null}>
-            <Link to="/">on co-creation</Link>
-          </li>
-          <li className={matchPath(currentLocation, {path:"/navigator/*"}) ? "current" : null}>
-            <Link to="/navigator/">the navigator</Link>
-          </li>
-          <li className={currentLocation === "/about" ? "current" : null}>
-            <Link to="/about">about</Link>
-          </li>
-        </ul>
-      </nav>
-    )
-
     //<ToolSelectedList/>
+    //<LanguageSelector/>
     return (
-      <div className="header-container">
-        <div className="panel-content">
+      <div id="site-header" className={className}>
+        <div id="site-titles">
           <h1 id="site-title">Co-creation Navigator <Label value="beta" size="0.3em" align="text-top"/></h1>
           <h2 id="site-subtitle">guiding you through the <span className="nowrap">co-creative</span> landscape</h2>
-          {navigation}
         </div>
+        {navigation}
       </div>
     );
   }

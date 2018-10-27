@@ -1,17 +1,35 @@
 .label {
   display: inline-block;
   margin: 0.25em 0;
-  background-color: black;
+  background-color: #000;
   border-radius: 0.75em;
   color: white;
   font-size: 0.35em;
   height: 1.5em;
-  line-height: 1.75em;
+  line-height: 1.5em;
   text-transform: uppercase;
   font-weight: 400;
   white-space: nowrap;
   box-sizing: border-box;
   vertical-align: middle;
+
+  .turquoise & { background: $color-turquoise; }
+  .yellow & { background: $color-yellow; }
+  .purple & { background: $color-purple; }
+  .red & { background: $color-red; }
+
+
+  .themes .box & {
+    margin-right: 0.5em;
+    margin-left: 0em;
+  }
+
+}
+
+
+.label-circle {
+  width: 1.5em;
+  text-align: center;
 
   &:first-child {
     margin-right: 0.5em;
@@ -22,24 +40,16 @@
   }
 
   &:first-child:last-child {
-    margin-left: 0em;
-    margin-right: 0em;
-  }
-
-  .themes .box & {
-    margin-right: 0.5em;
-    margin-left: 0em;
-  }
-
-}
-
-
-
-.label-circle {
-  width: 1.5em;
-  text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+  }  
 }
 
 .label-bar {
   padding: 0 0.65em;
+  margin-right: 0.5em;
+
+  &:last-child{
+    margin-right: 0;
+  }
 }

@@ -30,65 +30,6 @@
   }
 }
 
-// map elements
-.station {
-  fill: #FFF;
-  stroke: #000;
-  stroke-width: 3px;
-}
-.river {
-  stroke: none;
-  fill: #BBD5EA;
-}
-.area {
-  fill: #F2F2F2;
-  stroke: none;
-}
-.wide-area {
-  fill: #E5E5E5;
-  stroke: none;
-}
-.inner-area {
-  fill: #DBDBDB;
-  stroke: none;
-}
-.central-area {
-  fill: #CCC;
-  stroke: none;
-}
-.line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 6px;
-}
-.main-line {
-  stroke: #27BDBE;
-}
-.sub-line-e-0 {
-  stroke: #FAA619;
-}
-.sub-line-e-1 {
-  stroke: #522E90;
-}
-.sub-line-e-2 {
-  stroke: #F00;
-}
-.sub-line-w-0 {
-  stroke: #27BDBE;
-}
-.sub-line-w-1 {
-  stroke: #FF1B22;
-}
-.sub-line-w-2 {
-  stroke: #00F;
-}
-.map-text {
-  font-size: 20px;
-  font-weight: 500;
-  user-select: none;
-}
-
-
 
 .zone {
   pointer-events: none;
@@ -104,7 +45,16 @@
   text-transform: lowercase;
   margin-bottom: 0;
   white-space: nowrap;
+  transition: all 0ms ease;
 
+  &:hover {
+    text-decoration: underline;
+    transition-duration: 75ms;
+
+    .label {
+      box-shadow: 0 0 0.25rem 0 rgba(0,0,0,0.2);
+    }
+  }
 }
 
 .zone-title-link {
@@ -115,26 +65,12 @@
   pointer-events: auto;
   -webkit-user-drag: none;
   transition: all 75ms ease;
+  cursor: pointer;
 
   &:hover {
-    margin-top: 0.05rem;
-    margin-bottom: -0.05rem;
     transition: all 0ms ease;
   }
 }
-
-.zone-tool {
-  display: inline-block;
-  margin: 0.5em 0.5em 0 0;
-  text-transform: lowercase;
-  background-color: $color-turquoise;
-  color: #FFF;
-  font-size: 0.8rem;
-  line-height: 1.5em;
-  border-radius: 0.75em;
-  padding: 0 0.5em;
-}
-
 
 
 .themes {
@@ -149,12 +85,12 @@
   margin-top: 0.3rem;
   margin-right: 0.25rem;
   -webkit-user-drag: none;
+  cursor: pointer;
+  transition: all 0ms ease;
 
   &:hover {
-    // margin-top: 0.35rem;
-    // margin-bottom: -0.05rem;
-    //background-color: $color-background;
-    transition: all 0ms ease;
+    box-shadow: 0 0 0.25rem 0 rgba(0,0,0,0.2);
+    transition-duration: 75ms;
   }
 
   .theme-label-text {
@@ -163,4 +99,16 @@
     border-radius: 1em 0 0 1em;
     font-weight: 500;
   }
+}
+
+#easter-egg {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  width: 6rem;
+  height: 4rem;
+  text-align: center;
+  line-height: 4rem;
+  font-size: 2rem;
+  transform: translate(-1em, -1em);
+  background: $color-background;
+  border-radius: 10px;
 }

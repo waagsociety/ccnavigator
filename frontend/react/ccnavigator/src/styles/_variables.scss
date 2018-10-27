@@ -1,5 +1,6 @@
 $font-family: "Maax", sans-serif;
 
+// COLORS
 $color-text: #000;
 $color-background: #F2F2F2;
 $color-red: #DA0812;
@@ -7,10 +8,20 @@ $color-turquoise: #2FB6BC;
 $color-yellow: #F6A500;
 $color-purple: #522E90;
 
+// DIMENSIONS
+$site-header-height: 5rem;
+
+$nav-breakpoint: 760px;
+
+$info-panel-width: 440px;
+$info-panel-breakpoint: 760px;
+
+
+// MIXINS
 @mixin label($background-color, $color) {
   background: $background-color;
   color: $color;
-  padding: 0.25em 0.75em 0;
+  padding: 0.15em 0.75em;
   border-radius: 1em;
   font-size: 0.65em;
   line-height: 1.8em;
@@ -19,5 +30,48 @@ $color-purple: #522E90;
   pointer-events: auto;
   white-space: nowrap;
   transition: all 75ms ease;
+}
 
+@mixin user-select($value) {
+  -webkit-touch-callout: $value;
+    -webkit-user-select: $value;
+       -moz-user-select: $value;
+        -ms-user-select: $value;
+            user-select: $value;
+}
+
+// Browser Prefixes
+@mixin transform($transforms) {
+  -webkit-transform: $transforms;
+  -moz-transform: $transforms;
+  -ms-transform: $transforms;
+  transform: $transforms;
+}
+
+// Rotate
+@mixin rotate ($deg) {
+  @include transform(rotate(#{$deg}deg));
+}
+
+// Scale
+@mixin scale($scale) {
+  @include transform(scale($scale));
+}
+
+// Translate
+@mixin translate ($x, $y) {
+  @include transform(translate($x, $y));
+}
+
+// Skew
+@mixin skew ($x, $y) {
+  @include transform(skew(#{$x}deg, #{$y}deg));
+}
+
+// Transform Origin
+@mixin transform-origin ($origin) {
+  -webkit-transform-origin: $origin;
+  -moz-transform-origin: $origin;
+  -ms-transform-origin: $origin;
+  transform-origin: $origin;
 }
