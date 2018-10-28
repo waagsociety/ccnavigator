@@ -2,7 +2,7 @@ import React from 'react'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { connect } from 'react-redux'
-import { buildJSXFromHTML } from 'util/utility.js'
+import { buildJSXFromHTML, isUUID } from 'util/utility.js'
 import { Constants } from 'config/Constants.js'
 
 import InfoPanel from "containers/InfoPanel/index.js"
@@ -38,30 +38,38 @@ class Theme extends React.Component {
     }
   }
 
-  update(entityId) {
+  update(id) {
     ApiHelper.instance().clearCaches()
 
-    //get hierarchy path of this term
-    ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
-      this.setState({termHierachy: term})
-    }.bind(this))
+    // set filter based we have a uuid or path
+    var filter = (isUUID(id) ? id : { "field_path": "/" + id })
 
     //full info on this entity
-    ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, 0, function(termEntity) {
+    ApiClient.instance().fetchContent("taxonomy_term--category", filter, null, null, 0, function(termEntity) {
+      if(typeof(filter) !== "string") {
+        termEntity = termEntity[0]
+      }
       this.setState({termEntity: termEntity})
+
+      //get hierarchy path of this term
+      ApiHelper.instance().findTermInContentHierarchy(termEntity.id, function(term) {
+        this.setState({termHierachy: term})
+      }.bind(this))
+
+      //full info on all nodes that have this term
+      ApiHelper.instance().buildFilter((filter) => {
+        filter["field_category.uuid"] = termEntity.id
+        ApiClient.instance().fetchContent("node--tool", filter, null, Object.values(Constants.filterFieldMapping), 0, function(nodeEntities, included) {
+          //connect relationships to include in entity
+          this.setState({
+            nodeEntities: nodeEntities,
+            includedEntities: included
+          })
+        }.bind(this))
+      })
+
     }.bind(this))
 
-    //full info on all nodes that have this term
-    ApiHelper.instance().buildFilter((filter) => {
-      filter["field_category.uuid"] = entityId
-      ApiClient.instance().fetchContent("node--tool", filter, null, Object.values(Constants.filterFieldMapping), 0, function(nodeEntities, included) {
-        //connect relationships to include in entity
-        this.setState({
-          nodeEntities: nodeEntities,
-          includedEntities: included
-        })
-      }.bind(this))
-    })
   }
 
   onToolSelected(item) {
@@ -103,7 +111,7 @@ class Theme extends React.Component {
         zone = path.slice(0, -2)
       }
 
-      var title =  this.state.termEntity.attributes.name || ""
+      var title = this.state.termEntity.attributes.name || ""
       var subtitle = this.state.termEntity.attributes.field_subtitle || ""
 
       //make body
@@ -126,8 +134,10 @@ class Theme extends React.Component {
           </div>
         )
 
+        var id = (node.attributes.field_path ? node.attributes.field_path : `/${node.id}`)
+
         return {
-          link: `/navigator/tool/${node.id}`,
+          link: `/navigator/tool${id}`,
           title: node.attributes.title,
           content: <div className="box-body">{description}{metaData}</div>
         }

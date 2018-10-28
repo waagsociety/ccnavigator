@@ -181,7 +181,7 @@ class ApiHelper {
     //fetch and process the data
     this.buildFilter((filter) => {
       //console.log("f", filter);
-      ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "weight"], null, function(vocabulary) {
+      ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "field_path", "weight"], null, function(vocabulary) {
         if(vocabulary) {
           //get all tool nodes
           //var filter = {} // {"field_group_size.uuid":"1dce75e9-929d-4071-a91e-a5d6db08d2f5"}

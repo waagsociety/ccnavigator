@@ -1,7 +1,7 @@
 import React from 'react'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
-import { buildJSXFromHTML } from 'util/utility.js'
+import { buildJSXFromHTML, isUUID } from 'util/utility.js'
 import { connect } from 'react-redux'
 import { Constants } from 'config/Constants.js'
 
@@ -41,26 +41,32 @@ class Zone extends React.Component {
     }
   }
 
-  update(entityId) {
+  update(id) {
     ApiHelper.instance().clearCaches()
 
-    //get hierarchy path of this term
-    ApiHelper.instance().findTermInContentHierarchy(entityId, function(term) {
-      this.setState({termHierachy: term})
-    }.bind(this))
+    // set filter based we have a uuid or path
+    var filter = (isUUID(id) ? id : { "field_path": "/" + id })
 
     //full info on this entity
-    ApiClient.instance().fetchContent("taxonomy_term--category", entityId, null, null, 0, function(termEntity) {
+    ApiClient.instance().fetchContent("taxonomy_term--category", filter, null, null, 0, function(termEntity) {
+      if(typeof(filter) !== "string") {
+        termEntity = termEntity[0]
+      }
       this.setState({termEntity: termEntity})
-    }.bind(this))
 
-    //full info on all nodes that have this term its child terms as term
-    ApiHelper.instance().buildFilter((filter) => {
-      filter["field_category.parent.uuid"] = entityId
-      ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
-        this.setState({nodeEntities: nodeEntities})
+      //get hierarchy path of this term
+      ApiHelper.instance().findTermInContentHierarchy(termEntity.id, function(term) {
+        this.setState({termHierachy: term})
       }.bind(this))
-    })
+
+      //full info on all nodes that have this term its child terms as term
+      ApiHelper.instance().buildFilter((filter) => {
+        filter["field_category.parent.uuid"] = termEntity.id
+        ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
+          this.setState({nodeEntities: nodeEntities})
+        }.bind(this))
+      })
+    }.bind(this))
   }
 
 
@@ -113,8 +119,11 @@ class Zone extends React.Component {
                 <div>{tools} {toolsNote}</div>
               </div>
             ) // todo: make translatable
+
+            var id = (term.attributes.field_path ? term.attributes.field_path : `/${term.id}`)
+
             return {
-              link: `/navigator/theme/${term.id}`,
+              link: `/navigator/theme${id}`,
               title: term.attributes.name,
               content: content
             }

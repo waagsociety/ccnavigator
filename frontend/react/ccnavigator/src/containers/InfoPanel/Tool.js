@@ -3,7 +3,7 @@ import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
-import { buildJSXFromHTML} from "util/utility"
+import { buildJSXFromHTML, isUUID} from "util/utility"
 import { Constants } from 'config/Constants.js'
 
 import InfoPanel from "containers/InfoPanel/index.js"
@@ -39,9 +39,17 @@ class Tool extends React.Component {
         filterDefintions: definitions
       })
     })
-    //full info on this node including relationships
+
+    // set filter based we have a uuid or path
+    var filter = (isUUID(id) ? id : { "field_path": "/" + id })
+    // full info on this node including relationships
     var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"]
-    ApiClient.instance().fetchContent("node--tool", id, null, includes, 0, function(node, included) {
+
+    ApiClient.instance().fetchContent("node--tool", filter, null, includes, 0, function(node, included) {
+      // if we filtered by path we take the first node of the result
+      if(typeof(filter) !== "string") {
+        node = node[0]
+      }
       //set content
       this.setState({
         nodeEntity: node,

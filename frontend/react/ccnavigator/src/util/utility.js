@@ -207,3 +207,14 @@ export const ease = function(step, steps) {
   step = step*steps
   return step
 }
+
+
+export const isUUID = function(id) {
+  const uuidPattern = /[0-9a-f/-]{36}/g
+
+  if(uuidPattern.test(id)) {
+    return true
+  } else {
+    return false
+  }
+}
