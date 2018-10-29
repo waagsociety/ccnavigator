@@ -1,7 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { setTitle } from 'actions'
 import ApiClient from 'client/ApiClient'
 import { buildJSXFromHTML} from "util/utility"
-
 
 class Page extends React.Component {
 
@@ -25,6 +26,10 @@ class Page extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    this.props.dispatch(setTitle(this.state.nodeEntity.attributes.title))
+  }
+
   update(path) {
     ApiClient.instance().fetchContent("node--page", {field_path:path}, null, null, 0, function(node, included) {
       this.setState({
@@ -35,8 +40,10 @@ class Page extends React.Component {
   }
 
   render() {
+    var title = "Loading..."
+
     if(this.state.nodeEntity) {
-      var title =  this.state.nodeEntity.attributes.title || "";
+      title =  this.state.nodeEntity.attributes.title || "";
       var body = (this.state.nodeEntity.attributes.body || {}).value || "";
       var jsx = buildJSXFromHTML(body);
     }
@@ -53,5 +60,10 @@ class Page extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => ({
+
+})
+Page = connect(mapStateToProps)(Page)
 
 export default Page;

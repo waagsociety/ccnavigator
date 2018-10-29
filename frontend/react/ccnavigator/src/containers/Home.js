@@ -1,7 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { setTitle } from 'actions'
 import ApiClient from 'client/ApiClient'
 import { buildJSXFromHTML} from "util/utility"
 import { Link } from 'react-router-dom'
+import { Constants } from 'config/Constants.js'
+
 import Label from 'components/Label';
 
 class Home extends React.Component {
@@ -22,6 +26,8 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    this.props.dispatch(setTitle(Constants.title))
+
     ApiClient.instance().fetchContent("node--page", {field_path:"/home-1"}, null, ["field_image"], 0, function(node, included) {
       this.setState({
         content_1: node,
@@ -118,5 +124,10 @@ class Home extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => ({
+
+})
+Home = connect(mapStateToProps)(Home)
 
 export default Home;

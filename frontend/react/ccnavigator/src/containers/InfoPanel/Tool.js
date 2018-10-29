@@ -5,7 +5,6 @@ import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
 import { buildJSXFromHTML, isUUID} from "util/utility"
 import { Constants } from 'config/Constants.js'
-
 import InfoPanel from "containers/InfoPanel/index.js"
 
 

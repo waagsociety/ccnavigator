@@ -9,6 +9,12 @@ export const clearTools = () => ({
   type: 'CLEAR_TOOLS'
 })
 
+//regarding title
+export const setTitle = (title) => ({
+  type: 'SET_TITLE',
+  title: title
+})
+
 //regarding user
 export const setUser = (user) => ({
   type: 'SET_USER',

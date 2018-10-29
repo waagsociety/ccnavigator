@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Constants } from 'config/Constants.js'
+import DocumentMeta from 'react-document-meta';
 
 import Header from "containers/Header.js"
 import Home from "containers/Home.js"
@@ -17,14 +19,10 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showModal : false,
-      entityId : null,
+      title : '',
       width: 1200,
       height: 800
     }
-    this.updateDimensions = this.updateDimensions.bind(this)
-    window.addEventListener("resize", this.updateDimensions.bind(this))
-
     this.handleKeyUp = this.handleKeyUp.bind(this)
     window.addEventListener("keyup", this.handleKeyUp.bind(this))
   }
@@ -35,26 +33,15 @@ class App extends React.Component {
     if (browser && browser.name === "ie") {
       alert("This website needs a modern browser to function. Recent versions of Firefox, Edge, Chrome, Opera and Safari will do.")
     }
-
-    this.updateDimensions()
-    window.addEventListener("resize", this.updateDimensions)
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions)
   }
 
-  componentWillReceiveProps(newProps) {
-    //console.log("new entity", newProps.activeEntity)
-  }
-
-  /**
-   * calculate & Update state of new dimensions
-   */
-  updateDimensions() {
-    //let update_width  = window.innerWidth
-    //let update_height = window.innerHeight
-    //this.setState({ width: update_width, height: update_height })
+  componentWillReceiveProps(nextProps) {
+    if(this.props.title !== nextProps.title) {
+      this.setState({ title: nextProps.title })
+    }
   }
 
   handleKeyUp(e) {
@@ -77,22 +64,34 @@ class App extends React.Component {
 
 
   render() {
+    const title = (this.state.title ? this.state.title + " « " : "")
+    const meta = {
+      title: title + Constants.title
+    }
+
     return (
-      <Router>
-        <div id="container-app">
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/the-society-as-research-laboratorium" component={Page} />
-            <Route path="/the-power-of-co-creation" component={Page} />
-            <Route path="/navigator" component={Map} />
-            <Route path="/about" component={Page} />
-            <Route path="*" component={props => <Page remotePath="/404"/>} status={404} />
-          </Switch>
-         </div>
-      </Router>
+      <DocumentMeta {...meta}>
+        <Router>
+          <div id="container-app">
+            <Header />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/the-society-as-research-laboratorium" component={Page} />
+              <Route path="/the-power-of-co-creation" component={Page} />
+              <Route path="/navigator" component={Map} />
+              <Route path="/about" component={Page} />
+              <Route path="*" component={props => <Page remotePath="/404"/>} status={404} />
+            </Switch>
+          </div>
+        </Router>
+      </DocumentMeta>
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => ({
+  title: state.title
+})
+App = connect(mapStateToProps)(App)
 
 export default App

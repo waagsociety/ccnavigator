@@ -1,5 +1,14 @@
 import { combineReducers } from 'redux'
 
+const titleReducer = (state = null, action) => {
+  switch (action.type) {
+    case 'SET_TITLE':
+      return action.title;
+    default:
+      return state;
+  }
+}
+
 const userReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_USER':
@@ -172,6 +181,7 @@ const toolFiltersReducer = (state = [], action) => {
 
 //the keys defined here are the names of the substates
 const CCNavigatorApp = combineReducers({
+  title: titleReducer,
   user: userReducer,
   language: languageReducer,
   tools: toolsReducer,

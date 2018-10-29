@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setInfoPanel, setZone } from 'actions'
-import ReactDOM from 'react-dom'
+import { setTitle, setInfoPanel, setZone } from 'actions'
 import { Constants } from 'config/Constants.js'
 import Label from 'components/Label'
 import { IconBack, IconClose, IconCollapse } from "util/icons"
@@ -26,14 +25,6 @@ class InfoPanel extends React.Component {
     }
   }
 
-  componentDidMount() {
-    ReactDOM.findDOMNode(this).addEventListener('scroll', this.handleScroll)
-  }
-
-  componentWillUnmount() {
-    ReactDOM.findDOMNode(this).removeEventListener('scroll', this.handleScroll)
-  }
-
   componentWillReceiveProps(nextProps) {
     this.setState({ infoPanel: true })
 
@@ -55,6 +46,7 @@ class InfoPanel extends React.Component {
   }
 
   componentDidUpdate() {
+    this.props.dispatch(setTitle(this.state.title))
     this.props.dispatch(setInfoPanel(this.state.infoPanel))
     this.props.dispatch(setZone(this.state.zone))
   }
@@ -77,6 +69,7 @@ class InfoPanel extends React.Component {
   }
 
   closeInfoPanel() {
+    this.props.dispatch(setTitle(''))
     this.props.dispatch(setInfoPanel(false))
     this.context.router.history.push('/navigator/')
   }

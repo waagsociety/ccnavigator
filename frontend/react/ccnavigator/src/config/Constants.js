@@ -8,6 +8,7 @@ export const Constants = {
   //   'yellow': '#F6A500',
   //   'purple': '#522E90'
   // },
+  'title': 'Co-Creation Navigator',
   'infoPanel': {
     'width': 440,
     'breakpoint': 760
