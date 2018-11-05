@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import Config from 'config/Config';
 const parse5 = require('parse5');
 const URI = require('urijs');
@@ -119,7 +118,7 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
     return attributes.reduce((result, pair) => {
       switch(pair.name) {
         case "href":
-          result["to"] = resolveRelativePathIfRelative(pair.value);
+          result["href"] = resolveRelativePathIfRelative(pair.value);
           break;
         case "src":
           var path = resolveRelativePathIfRelative(pair.value);
@@ -145,13 +144,13 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
         break;
       case "a":
         attrs = convertAttributes(node.attrs)
+        attrs["target"] = "_blank"
         attrs["key"] = index
-        converted = React.createElement(Link, attrs, childs)
+        converted = React.createElement("a", attrs, childs)
         break;
       case "img":
         attrs = convertAttributes(node.attrs)
         attrs["key"] = index
-        //console.log(attrs)
         converted = React.createElement("img", attrs)
         break;
       case "table":
