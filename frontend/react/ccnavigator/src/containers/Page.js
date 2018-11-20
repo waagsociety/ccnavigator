@@ -1,22 +1,23 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
 import { setTitle } from 'actions'
 import ApiClient from 'client/ApiClient'
 import { buildJSXFromHTML} from "util/utility"
+import Footer from 'containers/Footer';
 
 class Page extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
+      footer: null,
       nodeEntity:null,
       includedEntities:null,
-    };
+    }
   }
 
   componentDidMount() {
     var path = this.props.remotePath || this.props.match.path
-
     this.update(path)
   }
 
@@ -35,17 +36,17 @@ class Page extends React.Component {
       this.setState({
         nodeEntity: node[0],
         includedEntities: included
-      });
-    }.bind(this));
+      })
+    }.bind(this))
   }
 
   render() {
     var title = "Loading..."
 
     if(this.state.nodeEntity) {
-      title =  this.state.nodeEntity.attributes.title || "";
-      var body = (this.state.nodeEntity.attributes.body || {}).value || "";
-      var jsx = buildJSXFromHTML(body);
+      title =  this.state.nodeEntity.attributes.title || ""
+      var body = (this.state.nodeEntity.attributes.body || {}).value || ""
+      var jsx = buildJSXFromHTML(body)
     }
 
     return (
@@ -56,6 +57,7 @@ class Page extends React.Component {
             {jsx}
           </div>
         </div>
+        <Footer />
       </div>
     )
   }
@@ -66,4 +68,4 @@ const mapStateToProps = (state, ownProps) => ({
 })
 Page = connect(mapStateToProps)(Page)
 
-export default Page;
+export default Page

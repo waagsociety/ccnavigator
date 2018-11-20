@@ -2147,7 +2147,7 @@ h3, h4, h5 {
 p {
   margin: 0 0 1.5em;
   line-height: 1.5em; }
-  p :last-child {
+  p:last-child {
     margin-bottom: 0; }
 
 small,
@@ -2885,6 +2885,29 @@ a.item {
     #site-navigation nav .languages span {
       font-weight: 500; } }
 
+#footer {
+  margin-top: 4rem;
+  background-color: white;
+  box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.1); }
+  #footer tr {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center; }
+    #footer tr td {
+      min-width: 180px; }
+      #footer tr td img {
+        margin: 0 auto;
+        width: auto;
+        height: auto;
+        max-width: 180px;
+        max-height: 125px; }
+  #footer small {
+    display: block;
+    max-width: 600px;
+    margin: 2rem auto 0;
+    text-align: center; }
+
 .content ul {
   margin: 1.5em 0;
   padding-left: 1em; }
@@ -3293,13 +3316,3 @@ img {
 
 table {
   width: 100%; }
-
-tr {
-  display: flex;
-  justify-content: space-around; }
-
-td img {
-  width: auto;
-  height: auto;
-  max-width: 250px;
-  max-height: 125px; }

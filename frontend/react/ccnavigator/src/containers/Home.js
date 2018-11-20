@@ -6,6 +6,7 @@ import { buildJSXFromHTML} from "util/utility"
 import { Link } from 'react-router-dom'
 import { Constants } from 'config/Constants.js'
 
+import Footer from 'containers/Footer';
 import Label from 'components/Label';
 
 class Home extends React.Component {
@@ -120,6 +121,8 @@ class Home extends React.Component {
           </div>
 
         </div>
+
+        <Footer />
       </div>
     )
   }

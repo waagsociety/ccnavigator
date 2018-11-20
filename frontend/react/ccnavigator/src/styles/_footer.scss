@@ -1,0 +1,31 @@
+#footer {
+  margin-top: 4rem;
+  background-color: white;
+  box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
+
+  tr {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+
+    td {
+      min-width: 180px;
+
+      img {
+        margin: 0 auto;
+        width: auto;
+        height: auto;
+        max-width: 180px;
+        max-height: 125px;
+      }
+    }
+  }
+
+  small {
+    display: block;
+    max-width: 600px;
+    margin: 2rem auto 0;
+    text-align: center;
+  }
+}

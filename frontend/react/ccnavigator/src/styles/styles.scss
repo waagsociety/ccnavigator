@@ -10,6 +10,7 @@
 
 @import "_layout";
 @import "_header";
+@import "_footer";
 @import "_content";
 @import "_metro";
 @import "_info-panel";
@@ -32,15 +33,4 @@ img {
 }
 table {
   width: 100%;
-}
-tr {
-  display: flex;
-  justify-content: space-around;
-}
-
-td img {
-  width: auto;
-  height: auto;
-  max-width: 250px;
-  max-height: 125px;
 }
