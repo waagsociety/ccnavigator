@@ -13,3 +13,6 @@ ansible-playbook playbook.yml -i hosts --ask-sudo-pass
 
 ### Only React
 ansible-playbook react.yml -i hosts --ask-sudo-pass
+
+
+_This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreements No 723521 and 723194._
