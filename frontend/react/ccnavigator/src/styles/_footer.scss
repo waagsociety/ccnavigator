@@ -3,6 +3,10 @@
   background-color: white;
   box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
 
+  table {
+    margin-bottom: 2rem;
+  }
+
   tr {
     display: flex;
     justify-content: space-between;
@@ -23,9 +27,13 @@
   }
 
   small {
+    img {
+      margin: 0 auto 0.5em;
+    }
+
     display: block;
     max-width: 600px;
-    margin: 2rem auto 0;
+    margin: 3rem auto 0;
     text-align: center;
   }
 }

@@ -2889,6 +2889,8 @@ a.item {
   margin-top: 4rem;
   background-color: white;
   box-shadow: 0 0 0.75rem 0 rgba(0, 0, 0, 0.1); }
+  #footer table {
+    margin-bottom: 2rem; }
   #footer tr {
     display: flex;
     justify-content: space-between;
@@ -2905,8 +2907,10 @@ a.item {
   #footer small {
     display: block;
     max-width: 600px;
-    margin: 2rem auto 0;
+    margin: 3rem auto 0;
     text-align: center; }
+    #footer small img {
+      margin: 0 auto 0.5em; }
 
 .content ul {
   margin: 1.5em 0;
