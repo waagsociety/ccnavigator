@@ -453,11 +453,13 @@ class ApiClient {
 
         //check if there is more and parse to find offset
         if(next) {
-          var nextURI = new URI(next);
+          var nextLink = next.href;
+          if(!nextLink) {
+            nextLink = next; //older version of JSONAPI
+          }
+          var nextURI = new URI(nextLink);
           var nextParams = URI.parseQuery(nextURI.query());
           nextOffset = parseInt(nextParams["page[offset]"], 10)
-          //console.log("uri", uri)
-          //console.log("next", next)
         }
         if(resultHandler) {
           resultHandler(data, included, nextOffset);

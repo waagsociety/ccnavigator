@@ -184,8 +184,8 @@ class ApiHelper {
       ApiClient.instance().fetchContentAll("taxonomy_term--category", null, ["name", "parent", "field_subtitle", "field_path", "weight"], null, function(vocabulary) {
         if(vocabulary) {
           //get all tool nodes
-          //var filter = {} // {"field_group_size.uuid":"1dce75e9-929d-4071-a91e-a5d6db08d2f5"}
-          //filter["field_duration.uuid"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
+          //var filter = {} // {"field_group_size.id":"1dce75e9-929d-4071-a91e-a5d6db08d2f5"}
+          //filter["field_duration.id"] = "e81db573-9cdf-458f-930d-d5942d13b1e0";
 
           ApiClient.instance().fetchContentAll("node--tool", filter, ["title", "field_category"], null, function(toolData) {
             //console.log("tooldata", toolData)
@@ -293,14 +293,14 @@ class ApiHelper {
       ApiClient.instance().fetchContent(resource, null, null, ["vid"], 0, function(terms, vocabulary) {
         var filter = {};
         filter.name = (((vocabulary || [])[0] || {}).attributes || {}).name;
-        filter.uuid = (((vocabulary || [])[0] || {}).attributes || {}).uuid;
-        filter.vid = (((vocabulary || [])[0] || {}).attributes || {}).vid;
+        filter.id = ((vocabulary || [])[0] || {}).id;
+        filter.vid = (((vocabulary || [])[0] || {}).attributes || {}).drupal_internal__vid;
         filter.weight = (((vocabulary || [])[0] || {}).attributes || {}).weight || 0;
         filter.options = [];
         for(var i=0;i<terms.length;i++) {
           var option = {};
           option.name = ((terms[i]).attributes || {}).name;
-          option.uuid = ((terms[i]).attributes || {}).uuid;
+          option.id = (terms[i] || {}).id;
           filter.options.push(option);
         }
         filters.push(filter);
@@ -324,10 +324,10 @@ class ApiHelper {
 
     this.getFilterDefintions((defs) => {
       //find which group this option is in
-      var findGroup = function(uuidOption) {
+      var findGroup = function(idOption) {
         return defs.filter((group) => {
           var found = group.options.find((option) => {
-            return option.uuid === uuidOption
+            return option.id === idOption
           });
           return (found !== undefined)
         })[0];
@@ -338,7 +338,7 @@ class ApiHelper {
       var grouped = applied.reduce(function(groups, item) {
         var group = findGroup(item);
         if(group && group.vid) {
-          var filterPath = `${Constants.filterFieldMapping[group.vid]}.uuid`;
+          var filterPath = `${Constants.filterFieldMapping[group.vid]}.id`;
           var opts = groups[filterPath] || [];
           opts.push(item);
           groups[filterPath] = opts;

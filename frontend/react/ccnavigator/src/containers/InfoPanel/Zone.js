@@ -1,7 +1,7 @@
 import React from 'react'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
-import { buildJSXFromHTML, isUUID } from 'util/utility.js'
+import { buildJSXFromHTML, isID } from 'util/utility.js'
 import { connect } from 'react-redux'
 import { Constants } from 'config/Constants.js'
 
@@ -45,7 +45,7 @@ class Zone extends React.Component {
     ApiHelper.instance().clearCaches()
 
     // set filter based we have a uuid or path
-    var filter = (isUUID(id) ? id : { "field_path": "/" + id })
+    var filter = (isID(id) ? id : { "field_path": "/" + id })
 
     //full info on this entity
     ApiClient.instance().fetchContent("taxonomy_term--category", filter, null, null, 0, function(termEntity) {
@@ -61,7 +61,7 @@ class Zone extends React.Component {
 
       //full info on all nodes that have this term its child terms as term
       ApiHelper.instance().buildFilter((filter) => {
-        filter["field_category.parent.uuid"] = termEntity.id
+        filter["field_category.parent.id"] = termEntity.id
         ApiClient.instance().fetchContent("node--tool", filter, null, null, 0, function(nodeEntities) {
           this.setState({nodeEntities: nodeEntities})
         }.bind(this))
@@ -80,7 +80,7 @@ class Zone extends React.Component {
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
       var color = Constants.zones[path].color
-      
+
       var zone = this.state.termHierachy.path.map(x => x + 1).join("-")
       var title =  this.state.termEntity.attributes.name || ""
       var subtitle = this.state.termEntity.attributes.field_subtitle || ""

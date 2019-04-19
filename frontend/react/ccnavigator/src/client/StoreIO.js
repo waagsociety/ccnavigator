@@ -30,7 +30,7 @@ class StoreIO {
       var tools = stored.tools || [];
       for(var i=0;i<tools.length;i++) {
         var tool = tools[i];
-        this.store.dispatch(setToolStatus(tool.uuid, tool.status));
+        this.store.dispatch(setToolStatus(tool.id, tool.status));
       }
     }
   }

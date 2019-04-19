@@ -2,7 +2,7 @@ import React from 'react'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { connect } from 'react-redux'
-import { buildJSXFromHTML, isUUID } from 'util/utility.js'
+import { buildJSXFromHTML, isID } from 'util/utility.js'
 import { Constants } from 'config/Constants.js'
 
 import InfoPanel from "containers/InfoPanel/index.js"
@@ -41,8 +41,8 @@ class Theme extends React.Component {
   update(id) {
     ApiHelper.instance().clearCaches()
 
-    // set filter based we have a uuid or path
-    var filter = (isUUID(id) ? id : { "field_path": "/" + id })
+    // set filter based we have a id or path
+    var filter = (isID(id) ? id : { "field_path": "/" + id })
 
     //full info on this entity
     ApiClient.instance().fetchContent("taxonomy_term--category", filter, null, null, 0, function(termEntity) {
@@ -58,7 +58,7 @@ class Theme extends React.Component {
 
       //full info on all nodes that have this term
       ApiHelper.instance().buildFilter((filter) => {
-        filter["field_category.uuid"] = termEntity.id
+        filter["field_category.id"] = termEntity.id
         ApiClient.instance().fetchContent("node--tool", filter, null, Object.values(Constants.filterFieldMapping), 0, function(nodeEntities, included) {
           //connect relationships to include in entity
           this.setState({
@@ -79,10 +79,10 @@ class Theme extends React.Component {
   }
 
   resolveRelationship(tool, relationshipName, includes) {
-    var uuidRelated = (((tool["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
-    if(uuidRelated) {
+    var idRelated = (((tool["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
+    if(idRelated) {
       var found = (includes || []).find((el) => {
-        return (el || {}).id === uuidRelated
+        return (el || {}).id === idRelated
       })
       return (found.attributes || {}).name
     }
