@@ -9,15 +9,15 @@ const persistedState = localStorage.getItem('reduxState') ? JSON.parse(localStor
 
 //
 {
-  uuid = "1278979",
+  id = "1278979",
   logout_token = "asdsdfadf",
   nodes: [
     {
-      uuid:"1234",
+      id:"1234",
       state:"todo"
     },
     {
-      uuid:"1234",
+      id:"1234",
       state:"todo"
     }
   ]

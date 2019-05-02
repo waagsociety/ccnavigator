@@ -30,13 +30,13 @@ class ToolFilters extends React.Component {
       ApiClient.instance().fetchContent(resource, null, null, ["vid"], 0, function(terms, vocabulary) {
         var filter = {};
         filter.name = (((vocabulary || [])[0] || {}).attributes || {}).name;
-        filter.uuid = (((vocabulary || [])[0] || {}).attributes || {}).uuid;
+        filter.id = (((vocabulary || [])[0] || {}).attributes || {}).id;
         filter.weight = (((vocabulary || [])[0] || {}).attributes || {}).weight || 0;
         filter.options = [];
         for(var i=0;i<terms.length;i++) {
           var option = {};
           option.name = ((terms[i]).attributes || {}).name;
-          option.uuid = ((terms[i]).attributes || {}).uuid;
+          option.id = ((terms[i]).attributes || {}).id;
           filter.options.push(option);
         }
         filters.push(filter);
@@ -72,17 +72,17 @@ class ToolFilters extends React.Component {
     })
   }
 
-  onToggleTool(uuid) {
-    if(this.props.filtersSelected.find((f) => f === uuid)) {
-      this.props.dispatch(removeToolFilter(uuid));
+  onToggleTool(id) {
+    if(this.props.filtersSelected.find((f) => f === id)) {
+      this.props.dispatch(removeToolFilter(id));
     } else {
-      this.props.dispatch(addToolFilter(uuid));
+      this.props.dispatch(addToolFilter(id));
     }
   }
 
   onClearAll() {
-    this.props.filtersSelected.forEach((uuid) => {
-      this.props.dispatch(removeToolFilter(uuid));
+    this.props.filtersSelected.forEach((id) => {
+      this.props.dispatch(removeToolFilter(id));
     })
   }
 
@@ -92,14 +92,13 @@ class ToolFilters extends React.Component {
 
     //individual filters with options
     var filterBoxes = this.state.filters.map((filter) => {
-
       var className = "tool-filter " + filter.vid
       var opts = filter.options.map(opt => {
-          var className = this.props.filtersSelected.indexOf(opt.uuid) !== -1 ? "selected" : null;
-          return <li className={className} key={opt.uuid} onClick={(evt) => {this.onToggleTool(opt.uuid)}}>{opt.name}</li>
+          var className = this.props.filtersSelected.indexOf(opt.id) !== -1 ? "selected" : null;
+          return <li className={className} key={opt.id} onClick={(evt) => {this.onToggleTool(opt.id)}}>{opt.name}</li>
       });
       return (
-        <div className={className} key={filter.uuid}>
+        <div className={className} key={filter.id}>
           <h4>{filter.name}</h4>
           <ul className="tool-filter-options">
             {opts}

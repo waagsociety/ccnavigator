@@ -1,7 +1,7 @@
 //regarding tools
-export const setToolStatus = (uuid, status) => ({
+export const setToolStatus = (id, status) => ({
   type: 'SET_TOOL_STATUS',
-  uuid: uuid,
+  id: id,
   status: status
 })
 
@@ -46,19 +46,19 @@ export const setZone = (number) => ({
 })
 
 //regarding filters on content (tools) on meta data (taxonomy terms)
-export const addToolFilter = (uuid) => ({
+export const addToolFilter = (id) => ({
   type: 'ADD_TOOL_FILTER',
-  uuid: uuid
+  id: id
 })
 
 //regarding filters on content (tools) on meta data (taxonomy terms)
-export const removeToolFilter = (uuid) => ({
+export const removeToolFilter = (id) => ({
   type: 'REMOVE_TOOL_FILTER',
-  uuid: uuid
+  id: id
 })
 
 //regarding filters on content (tools) on meta data (taxonomy terms)
-export const clearToolFilters = (uuid) => ({
+export const clearToolFilters = (id) => ({
   type: 'CLEAR_TOOL_FILTERS',
-  uuid: uuid
+  id: id
 })

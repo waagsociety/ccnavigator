@@ -208,10 +208,10 @@ export const ease = function(step, steps) {
 }
 
 
-export const isUUID = function(id) {
-  const uuidPattern = /[0-9a-f/-]{36}/g
+export const isID = function(id) {
+  const idPattern = /[0-9a-f/-]{36}/g
 
-  if(uuidPattern.test(id)) {
+  if(idPattern.test(id)) {
     return true
   } else {
     return false

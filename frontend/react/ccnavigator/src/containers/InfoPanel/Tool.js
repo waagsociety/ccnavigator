@@ -3,7 +3,7 @@ import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
-import { buildJSXFromHTML, isUUID} from "util/utility"
+import { buildJSXFromHTML, isID} from "util/utility"
 import { Constants } from 'config/Constants.js'
 import InfoPanel from "containers/InfoPanel/index.js"
 
@@ -39,8 +39,8 @@ class Tool extends React.Component {
       })
     })
 
-    // set filter based we have a uuid or path
-    var filter = (isUUID(id) ? id : { "field_path": "/" + id })
+    // set filter based we have a id or path
+    var filter = (isID(id) ? id : { "field_path": "/" + id })
     // full info on this node including relationships
     var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"]
 
@@ -85,11 +85,11 @@ class Tool extends React.Component {
     switch(mime) {
       case "image/jpeg":
         filename = (item.attributes || {}).filename
-        url = (item.attributes || {}).url
+        url = ((item.attributes || {}).uri || {}).url
         return <img key={item.id} src={ApiClient.instance().getFullURL(url)} alt={filename} />
       case "application/pdf":
         filename = (item.attributes || {}).filename
-        url = (item.attributes || {}).url
+        url = ((item.attributes || {}).uri || {}).url
         var label = (meta.description) ? meta.description : 'download tool'
         return <a className="button button-download" key={item.id} href={ApiClient.instance().getFullURL(url)} target="_blank" rel="noopener noreferrer">{label}</a>
       default:
@@ -103,16 +103,16 @@ class Tool extends React.Component {
   resolveMetaData(relationshipName) {
     //this.state.nodeEntity, fieldName, this.state.includedEntities
     if(this.state.nodeEntity && this.state.includedEntities && this.state.filterDefintions) {
-      var uuidRelated = (((this.state.nodeEntity["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
-      if(uuidRelated) {
+      var idRelated = (((this.state.nodeEntity["relationships"] || {})[relationshipName] || {})["data"] || {})["id"]
+      if(idRelated) {
         //find term
         var term = (this.state.includedEntities || []).find((el) => {
-          return (el || {}).id === uuidRelated
+          return (el || {}).id === idRelated
         })
         //lookup filter/vocabulary name
         var vocabularyId = ((((term || {}).relationships || {}).vid || {}).data || {}).id
         var filter = (this.state.filterDefintions || []).find((def) => {
-          return def.uuid === vocabularyId
+          return def.id === vocabularyId
         })
         //return filter/value
         var name = (filter || {}).name
@@ -212,7 +212,7 @@ class Tool extends React.Component {
 
 //connect the status prop to the record for this tool in redux
 const mapStateToProps = (state, ownProps) => ({
-  flagged: state.tools.find((item) => {return item.uuid === ownProps.match.params.id})
+  flagged: state.tools.find((item) => {return item.id === ownProps.match.params.id})
 })
 Tool = connect(mapStateToProps)(Tool)
 

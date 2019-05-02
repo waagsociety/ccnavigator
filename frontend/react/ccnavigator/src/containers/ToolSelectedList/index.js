@@ -28,7 +28,7 @@ class ToolSelectedList extends React.Component {
    * retrieve tool node data from stored hierarchy
    */
   update(tools) {
-    var toolIds = tools.map((tool) => {return tool.uuid});
+    var toolIds = tools.map((tool) => {return tool.id});
     ApiHelper.instance().findNodeInContentHierarchy(toolIds, function(nodes) {
       this.setState({
         nodeEntities: nodes
@@ -45,9 +45,9 @@ class ToolSelectedList extends React.Component {
     // join the tool data from redux with node data
     if(this.props.tools && this.state.nodeEntities) {
       list = this.props.tools.map((tool, index) => {
-        var nodeInfo = this.state.nodeEntities.filter((node) => { return node.id === tool.uuid})[0];
+        var nodeInfo = this.state.nodeEntities.filter((node) => { return node.id === tool.id})[0];
         var title = ((nodeInfo || {}).attributes || {}).title;
-        return <ToolSelectedListItem id={tool.uuid} key={tool.uuid} title={title} onDelete={this.onDeleteItem.bind(this)} />
+        return <ToolSelectedListItem id={tool.id} key={tool.id} title={title} onDelete={this.onDeleteItem.bind(this)} />
       });
     }
 

@@ -69,11 +69,11 @@ const zoneReducer = (state = false, action) => {
  * state will look something like:
  * [
  *   {
- *     uuid:"49b44d9f-bdc5-4d12-a6fe-6ad2672ac83a",
+ *     id:"49b44d9f-bdc5-4d12-a6fe-6ad2672ac83a",
  *     status:"DOING"
  *   },
  *   {
- *     uuid:"31a952cd-6588-4a7e-8da9-9428f4108703",
+ *     id:"31a952cd-6588-4a7e-8da9-9428f4108703",
  *     status:"DONE"
  *   }
  * ]
@@ -85,12 +85,12 @@ const toolsReducer = (state = [], action) => {
       return [];
     case 'SET_TOOL_STATUS':
       if(action.status === null) { //means unset
-        return state.filter((elem) => {return (elem.uuid !== action.uuid)})
+        return state.filter((elem) => {return (elem.id !== action.id)})
       }
       var newState = []
-      if(state.find( elem => elem.uuid === action.uuid )) {
+      if(state.find( elem => elem.id === action.id )) {
         newState = state.map( (elem) => {
-          if(elem.uuid === action.uuid) {
+          if(elem.id === action.id) {
             elem.status = action.status
           }
           return elem
@@ -99,7 +99,7 @@ const toolsReducer = (state = [], action) => {
         newState = [
           ...state,
           {
-            uuid: action.uuid,
+            id: action.id,
             status: action.status
           }
         ]
@@ -129,21 +129,21 @@ const toolsReducer = (state = [], action) => {
       return [];
     case 'ADD_TOOL_FILTER':
       //return old state if nothing changes
-      if(state[action.uuidFilter] && state[action.uuidFilter].find( elem => elem === action.uuidOption )) {
+      if(state[action.idFilter] && state[action.idFilter].find( elem => elem === action.idOption )) {
         return state;
       }
       //deep clone state and add new option modify
       var newState = JSON.parse(JSON.stringify(state));
-      if(!newState[action.uuidFilter]) {
-        newState[action.uuidFilter] = [];
+      if(!newState[action.idFilter]) {
+        newState[action.idFilter] = [];
       }
-      newState[action.uuidFilter].push(action.uuidOption);
+      newState[action.idFilter].push(action.idOption);
       return newState;
     case 'REMOVE_TOOL_FILTER':
       //only return new state if there really is something to be removed
-      if(state[action.uuidFilter] && state[action.uuidFilter].find( elem => elem === action.uuidOption )) {
+      if(state[action.idFilter] && state[action.idFilter].find( elem => elem === action.idOption )) {
         var newState = JSON.parse(JSON.stringify(state));
-        newState[action.uuidFilter] = newState[action.uuidFilter].filter((e) => e !== action.uuidOption);
+        newState[action.idFilter] = newState[action.idFilter].filter((e) => e !== action.idOption);
         return newState;
       }
       return state;
@@ -165,13 +165,13 @@ const toolFiltersReducer = (state = [], action) => {
     case 'CLEAR_FILTERS':
       return [];
     case 'ADD_TOOL_FILTER':
-      if(!state.find( e => e === action.uuid)) {
-        return [...state, action.uuid];
+      if(!state.find( e => e === action.id)) {
+        return [...state, action.id];
       }
       return state;
     case 'REMOVE_TOOL_FILTER':
-      if(state.find( e => e === action.uuid)) {
-        return state.filter((e) => e !== action.uuid);
+      if(state.find( e => e === action.id)) {
+        return state.filter((e) => e !== action.id);
       }
       return state;
     default:
