@@ -35,13 +35,13 @@ class Home extends React.Component {
         content_1_i: included
       });
     }.bind(this));
-    ApiClient.instance().fetchContent("node--page", {field_path:"/the-society-as-research-laboratorium"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
+    ApiClient.instance().fetchContent("node--page", {field_path:"/the-society-as-research-laboratorium"}, null, ["field_image"], 0, function(node, included) {
       this.setState({
         content_2_1: node,
         content_2_1_i: included
       });
     }.bind(this));
-    ApiClient.instance().fetchContent("node--page", {field_path:"/the-power-of-co-creation"}, null, ["field_short_description", "field_image"], 0, function(node, included) {
+    ApiClient.instance().fetchContent("node--page", {field_path:"/the-power-of-co-creation"}, null, ["field_image"], 0, function(node, included) {
       this.setState({
         content_2_2: node,
         content_2_2_i: included
