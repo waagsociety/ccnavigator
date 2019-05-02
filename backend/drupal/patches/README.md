@@ -1,9 +1,9 @@
-# some patches are required to fix Drupal 8.5.3
+# UPDATE, JSONAPI patch not needed anymore in Drupal 8.6.x
 
 Generally patching goes like this.
-patch -d /var/www/mydrupaldir -p1 < mypatchfile.patch 
+patch -d /var/www/mydrupaldir -p1 < mypatchfile.patch
 
-## 2543726-309.patch : make JSON api include hierarchy in taxonomy_term vocabularies
+## add_uuid_to_login_resp.patch : make REST login return a uuid for the user
 
-This patch works with Drupal release 8.5.3. Don't forget to `drush updb` afterwards.
-The patch doesn't seem to work when the HAL modules is enabled.
+This patch was used for REST login support which is currently not supported in the client.
+Patch not tested in latest version. This patch is considered a HACK, probably new versions of Drupal/JSONAPI provides a workaround for this hack.
