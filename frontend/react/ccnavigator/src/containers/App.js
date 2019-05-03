@@ -76,8 +76,10 @@ class App extends React.Component {
             <Header />
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/the-society-as-research-laboratorium" component={Page} />
+              <Route path="/waags-public-research" component={Page} />
               <Route path="/the-power-of-co-creation" component={Page} />
+              <Route path="/hosting-co-creation" component={Page} />
+              <Route path="/ccn-community" component={Page} />
               <Route path="/navigator" component={Map} />
               <Route path="/about" component={Page} />
               <Route path="*" component={props => <Page remotePath="/404"/>} status={404} />
