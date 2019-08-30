@@ -12,7 +12,7 @@ class ThemeLabel extends React.Component {
     e.preventDefault()
 
     if(!this.props.didDrag) {
-      this.context.router.history.push(`/navigator/theme${this.props.id}`)
+      this.props.history.push(`/navigator/theme${this.props.id}`)
     }
   }
 

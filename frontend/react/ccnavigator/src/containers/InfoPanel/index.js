@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setTitle, setInfoPanel, setZone } from 'actions'
 import { Constants } from 'config/Constants.js'
@@ -7,10 +8,6 @@ import { IconBack, IconClose, IconCollapse } from "util/icons"
 
 
 class InfoPanel extends React.Component {
-
-  static contextTypes = {
-    router: () => null
-  }
 
   constructor(props) {
     super(props)
@@ -46,7 +43,7 @@ class InfoPanel extends React.Component {
   }
 
   componentDidUpdate() {
-    this.props.dispatch(setTitle(this.state.title))
+    if(this.state.title) this.props.dispatch(setTitle(this.state.title))
     this.props.dispatch(setInfoPanel(this.state.infoPanel))
     this.props.dispatch(setZone(this.state.zone))
   }
@@ -60,7 +57,7 @@ class InfoPanel extends React.Component {
   handleViewportClick() {
     // only if smaller than info panel breakpoint ($info-panel-breakpoint in scss)
     if(window.innerWidth < Constants.infoPanel.breakpoint) {
-      this.context.router.history.push('/navigator/')
+      this.props.history.push('/navigator/')
     }
   }
 
@@ -71,7 +68,7 @@ class InfoPanel extends React.Component {
   closeInfoPanel() {
     this.props.dispatch(setTitle(''))
     this.props.dispatch(setInfoPanel(false))
-    this.context.router.history.push('/navigator/')
+    this.props.history.push('/navigator/')
   }
 
 
@@ -86,7 +83,7 @@ class InfoPanel extends React.Component {
         <div id="info-panel-inner">
 
           <div id="info-panel-buttons" ref="infoPanelButtons"><div>
-            <span className="button-info-panel button-back" onClick={ this.context.router.history.goBack}>{IconBack} <span className="text">back</span></span>
+            <span className="button-info-panel button-back" onClick={ this.props.history.goBack}>{IconBack} <span className="text">back</span></span>
             <span className="button-info-panel button-close" onClick={ this.closeInfoPanel.bind(this) }>{IconClose}</span>
             <span className="button-info-panel button-collapse" onClick={ this.toggleInfoPanel.bind(this)}>{IconCollapse}</span>
           </div></div>
@@ -116,4 +113,4 @@ const mapStateToProps = (state, ownProps) => ({
 })
 InfoPanel = connect(mapStateToProps)(InfoPanel)
 
-export default InfoPanel
+export default withRouter(InfoPanel)

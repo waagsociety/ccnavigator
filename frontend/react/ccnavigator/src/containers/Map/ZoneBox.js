@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Constants } from 'config/Constants.js'
 import Label from 'components/Label'
@@ -6,10 +7,6 @@ import ThemeLabel from "./ThemeLabel.js"
 
 
 class ZoneBox extends React.Component {
-
-  static contextTypes = {
-    router: () => null
-  }
 
   constructor(props) {
     super(props)
@@ -28,7 +25,7 @@ class ZoneBox extends React.Component {
     e.preventDefault()
 
     if(!this.props.didDrag) {
-      this.context.router.history.push(`/navigator/zone${this.state.id}`)
+      this.props.history.push(`/navigator/zone${this.state.id}`)
     }
   }
 
@@ -78,4 +75,4 @@ const mapStateToProps = (state, ownProps) => ({
 })
 ZoneBox = connect(mapStateToProps)(ZoneBox)
 
-export default ZoneBox
+export default withRouter(ZoneBox)
