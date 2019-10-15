@@ -18,21 +18,31 @@ class Map extends React.Component {
 
   state = {
     data: null,
-    filtersSelected: [],
     dimensions: {
       width: -1,
       height: -1
     }
   }
 
+
   componentDidMount() {
-    this.update(this.state.filtersSelected)
+    this.update()
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(this.props.filtersSelected !== nextProps.filtersSelected) {
-      this.update(nextProps.filtersSelected)
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.filtersSelected !== prevProps.filtersSelected) {
+      this.update()
     }
+  }
+
+  // get the vocabulary with category labels to display on the map
+  update() {
+    ApiHelper.instance().clearCaches()
+    ApiHelper.instance().buildContentHierarchy(function(hierarchy) {
+      this.setState({
+        data: hierarchy
+      })
+    }.bind(this))
   }
 
   // flatten all categories in the hierarchy getting the ones that are parent but not grand parent, add a path like "3-1"
@@ -59,22 +69,12 @@ class Map extends React.Component {
     return result
   }
 
-  // get the vocabulary with category labels to display on the map
-  update(filtersSelected) {
-    ApiHelper.instance().clearCaches()
-    ApiHelper.instance().buildContentHierarchy(function(hierarchy){
-      this.setState({
-        data: hierarchy,
-        filtersSelected: filtersSelected
-      })
-    }.bind(this))
-  }
 
   render() {
     //zone boxes
-    if(this.state && this.state.data) {
-      var zoneBoxes = this.flattenTree(this.state.data).map((termEntity, index) => {
-        return <ZoneBox key={termEntity.path} entity={termEntity} filter={this.state.filtersSelected} />
+    if(this.state.data) {
+      var zoneBoxes = this.flattenTree(this.state.data).map(termEntity => {
+        return <ZoneBox key={termEntity.path} entity={termEntity} forceUpdate={Math.random()} />
       })
     }
 
@@ -105,8 +105,9 @@ class Map extends React.Component {
 
 // update when language or filters change
 const mapStateToProps = (state, ownProps) => ({
-  language: state.language,
-  filtersSelected: state.toolFiltersApplied
+  //language: state.language,
+  filtersSelected: state.toolFiltersApplied,
+  //data: state.data
 })
 
 Map = sizeMe({ monitorHeight: true })(Map)

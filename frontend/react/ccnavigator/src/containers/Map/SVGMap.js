@@ -24,34 +24,31 @@ class SVGMap extends React.Component {
     }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.infoPanel !== state.infoPanel) {
+      return {
+        infoPanel: props.infoPanel,
+      }
+    }
+    return null
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.props.dispatch(setDidDrag(this.state.didDrag))
+
+    if(this.props.zone !== prevProps.zone && this.props.zone !== '') {
+      // only if larger than info panel breakpoint ($info-panel-breakpoint in scss)
+      if(window.innerWidth > Constants.infoPanel.breakpoint) {
+        this.animateZoomPan(1.5, [Constants['zones'][this.props.zone]['x'] + 75, Constants['zones'][this.props.zone]['y'] + 15])
+      }
+    }
+  }
+
   componentDidMount() {
     //adapt the initial viewBox bigger screens zoom out a bit to show more of the map
     if((this.props.width > 1000) && (this.props.height > 960)) {
       this.zoomWith(1000 / (Math.min(this.props.width,this.props.height)))
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(this.props.infoPanel !== nextProps.infoPanel) {
-      this.setState({ infoPanel: nextProps.infoPanel })
-
-      // if(nextProps.infoPanel === false) {
-      //   this.panWith(-Constants.infoPanel.width/2, 0)
-      // }
-      // if(nextProps.infoPanel === true) {
-      //   this.panWith(Constants.infoPanel.width/2, 0)
-      // }
-    }
-    if(this.props.zone !== nextProps.zone && nextProps.zone !== '') {
-      // only if larger than info panel breakpoint ($info-panel-breakpoint in scss)
-      if(window.innerWidth > Constants.infoPanel.breakpoint) {
-        this.animateZoomPan(1.5, [Constants['zones'][nextProps.zone]['x'] + 75, Constants['zones'][nextProps.zone]['y'] + 15])
-      }
-    }
-  }
-
-  componentDidUpdate() {
-    this.props.dispatch(setDidDrag(this.state.didDrag))
   }
 
   getCenterX() {
@@ -208,7 +205,7 @@ class SVGMap extends React.Component {
     } else {
       this.zoomWith(0.95)
     }
-    e.preventDefault()
+    //e.preventDefault()
   }
 
   zoomWith(scale) {

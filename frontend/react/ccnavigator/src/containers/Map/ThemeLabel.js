@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Label from 'components/Label'
 
@@ -7,6 +8,10 @@ class ThemeLabel extends React.Component {
   static contextTypes = {
     router: () => null
   }
+
+  // constructor(props) {
+  //   super(props)
+  // }
 
   handleClick(e) {
     e.preventDefault()
@@ -31,4 +36,4 @@ const mapStateToProps = (state, ownProps) => ({
 })
 ThemeLabel = connect(mapStateToProps)(ThemeLabel)
 
-export default ThemeLabel
+export default withRouter(ThemeLabel)

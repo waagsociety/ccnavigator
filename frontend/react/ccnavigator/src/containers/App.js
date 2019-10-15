@@ -27,20 +27,20 @@ class App extends React.Component {
     window.addEventListener("keyup", this.handleKeyUp.bind(this))
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.title !== state.title) {
+      return {
+        title: props.title,
+      }
+    }
+    return null
+  }
+
   componentDidMount() {
     const browser = detect()
     // handle the case where we don't detect the browser
     if (browser && browser.name === "ie") {
       alert("This website needs a modern browser to function. Recent versions of Firefox, Edge, Chrome, Opera and Safari will do.")
-    }
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(this.props.title !== nextProps.title) {
-      this.setState({ title: nextProps.title })
     }
   }
 
@@ -92,7 +92,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  title: state.title
+  title: state.title,
 })
 App = connect(mapStateToProps)(App)
 

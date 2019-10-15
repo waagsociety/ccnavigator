@@ -15,7 +15,7 @@ class Header extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
   }
 
@@ -23,20 +23,11 @@ class Header extends React.Component {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
 
+
   handleLocationChange = (location) => {
     this.setState({
       nav: false
     })
-  }
-
-  componentWillUpdate(nextProps) {
-    if (nextProps.specificProperty !== this.props.specificProperty) {
-      // Do whatever you want
-    }
-  }
-
-  componentDidUpdate() {
-    //console.log("need to fetch info about the tools selected")
   }
 
   onNavToggle() {
