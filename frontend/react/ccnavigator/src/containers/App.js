@@ -1,8 +1,7 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { connect, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Constants } from 'config/Constants.js'
-import DocumentMeta from 'react-document-meta';
 
 import Header from "containers/Header.js"
 import Home from "containers/Home.js"
@@ -13,6 +12,18 @@ import 'styles/styles.css'
 
 
 const { detect } = require('detect-browser')
+
+
+function Title() {
+  const title = useSelector(state => state.title)
+
+  useEffect(() => {
+    document.title = (title ? title + " « " : "") + Constants.title;
+  });
+
+  return null;
+}
+
 
 class App extends React.Component {
 
@@ -62,31 +73,24 @@ class App extends React.Component {
     }
   }
 
-
   render() {
-    const title = (this.state.title ? this.state.title + " « " : "")
-    const meta = {
-      title: title + Constants.title
-    }
-
     return (
-      <DocumentMeta {...meta}>
-        <Router>
-          <div id="container-app">
-            <Header />
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/waags-public-research" component={Page} />
-              <Route path="/the-power-of-co-creation" component={Page} />
-              <Route path="/hosting-co-creation" component={Page} />
-              <Route path="/ccn-community" component={Page} />
-              <Route path="/navigator" component={Map} />
-              <Route path="/about" component={Page} />
-              <Route path="*" component={props => <Page remotePath="/404"/>} status={404} />
-            </Switch>
-          </div>
-        </Router>
-      </DocumentMeta>
+      <Router>
+        <div id="container-app">
+          <Title />
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/waags-public-research" component={Page} />
+            <Route path="/the-power-of-co-creation" component={Page} />
+            <Route path="/hosting-co-creation" component={Page} />
+            <Route path="/ccn-community" component={Page} />
+            <Route path="/navigator" component={Map} />
+            <Route path="/about" component={Page} />
+            <Route path="*" component={props => <Page remotePath="/404"/>} status={404} />
+          </Switch>
+        </div>
+      </Router>
     )
   }
 }
