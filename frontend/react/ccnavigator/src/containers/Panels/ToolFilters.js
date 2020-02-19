@@ -61,10 +61,6 @@ class ToolFilters extends React.Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
-    //console.log("nextProps", nextProps)
-    //ApiHelper.instance().buildFilter();
-  }
 
   onToggleFiltersDisplay() {
     this.setState({

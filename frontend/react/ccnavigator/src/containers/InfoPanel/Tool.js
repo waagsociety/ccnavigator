@@ -20,16 +20,19 @@ class Tool extends React.Component {
     }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.match.params.id !== state.id) {
+      return {
+        id: props.match.params.id,
+      }
+    }
+    return null
+  }
+
   componentDidMount() {
     this.update(this.props.match.params.id)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(this.props.match.params.id !== nextProps.match.params.id) {
-      this.setState({ id: nextProps.match.params.id })
-      this.update(nextProps.match.params.id)
-    }
-  }
 
   update(id) {
     //get filter definitions to be able to lookup vocabulary names
@@ -45,24 +48,26 @@ class Tool extends React.Component {
     var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"]
 
     ApiClient.instance().fetchContent("node--tool", filter, null, includes, 0, function(node, included) {
-      // if we filtered by path we take the first node of the result
-      if(typeof(filter) !== "string") {
-        node = node[0]
-      }
-      //set content
-      this.setState({
-        nodeEntity: node,
-        includedEntities: included
-      })
-      //lookup the terms in the hierarchy to get pathnames
-      var categoryIds = ((((node || {}).relationships || {}).field_category || {}).data || []).map((cat) => {
-        return cat.id
-      })
-      ApiHelper.instance().findTermInContentHierarchy(categoryIds, function(terms) {
+      if(node) {
+        // if we filtered by path we take the first node of the result
+        if(typeof(filter) !== "string") {
+          node = node[0]
+        }
+        //set content
         this.setState({
-          termEntities: terms
+          nodeEntity: node,
+          includedEntities: included
         })
-      }.bind(this))
+        //lookup the terms in the hierarchy to get pathnames
+        var categoryIds = ((((node || {}).relationships || {}).field_category || {}).data || []).map((cat) => {
+          return cat.id
+        })
+        ApiHelper.instance().findTermInContentHierarchy(categoryIds, function(terms) {
+          this.setState({
+            termEntities: terms
+          })
+        }.bind(this))
+      }
     }.bind(this))
   }
 

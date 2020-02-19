@@ -22,24 +22,25 @@ class InfoPanel extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ infoPanel: true })
-
-    if(this.props.color !== nextProps.color) {
-      this.setState({ color: nextProps.color })
+  static getDerivedStateFromProps(props, state) {
+    if (props.title !== state.title) {
+      return {
+        id: props.id,
+        //icon: props.icon,
+        color: props.color,
+        //images: props.images,
+        //zone: props.zone,
+        title: props.title,
+        subtitle: props.subtitle,
+        infoPanel: true
+      }
     }
-    if(this.props.zone !== nextProps.zone) {
-      this.setState({ zone: nextProps.zone })
+    if (props.children !== state.children) {
+      return {
+        children: props.children
+      }
     }
-    if(this.props.title !== nextProps.title) {
-      this.setState({ title: nextProps.title })
-    }
-    if(this.props.subtitle !== nextProps.subtitle) {
-      this.setState({ subtitle: nextProps.subtitle })
-    }
-    if(this.props.children !== nextProps.children) {
-      this.setState({ children: nextProps.children })
-    }
+    return null
   }
 
   componentDidUpdate() {

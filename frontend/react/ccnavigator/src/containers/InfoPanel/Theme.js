@@ -23,17 +23,29 @@ class Theme extends React.Component {
     }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.match.params.id !== state.id) {
+      return {
+        id: props.match.params.id,
+      }
+    }
+    if (props.filtersSelected !== state.filtersSelected) {
+      return {
+        filtersSelected: props.filtersSelected,
+      }
+    }
+    return null
+  }
+
   componentDidMount() {
     this.update(this.state.id)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(this.props.match.params.id !== nextProps.match.params.id) {
-      this.setState({ id: nextProps.match.params.id })
-      this.update(nextProps.match.params.id)
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.update(this.props.match.params.id)
     }
-    if(this.props.filtersSelected !== nextProps.filtersSelected) {
-      this.setState({ filtersSelected: nextProps.filtersSelected })
+    if (this.props.filtersSelected !== prevProps.filtersSelected) {
       this.update(this.state.id)
     }
   }
