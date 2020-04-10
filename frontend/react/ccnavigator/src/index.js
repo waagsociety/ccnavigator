@@ -13,8 +13,8 @@ const store = createStore(reducer)
 
 //instantiate singletons
 /*eslint-disable no-unused-vars*/
-const storeExporter = new StoreIO.instance(store);
-const apiHelper = new ApiHelper.instance(store);
+const storeExporter = StoreIO.instance(store);
+const apiHelper = ApiHelper.instance(store);
 /*eslint-enable no-unused-vars*/
 
 render(
