@@ -107,7 +107,7 @@ a.pane {
 }
 
 .pane-border {
-  border-top: 0.2rem $color-turquoise solid;
+  border-top: 0.2rem var(--color-1) solid;
 }
 
 
@@ -151,8 +151,7 @@ a.pane {
   width: calc(100% - 1rem);
   margin: 0.5rem;
   padding: 1rem;
-  background-color: $color-background;
-  //border-top: 3px solid $color-turquoise;
+  background-color: var(--color-bg);
   transition: all 200ms ease;
 }
 
@@ -161,7 +160,7 @@ a.item {
   text-decoration: none;
 
   &:hover {
-    background-color: darken($color-background, 2%);
+    background-color: var(--color-bg-hover);
     //box-shadow: 0 0 0.75rem 0 rgba(0,0,0,0.1);
   }
 }

@@ -1,9 +1,11 @@
 
 body {
   margin: 0;
-  background-color: $color-background;
-  font-family: $font-family;
+  background-color: var(--color-bg);
+  font-family: var(--font-family-default);
+  font-weight: var(--font-weight-default);
   font-size: 16px;
+  color: var(--color-text);
 
   @media (min-width: 600px) {
     font-size: 17px;
@@ -13,11 +15,13 @@ em {
   font-style: italic;
 }
 strong, th {
-  font-weight: 500;
+  font-weight: var(--font-weight-strong);
 }
 
 h1, h2, h3, h4, h5 {
-  font-weight: 500;
+  font-family: var(--font-family-headings);
+  font-weight: var(--font-weight-headings);
+  color: var(--color-headings);
   margin: 0;
 
   .icon {
@@ -28,7 +32,8 @@ h1, h2, h3, h4, h5 {
   }
 
   &.subtitle {
-    font-weight: 400;
+    font-family: var(--font-family-default);
+    font-weight: var(--font-weight-default);
     margin-bottom: 1rem;
   }
 }

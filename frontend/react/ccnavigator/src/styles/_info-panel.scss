@@ -15,10 +15,10 @@ $button-icon-size: 0.65rem;
     }
   }
 
-  &.turquoise #info-panel-buttons > div { background: $color-turquoise; }
-  &.yellow #info-panel-buttons > div { background: $color-yellow; }
-  &.purple #info-panel-buttons > div { background: $color-purple; }
-  &.red #info-panel-buttons > div { background: $color-red; }
+  &.color-1 #info-panel-buttons > div { background: var(--color-1); }
+  &.color-2 #info-panel-buttons > div { background: var(--color-2); }
+  &.color-3 #info-panel-buttons > div { background: var(--color-3); }
+  &.color-4 #info-panel-buttons > div { background: var(--color-4); }
 
 
   @media (max-width: $info-panel-breakpoint) {
@@ -93,8 +93,8 @@ $button-icon-size: 0.65rem;
       border-top: $button-size solid transparent;
 
       &::-webkit-scrollbar { width: 0.4rem; }
-      &::-webkit-scrollbar-thumb { background-color: darken($color-background, 15%); }
-      &::-webkit-scrollbar-track { background-color: $color-background; }
+      &::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.1); }
+      &::-webkit-scrollbar-track { background-color: var(--color-bg); }
     }
 
     &:hover #info-panel-viewport {

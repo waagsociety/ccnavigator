@@ -23,11 +23,12 @@
   &.duration                     h4:before { content: $fa-var-clock-o; }
   &.facilitator_participant      h4:before { content: $fa-var-users; }
   &.experience_level_facilitator h4:before { content: $fa-var-star; }
+  &.online_offline               h4:before { content: $fa-var-desktop; }
 }
 
 .tool-filter-options {
   li {
-    @include label($color-background, $color-text);
+    @include label(var(--color-bg), var(--color-text));
     display: inline-block;
     margin: 0.2em 0.4em 0.2em 0;
     cursor: pointer;
@@ -37,7 +38,7 @@
       color: #FFF;
     }
     &.selected {
-      background-color: $color-turquoise;
+      background-color: var(--color-1);
       color: #FFF;
     }
   }

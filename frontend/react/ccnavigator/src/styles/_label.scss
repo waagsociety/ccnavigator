@@ -8,15 +8,15 @@
   height: 1.5em;
   line-height: 1.5em;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: var(--font-weight-default);
   white-space: nowrap;
   box-sizing: border-box;
   vertical-align: middle;
 
-  .turquoise & { background: $color-turquoise; }
-  .yellow & { background: $color-yellow; }
-  .purple & { background: $color-purple; }
-  .red & { background: $color-red; }
+  .color-1 & { background: var(--color-1); }
+  .color-2 & { background: var(--color-2); }
+  .color-3 & { background: var(--color-3); }
+  .color-4 & { background: var(--color-4); }
 
 
   .themes .box & {

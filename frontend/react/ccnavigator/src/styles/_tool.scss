@@ -18,10 +18,11 @@
     vertical-align: middle;
   }
 
-  &.group_size:before                   { content: $fa-var-child; }
-  &.duration:before                     { content: $fa-var-clock-o; }
-  &.facilitator_participant:before      { content: $fa-var-users; }
-  &.experience_level:before             { content: $fa-var-star; }
+  &.group_size:before              { content: $fa-var-child; }
+  &.duration:before                { content: $fa-var-clock-o; }
+  &.facilitator_participant:before { content: $fa-var-users; }
+  &.experience_level:before        { content: $fa-var-star; }
+  &.online_offline:before          { content: $fa-var-desktop; }
 }
 
 .tool-meta-name {
@@ -33,13 +34,13 @@
 }
 
 .tool-meta-value {
-  @include label($color-turquoise, #FFF);
+  @include label(var(--color-1), #FFF);
   font-size: 0.8em;
 
-  .turquoise & { background: $color-turquoise; }
-  .yellow & { background: $color-yellow; }
-  .purple & { background: $color-purple; }
-  .red & { background: $color-red; }
+  .color-1 & { background: var(--color-1); }
+  .color-2 & { background: var(--color-2); }
+  .color-3 & { background: var(--color-3); }
+  .color-4 & { background: var(--color-4); }
 }
 
 .short-tool-metas {
@@ -56,18 +57,19 @@
   &:before {
     font-family: "FontAwesome";
     margin-right: 0.25em;
-    color: $color-turquoise;
+    color: #000;
 
-    .turquoise & { color: $color-turquoise; }
-    .yellow & { color: $color-yellow; }
-    .purple & { color: $color-purple; }
-    .red & { color: $color-red; }
+    .color-1 & { color: var(--color-1); }
+    .color-2 & { color: var(--color-2); }
+    .color-3 & { color: var(--color-3); }
+    .color-4 & { color: var(--color-4); }
   }
 
-  &.group_size:before                   { content: $fa-var-child; }
-  &.duration:before                     { content: $fa-var-clock-o; }
-  &.facilitator_participant:before      { content: $fa-var-users; }
-  &.experience_level:before             { content: $fa-var-star; }
+  &.group_size:before              { content: $fa-var-child; }
+  &.duration:before                { content: $fa-var-clock-o; }
+  &.facilitator_participant:before { content: $fa-var-users; }
+  &.experience_level:before        { content: $fa-var-star; }
+  &.online_offline:before          { content: $fa-var-desktop; }
 }
 
 .tool-images {

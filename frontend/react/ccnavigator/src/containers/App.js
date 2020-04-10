@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Constants } from 'config/Constants.js'
+import Config from 'config/Config.js'
 
 import Header from "containers/Header.js"
 import Home from "containers/Home.js"
@@ -14,14 +15,33 @@ import 'styles/styles.css'
 const { detect } = require('detect-browser')
 
 
-function Title() {
+function SiteSettings() {
   const title = useSelector(state => state.title)
 
   useEffect(() => {
-    document.title = (title ? title + " « " : "") + Constants.title;
+    document.title = (title ? title + " « " : "") + Config.title;
   });
 
-  return null;
+  return <style>
+    @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C300italic%2Cregular%2Citalic%2C700%2C700italic&ver=5.3.2");
+    {`
+      :root {
+        --color-bg: ${Config.colors['color-bg']};
+        --color-bg-hover: ${Config.colors['color-bg-hover']};
+        --color-text: ${Config.colors['color-text']};
+        --color-headings: ${Config.colors['color-headings']};
+        --color-1: ${Config.colors['color-1']};
+        --color-2: ${Config.colors['color-2']};
+        --color-3: ${Config.colors['color-3']};
+        --color-4: ${Config.colors['color-4']};
+        --font-family-default: ${Config.fontFamily.default};
+        --font-weight-default: ${Config.fontWeight.default};
+        --font-family-headings: ${Config.fontFamily.headings};
+        --font-weight-headings: ${Config.fontWeight.headings};
+        --font-weight-strong: ${Config.fontWeight.strong};
+      }
+  `}
+  </style>;
 }
 
 
@@ -77,8 +97,8 @@ class App extends React.Component {
     return (
       <Router>
         <div id="container-app">
-          <Title />
-          <Header />
+          <SiteSettings />
+          { Config.header && <Header /> }
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/waags-public-research" component={Page} />

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Link, withRouter, matchPath } from 'react-router-dom';
 import Label from 'components/Label';
+import Config from 'config/Config.js'
 //import ToolSelectedList from './ToolSelectedList'
 //import LanguageSelector from "containers/LanguageSelector"
 
@@ -64,7 +65,7 @@ class Header extends React.Component {
     return (
       <div id="site-header" className={className}>
         <div id="site-titles">
-          <h1 id="site-title">Co-creation Navigator <Label value="beta" size="0.3em" align="text-top"/></h1>
+          <h1 id="site-title">{Config.title} <Label value="beta" size="0.3em" align="text-top"/></h1>
           <h2 id="site-subtitle">guiding you through the <span className="nowrap">co-creative</span> landscape</h2>
         </div>
         {navigation}

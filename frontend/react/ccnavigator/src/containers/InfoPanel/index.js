@@ -20,19 +20,32 @@ class InfoPanel extends React.Component {
       subtitle: props.subtitle,
       children: props.children
     }
+
+    this.infoPanelViewport = React.createRef();
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.title !== state.title) {
+      
       return {
         id: props.id,
         //icon: props.icon,
         color: props.color,
         //images: props.images,
-        //zone: props.zone,
+        zone: props.zone,
         title: props.title,
         subtitle: props.subtitle,
         infoPanel: true
+      }
+    }
+    if (props.zone !== state.zone) {
+      return {
+        zone: props.zone
+      }
+    }
+    if (props.color !== state.color) {
+      return {
+        color: props.color
       }
     }
     if (props.children !== state.children) {
@@ -45,8 +58,9 @@ class InfoPanel extends React.Component {
 
   componentDidUpdate() {
     if(this.state.title) this.props.dispatch(setTitle(this.state.title))
-    this.props.dispatch(setInfoPanel(this.state.infoPanel))
-    this.props.dispatch(setZone(this.state.zone))
+    if(this.state.infoPanel) this.props.dispatch(setInfoPanel(this.state.infoPanel))
+    if(this.state.zone) this.props.dispatch(setZone(this.state.zone))
+    this.infoPanelViewport.current.scrollTop = 0
   }
 
   toggleInfoPanel() {
@@ -89,7 +103,7 @@ class InfoPanel extends React.Component {
             <span className="button-info-panel button-collapse" onClick={ this.toggleInfoPanel.bind(this)}>{IconCollapse}</span>
           </div></div>
 
-          <div id="info-panel-viewport" ref="infoPanelViewport" >
+          <div id="info-panel-viewport" ref={this.infoPanelViewport}>
             <div id="info-panel-content" onClick={ this.handleContentClick.bind(this) }>
               <div id="info-panel-header">
                 <h1 className="info-panel-title">

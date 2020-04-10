@@ -97,7 +97,7 @@
     display: inline-block;
     margin-left: 0.5em;
     border-radius: 1em 0 0 1em;
-    font-weight: 500;
+    font-weight: var(--font-weight-strong);
   }
 }
 
@@ -109,6 +109,6 @@
   line-height: 4rem;
   font-size: 2rem;
   transform: translate(-1em, -1em);
-  background: $color-background;
+  background: var(--color-bg);
   border-radius: 10px;
 }
