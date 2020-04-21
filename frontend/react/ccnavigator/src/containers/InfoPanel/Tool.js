@@ -1,10 +1,10 @@
 import React from 'react'
+import Config from 'config/Config.js'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
 import { buildJSXFromHTML, isID} from "util/utility"
-import { Constants } from 'config/Constants.js'
 import InfoPanel from "containers/InfoPanel/index.js"
 
 
@@ -45,7 +45,7 @@ class Tool extends React.Component {
     // set filter based we have a id or path
     var filter = (isID(id) ? id : { "field_path": "/" + id })
     // full info on this node including relationships
-    var includes = [...Object.values(Constants.filterFieldMapping), "field_image", "field_download"]
+    var includes = [...Object.values(Config.filterFieldMapping), "field_image", "field_download"]
 
     ApiClient.instance().fetchContent("node--tool", filter, null, includes, 0, function(node, included) {
       if(node) {
@@ -141,11 +141,11 @@ class Tool extends React.Component {
         var path = this.state.termEntities[0].path.slice(0, 2).map(x => x + 1).join("-")
 
         var color
-        if (Constants.zones[path]) {
-          color = Constants.zones[path].color
-        } else if (Constants.zones[path.slice(0, -2)]) {
+        if (Config.zones[path]) {
+          color = Config.zones[path].color
+        } else if (Config.zones[path.slice(0, -2)]) {
           path = path.slice(0, -2)
-          color = Constants.zones[path].color
+          color = Config.zones[path].color
         }
 
       }
@@ -185,7 +185,7 @@ class Tool extends React.Component {
       // }
 
       //metadata fields
-      var metaDataFields = Object.values(Constants.filterFieldMapping).map((fieldName) => {
+      var metaDataFields = Object.values(Config.filterFieldMapping).map((fieldName) => {
         var metaData = this.resolveMetaData(fieldName)
         var field = (
           <div key={fieldName} className={"tool-meta " + fieldName.slice(6)}>

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Constants } from 'config/Constants.js'
 import Config from 'config/Config.js'
 
 import Header from "containers/Header.js"
@@ -77,7 +76,7 @@ class App extends React.Component {
 
   handleKeyUp(e) {
     if(["1", "2", "3", "4", "5"].indexOf(e.key) > -1) {
-      window.svgmap.animateZoomPan(1.75, [Constants.zones[e.key].x + 75,Constants.zones[e.key].y + 15])
+      window.svgmap.animateZoomPan(1.75, [Config.zones[e.key].x + 75, Config.zones[e.key].y + 15])
     }
 
     if(e.key === "w") {

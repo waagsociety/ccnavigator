@@ -1,9 +1,10 @@
 import React from 'react'
+import Config from 'config/Config'
 import { connect } from 'react-redux'
 import { setDidDrag } from 'actions'
 import { withRouter } from 'react-router-dom'
 import { ease } from "util/utility"
-import { Constants } from 'config/Constants.js'
+
 
 class SVGMap extends React.Component {
 
@@ -38,8 +39,8 @@ class SVGMap extends React.Component {
 
     if(this.props.zone !== prevProps.zone && this.props.zone !== '') {
       // only if larger than info panel breakpoint ($info-panel-breakpoint in scss)
-      if(window.innerWidth > Constants.infoPanel.breakpoint) {
-        this.animateZoomPan(1.5, [Constants['zones'][this.props.zone]['x'] + 75, Constants['zones'][this.props.zone]['y'] + 15])
+      if(window.innerWidth > Config.infoPanel.breakpoint) {
+        this.animateZoomPan(1.5, [Config['zones'][this.props.zone]['x'] + 75, Config['zones'][this.props.zone]['y'] + 15])
       }
     }
   }
@@ -53,7 +54,7 @@ class SVGMap extends React.Component {
 
   getCenterX() {
     if(this.state.infoPanel) {
-      return Constants.infoPanel.width / window.innerWidth + (window.innerWidth - Constants.infoPanel.width) / window.innerWidth / 2
+      return Config.infoPanel.width / window.innerWidth + (window.innerWidth - Config.infoPanel.width) / window.innerWidth / 2
     } else {
       return 0.5
     }

@@ -1,5 +1,5 @@
 import ApiClient from 'client/ApiClient'
-import Constants from 'config/Constants'
+import Config from 'config/Config'
 //import {flattenArray} from 'util/utility'
 var _ = require('lodash');
 
@@ -286,7 +286,7 @@ class ApiHelper {
       return;
     }
     //retrieve filters from backend
-    var filterFields = Object.keys(Constants.filterFieldMapping);
+    var filterFields = Object.keys(Config.filterFieldMapping);
     var filters = [];
     for(var i=0;i<filterFields.length;i++) {
       var resource = `taxonomy_term--${filterFields[i]}`
@@ -338,7 +338,7 @@ class ApiHelper {
       var grouped = applied.reduce(function(groups, item) {
         var group = findGroup(item);
         if(group && group.vid) {
-          var filterPath = `${Constants.filterFieldMapping[group.vid]}.id`;
+          var filterPath = `${Config.filterFieldMapping[group.vid]}.id`;
           var opts = groups[filterPath] || [];
           opts.push(item);
           groups[filterPath] = opts;

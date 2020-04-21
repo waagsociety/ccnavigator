@@ -1,7 +1,8 @@
 import React from 'react'
+import Config from 'config/Config'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Constants } from 'config/Constants.js'
+
 import Label from 'components/Label'
 import ThemeLabel from "./ThemeLabel.js"
 
@@ -42,7 +43,7 @@ class ZoneBox extends React.Component {
   render() {
     var termEntity = this.props.entity
     var path = termEntity.path.map(x => x + 1).join("-")
-    var color = Constants.zones[path].color
+    var color = Config.zones[path].color
 
     // render term themes (if not grandparent)
     var termThemes
@@ -65,7 +66,7 @@ class ZoneBox extends React.Component {
 
     //return category box
     return (
-      <foreignObject className={classNames.join(' ')} width={width} height="130" x={Constants.zones[path].x} y={Constants.zones[path].y} transform={`rotate(-45 ${Constants.zones[path].x},${Constants.zones[path].y})`}>
+      <foreignObject className={classNames.join(' ')} width={width} height="130" x={Config.zones[path].x} y={Config.zones[path].y} transform={`rotate(-45 ${Config.zones[path].x},${Config.zones[path].y})`}>
         <a href={`/navigator/zone${this.state.id}`} className="zone-title-link" onClick={ this.handleClick.bind(this) }>
           <h3 className="zone-title">
             {path.length === 1 &&

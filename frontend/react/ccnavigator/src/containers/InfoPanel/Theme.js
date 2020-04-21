@@ -1,9 +1,9 @@
 import React from 'react'
+import Config from 'config/Config'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { connect } from 'react-redux'
 import { buildJSXFromHTML, isID } from 'util/utility.js'
-import { Constants } from 'config/Constants.js'
 
 import InfoPanel from "containers/InfoPanel/index.js"
 import InfoPanelItems from 'components/InfoPanelItems'
@@ -71,7 +71,7 @@ class Theme extends React.Component {
       //full info on all nodes that have this term
       ApiHelper.instance().buildFilter((filter) => {
         filter["field_category.id"] = termEntity.id
-        ApiClient.instance().fetchContent("node--tool", filter, null, Object.values(Constants.filterFieldMapping), 0, function(nodeEntities, included) {
+        ApiClient.instance().fetchContent("node--tool", filter, null, Object.values(Config.filterFieldMapping), 0, function(nodeEntities, included) {
           //connect relationships to include in entity
           this.setState({
             nodeEntities: nodeEntities,
@@ -110,16 +110,16 @@ class Theme extends React.Component {
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
       var color
-      if (Constants.zones[path]) {
-        color = Constants.zones[path].color
-      } else if (Constants.zones[path.slice(0, -2)]) {
-        color = Constants.zones[path.slice(0, -2)].color
+      if (Config.zones[path]) {
+        color = Config.zones[path].color
+      } else if (Config.zones[path.slice(0, -2)]) {
+        color = Config.zones[path.slice(0, -2)].color
       }
 
       var zone
-      if (Constants.zones[path]) {
+      if (Config.zones[path]) {
         zone = path
-      } else if (Constants.zones[path.slice(0, -2)]) {
+      } else if (Config.zones[path.slice(0, -2)]) {
         zone = path.slice(0, -2)
       }
 
@@ -134,7 +134,7 @@ class Theme extends React.Component {
         var description = node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
 
         //metadata fields
-        var metaDataFields = Object.values(Constants.filterFieldMapping).map((fieldName) => {
+        var metaDataFields = Object.values(Config.filterFieldMapping).map((fieldName) => {
           var fieldValue = this.resolveRelationship(node,fieldName,this.state.includedEntities)
           var className = "short-tool-meta " + fieldName.slice(6)
           return (fieldValue ? <span key={fieldName} className={className}>{fieldValue}</span> : null)

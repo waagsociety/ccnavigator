@@ -1,8 +1,10 @@
 import React from 'react'
+import Config from 'config/Config.js'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+
 import { setTitle, setInfoPanel, setZone } from 'actions'
-import { Constants } from 'config/Constants.js'
+
 import Label from 'components/Label'
 import { IconBack, IconClose, IconCollapse } from "util/icons"
 
@@ -71,7 +73,7 @@ class InfoPanel extends React.Component {
 
   handleViewportClick() {
     // only if smaller than info panel breakpoint ($info-panel-breakpoint in scss)
-    if(window.innerWidth < Constants.infoPanel.breakpoint) {
+    if(window.innerWidth < Config.infoPanel.breakpoint) {
       this.props.history.push('/navigator/')
     }
   }

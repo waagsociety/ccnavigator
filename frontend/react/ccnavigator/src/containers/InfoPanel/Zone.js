@@ -1,9 +1,10 @@
 import React from 'react'
+import Config from 'config/Config'
 import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { buildJSXFromHTML, isID } from 'util/utility.js'
 import { connect } from 'react-redux'
-import { Constants } from 'config/Constants.js'
+
 
 import InfoPanel from "containers/InfoPanel/index.js"
 import InfoPanelItems from 'components/InfoPanelItems'
@@ -88,7 +89,7 @@ class Zone extends React.Component {
 
       //make header
       var path = this.state.termHierachy.path.slice(0, 2).map(x => x + 1).join("-")
-      var color = Constants.zones[path].color
+      var color = Config.zones[path].color
 
       var zone = this.state.termHierachy.path.map(x => x + 1).join("-")
       var title =  this.state.termEntity.attributes.name || ""
