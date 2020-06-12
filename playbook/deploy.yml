@@ -54,7 +54,7 @@
     # now deploy react application
     - name: place react app (takes while)
       copy:
-        src={{ playbook_dir }}/../frontend/react/ccnavigator/build/
+        src={{ playbook_dir }}/../frontend/build/
         dest=/var/www/
         mode=0440
         directory_mode=0550

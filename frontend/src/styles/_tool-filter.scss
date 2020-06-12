@@ -1,0 +1,49 @@
+.tool-filters {
+  h3 + .button-clear {
+    margin-top: 0.5em;
+  }
+}
+
+.tool-filter {
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+
+  &:last-child {
+    margin-bottom: 0.3rem;
+  }
+
+  h4 {
+    text-transform: lowercase;
+    font-size: 0.85em;
+
+    &:before {
+      font-family: "FontAwesome";
+      margin-right: 0.5em;
+      vertical-align: middle;
+    }
+  }
+
+  &.group_size                   h4:before { content: $fa-var-child; }
+  &.duration                     h4:before { content: $fa-var-clock-o; }
+  &.facilitator_participant      h4:before { content: $fa-var-users; }
+  &.experience_level_facilitator h4:before { content: $fa-var-star; }
+  &.online_offline               h4:before { content: $fa-var-desktop; }
+}
+
+.tool-filter-options {
+  li {
+    @include label(var(--color-bg), var(--color-text));
+    display: inline-block;
+    margin: 0.2em 0.4em 0.2em 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #000;
+      color: #FFF;
+    }
+    &.selected {
+      background-color: var(--color-1);
+      color: #FFF;
+    }
+  }
+}

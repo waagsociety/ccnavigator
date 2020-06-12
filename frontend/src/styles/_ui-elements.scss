@@ -1,0 +1,155 @@
+// ui buttons
+.button-back {
+  position: absolute;
+  text-align: center;
+  color: #000;
+  font-size: 1rem;
+  line-height: 1.15rem;
+  user-select: none;
+  cursor: pointer;
+  transition: all 100ms ease;
+
+  &:hover .fa-icon {
+    transform: translateX(-1px);
+  }
+}
+
+
+#buttons-bar {
+  height: $button-size;
+
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    .color-1 & { background: var(--color-1); }
+    .color-2 & { background: var(--color-2); }
+    .color-3 & { background: var(--color-3); }
+    .color-4 & { background: var(--color-4); }
+  }
+}
+
+// BUTTONS
+.bar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  height: $button-size;
+  padding: 0 ($button-size - $button-icon-size) / 2;
+  color: #FFF;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+
+  .text {
+    font-size: 0.85em;
+    margin-top: 0.2em;
+    padding: 0 ($button-size - $button-icon-size) / 4;
+  }
+
+  .icon {
+    width: $button-icon-size;
+    transition: all 100ms ease;
+
+    path {
+      fill: #FFF;
+    }
+  }
+}
+
+// back
+.button-back {
+  left: 0;
+
+  &:hover .icon { transform: translateX(-1px); }
+}
+
+// close
+.button-close {
+  right: 0;
+  transform: rotate(90deg);
+
+  &:hover .icon { transform: rotate(180deg); }
+}
+
+// collapse
+.button-collapse {
+  right: 0;
+
+  &:hover .icon { transform: translateX(-1px); }
+
+  .collapsed & {
+    //right: -$button-size;
+    transform: rotate(180deg);
+  }
+
+  @media (max-width: $info-panel-breakpoint) {
+    display: none;
+  }
+}
+
+
+
+// 
+.scrollable {
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar { width: 0.4rem; }
+  &::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.1); }
+  &::-webkit-scrollbar-track { background-color: rgba(0,0,0,0.025); }
+}
+
+// TOGGLE
+.toggle {
+
+  .toggle-button {
+    position: relative;
+    padding-right: 1.25em;
+    cursor: pointer;
+    user-select: none;
+
+    &:after {
+      content: $fa-var-angle-up;
+      font-family: "FontAwesome";
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+      transition: transform 0ms ease;
+    }
+
+    &:hover:after {
+      transform: translateY(-1px);
+      transition-duration: 75ms;
+    }
+  }
+  &.toggled .toggle-button {
+    &:after {
+      content: $fa-var-angle-down;
+    }
+    &:hover:after {
+      transform: translateY(1px);
+    }
+  }
+
+
+
+
+  .toggle-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 100ms ease;
+  }
+
+  &.toggled .toggle-content {
+    max-height: 600px;
+    transition: all 200ms ease;
+  }
+}
+
+

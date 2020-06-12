@@ -1,0 +1,150 @@
+@mixin modal-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.8);
+  overflow: auto;
+  text-align: center;
+  z-index: 200;
+
+  &:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  #info-panel-inner {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    text-align: left;
+    background-color: #FFF;
+  }
+
+  #buttons-bar {
+    position: relative;
+  }
+}
+
+@mixin panel-mode {
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  bottom: 0.75rem;
+  width: 600px;
+  max-width: 65%;
+  z-index: 200;
+  box-shadow: 0 0 0.5rem 0 rgba(0,0,0,0.2);
+  background-color: #FFF;
+  transition: all 200ms ease;
+
+  &.collapsed {
+    transform: translateX(-100%);
+  }
+
+  &.practice {
+    width: calc(100% - 0.75rem);
+    max-width: 960px;
+
+  }
+
+  #buttons-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 201;
+  }
+
+  &.collapsed #buttons-bar {
+    left: $button-size;
+  }
+
+  .button-close {
+    right: $button-size;
+
+    @media (max-width: $info-panel-breakpoint) {
+      right: 0;
+    }
+  }
+
+  #info-panel-viewport {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    border-top: $button-size solid transparent;
+  }
+
+  #info-panel-content {
+    width: 100%;
+    min-height: 100%;
+  }
+
+  &:hover #info-panel-viewport {
+    overflow-y: scroll;
+
+    #info-panel-content {
+      width: calc(100% + 0.4rem);
+    }
+  }
+}
+
+
+
+#info-panel.non-embedded {
+  @media (max-width: $info-panel-breakpoint) {
+    @include modal-mode;
+  }
+
+  @media (min-width: $info-panel-breakpoint + 1px) {
+    @include panel-mode;
+  }
+}
+
+#info-panel.embedded {
+  @include modal-mode;
+
+  padding: 0;
+  border: 1px solid #eee;
+
+  #info-panel-inner {
+    max-width: none;
+    height: 100%;
+  }
+  #info-panel-viewport {
+    height: 100%;
+  }
+}
+
+
+// HEADER
+#info-panel-header {
+  padding: 1rem;
+
+  .info-panel-title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+
+    .label {
+      margin-top: 1rem;
+      margin-right: 0.75rem;
+    }
+  }
+}
+
+// BODY
+#info-panel-body {
+  padding: 1rem;
+}
