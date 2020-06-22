@@ -1,0 +1,28 @@
+input {
+  font-family: "Maax", sans-serif;
+  background-color: var(--color-bg);
+  border: none;
+  border-bottom: 2px solid var(--color-bg);
+  margin-bottom: 0.5rem;
+  padding: 0.8em 0.8em 0.6em;
+  transition: all 200ms ease;
+
+  :focus {
+    border-bottom-color: var(--color-bg);
+  }
+}
+
+button {
+  background-color: var(--color-1);
+  color: #FFF;
+  padding: 0.8em 0.8em 0.6em;
+  border: none;
+  text-transform: uppercase;
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  max-width: 14rem;
+  margin: 1rem 0;
+}

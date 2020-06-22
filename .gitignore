@@ -1,5 +1,10 @@
 # misc
 .DS_Store
-backend/drupal/web/sites/default/settings.php
-backend/drupal/web/sites/default/services.yml
+
+backend/drupal/web
+backend/drupal/sites/
+backend/drupal/vendor
+backend/drupal/composer.lock
+backend/drupal/.editorconfig
+backend/drupal/.gitattributes
 frontend/react/ccnavigator/src/config/Config.js
