@@ -1,9 +1,10 @@
+# when to improve this script look here : https://github.com/geerlingguy/ansible-role-php-versions
 - hosts: all
   vars:
     drupal_database: "ccnavigator"
     drupal_database_user: "drupal"
     drupal_database_pass: "drupal"
-  gather_facts: no #retrieves some variables like ansible_hostname, this fails on first provision, but works when we skip it and install some things and try again...a
+  gather_facts: no #retrieves some variables like ansible_hostname, this fails on first provision, but works when we skip it and install some things and try again...
   become: true
   pre_tasks:
     - name: Install Python for Ansible
@@ -15,16 +16,39 @@
   tasks:
     - name: Install git
       apt: name=git-all
+    - name: Install unzip
+      apt: name=unzip
     - name: Update the server
       apt: update_cache=yes
     - name: Install Apache
       apt: name=apache2 state=present update_cache=yes
-    - name: Install PHP 7.0
-      apt: name=php7.0
+    # Debian-specific tasks Ondrej Sury php repo.
+    - name: Add dependencies for PHP versions (Debian).
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+        state: present
+      when: ansible_distribution == "Debian"
+    - name: Add Ondrej Sury's apt key (Debian).
+      apt_key:
+        url: https://packages.sury.org/php/apt.gpg
+        state: present
+      when: ansible_distribution == "Debian"
+    - name: Add Ondrej Sury's repo (Debian).
+      apt_repository:
+        repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
+        state: present
+      register: php_ondrej_debian_repo
+      when: ansible_distribution == "Debian"
+    - name: Update apt caches after repo is added (Debian).
+      apt: update_cache=true
+    - name: Install PHP 7.2
+      apt: name=php7.2
     - name: Install php mbstring extension
-      apt: name=php7.0-mbstring
+      apt: name=php7.2-mbstring
     - name: Install mod_rewrite for PHP
-      apt: name=libapache2-mod-php7.0
+      apt: name=libapache2-mod-php7.2
     - name: Enable mod_rewrite
       apache2_module:
         state: present
@@ -34,9 +58,11 @@
         state: present
         name: headers
     - name: Install php-xml required for drupal
-      apt: name=php-xml
+      apt: name=php7.2-xml
     - name: Install php-gd required for drupal
-      apt: name=php-gd
+      apt: name=php7.2-gd
+    - name: Install php-curl required for drupal
+      apt: name=php7.2-curl
     - name: Install MariaDB server
       apt: name=mariadb-server
     - name: Install MariaDB client
@@ -103,47 +129,8 @@
         mode: a+x
         state: file
       tags: composer
-    #drush will be installed here /home/vagrant/.config/composer/vendor/bin/ (composer -g config bin-dir)
-    - name: Make composer install drush
-      become: no
-      composer:
-        command: require
-        global_command: yes
-        arguments: drush/drush:8.*
-    #add the composer bin path to env for this task
-    - name: Test drush
-      become: false
-      command: ~/.config/composer/vendor/bin/drush
-      register: out
-    - debug: var=out.stdout_lines
-    #download drupal
-    - name: Download drupal
-      get_url:
-        url: https://ftp.drupal.org/files/projects/drupal-8.4.0.tar.gz
-        dest: /tmp/drupal-8.4.0.zip
-    - name: Place code
-      unarchive: src=/tmp/drupal-8.4.0.zip dest=/var/www/ copy=no owner=www-data group=www-data
-    - name: link web dir
-      file: path=/var/www/drupal
-            src=/var/www/drupal-8.4.0
-            state=link
-            force=yes
-            owner=www-data
-            group=www-data
-    # patch drupal
-    - name: Patch for getting jsonapi to return term its parent as relationship
-      patch:
-        src={{ playbook_dir }}/../backend/drupal/patches/2543726-309.patch
-        basedir=/var/www/drupal-8.4.0
-        strip=1
-    # patch drupal
-    - name: Patch for making login response include uuid
-      patch:
-        src={{ playbook_dir }}/../backend/drupal/patches/add_uuid_to_login_resp.patch
-        basedir=/var/www/drupal-8.4.0
-        strip=1
     #copy the apache config
-    - name: Apache config
-      copy: src=config/apache2.conf dest=/etc/apache2/apache2.conf
-    - name: Restart apache
-      service: name=apache2 state=restarted
+    #- name: Apache config
+    #  copy: src=config/apache2.conf dest=/etc/apache2/apache2.conf
+    #- name: Restart apache
+    #  service: name=apache2 state=restarted
