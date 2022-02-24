@@ -21,7 +21,9 @@ const SiteSettings = () => {
   });
 
   return <style>
-    {/* @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C300italic%2Cregular%2Citalic%2C700%2C700italic&ver=5.3.2"); */}
+    { Config.cssImports.length > 0 && Config.cssImports.map(cssImport => {
+      return `@import url("${cssImport}");`
+    }) }
     {`
       :root {
         --color-bg: ${Config.colors['color-bg']};

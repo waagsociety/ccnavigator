@@ -22,7 +22,7 @@ class Practices extends React.Component {
     const { titlePrefixField } = this.state
     const include = titlePrefixField ? [titlePrefixField] : []
 
-    ApiClient.instance().fetchContent("node--practice", '', null, include, 0, function(nodeEntities, included) {
+    ApiClient.instance().fetchContent("node--practice", Config.practicesPanelFilter, null, include, 0, function(nodeEntities, included) {
       const includedEntities = {}
       if(included) {
         for (let i = 0; i < included.length; i++) {

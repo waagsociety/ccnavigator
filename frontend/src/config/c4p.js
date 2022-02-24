@@ -14,8 +14,8 @@ const c4pConfig = {
   footer: false,
   routes: [
     {
-      path: "/",
-      component: Map
+      path: "/*",
+      component: <Map />
     }
   ],
   mapPath: "/",
@@ -43,6 +43,7 @@ const c4pConfig = {
     strong: '700',
     headings: '700'
   },
+  practicesPanelFilter: {"field_project.name":"Cities 4 People"},
   practicesPanelTitlePrefixTaxonomy: null,
   practiceTaxonomies: ["project"]
 }
