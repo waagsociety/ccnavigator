@@ -24,7 +24,7 @@ class Page extends React.Component {
     this.update(path)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if(this.props.router.location.pathname !== nextProps.router.location.pathname) {
       this.update(nextProps.router.location.pathname)
     }

@@ -20,7 +20,7 @@ class ToolSelectedList extends React.Component {
   /**
    * when tool list changes
    */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.update(nextProps.tools);
   }
 
