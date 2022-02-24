@@ -5,6 +5,8 @@ import ApiClient from 'client/ApiClient'
 import { buildJSXFromHTML, inIframe } from 'util/utility'
 import { connect } from 'react-redux'
 
+import { withRouter } from 'util/withRouter'
+
 import InfoPanel from "containers/InfoPanel/index.js"
 
 import { IconClose } from 'util/icons'
@@ -25,21 +27,21 @@ class Practice extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.match.params.id !== state.id) {
+    if (props.router.params.id !== state.id) {
       return {
-        id: props.match.params.id,
+        id: props.router.params.id,
       }
     }
     return null
   }
 
   componentDidMount() {
-    this.update(this.props.match.params.id)
+    this.update(this.props.router.params.id)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.update(this.props.match.params.id)
+    if (this.props.router.params.id !== prevProps.router.params.id) {
+      this.update(this.props.router.params.id)
     }
   }
 
@@ -150,4 +152,4 @@ const mapStateToProps = (state, ownProps) => ({
 Practice = connect(mapStateToProps)(Practice)
 
 
-export default Practice
+export default withRouter(Practice)

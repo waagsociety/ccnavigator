@@ -1,6 +1,6 @@
 import React from 'react'
 import Config from 'config/Config'
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'util/withRouter'
 import { connect } from 'react-redux'
 
 import Label from 'components/Label'
@@ -36,7 +36,8 @@ class ZoneBox extends React.Component {
     e.preventDefault()
 
     if(!this.props.didDrag) {
-      this.props.history.push(`${Config.mapPath}zone${this.state.id}`)
+      this.props.router.navigate(`${Config.mapPath}zone${this.state.id}`)
+      //this.props.history.push(`${Config.mapPath}zone${this.state.id}`)
     }
   }
 

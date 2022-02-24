@@ -2,7 +2,7 @@ import React from 'react'
 import Config from 'config/Config'
 import { connect } from 'react-redux'
 import { setDidDrag } from 'actions'
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'util/withRouter'
 import { ease } from "util/utility"
 
 

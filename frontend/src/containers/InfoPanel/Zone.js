@@ -5,6 +5,8 @@ import ApiHelper from 'client/ApiHelper'
 import { buildJSXFromHTML, isID } from 'util/utility.js'
 import { connect } from 'react-redux'
 
+import { withRouter } from 'util/withRouter'
+
 
 import InfoPanel from "containers/InfoPanel/index.js"
 import InfoPanelItems from 'components/InfoPanelItems'
@@ -15,8 +17,9 @@ class Zone extends React.Component {
 
   constructor(props) {
     super(props)
+
     this.state = {
-      id: props.match.params.id,
+      id: props.router.params.id,
       filtersSelected: props.filtersSelected,
       termHierachy: null,
       termEntity: null,
@@ -25,9 +28,9 @@ class Zone extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.match.params.id !== state.id) {
+    if (props.router.params.id !== state.id) {
       return {
-        id: props.match.params.id,
+        id: props.router.params.id,
       }
     }
     if (props.filtersSelected !== state.filtersSelected) {
@@ -43,8 +46,8 @@ class Zone extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.update(this.props.match.params.id)
+    if (this.props.router.params.id !== prevProps.router.params.id) {
+      this.update(this.props.router.params.id)
     }
     if (this.props.filtersSelected !== prevProps.filtersSelected) {
       this.update(this.state.id)
@@ -170,4 +173,4 @@ const mapStateToProps = (state, ownProps) => ({
 Zone = connect(mapStateToProps)(Zone)
 
 
-export default Zone
+export default withRouter(Zone)

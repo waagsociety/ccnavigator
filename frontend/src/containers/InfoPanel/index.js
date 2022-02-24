@@ -1,6 +1,6 @@
 import React from 'react'
 import Config from 'config/Config.js'
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'util/withRouter'
 
 import { connect } from 'react-redux'
 import { setTitle, setInfoPanel, setZone } from 'actions'
@@ -79,7 +79,7 @@ class InfoPanel extends React.Component {
   closeInfoPanel() {
     this.props.dispatch(setTitle(''))
     this.props.dispatch(setInfoPanel(false))
-    this.props.history.push(Config.mapPath)
+    this.props.router.navigate(Config.mapPath)
   }
 
 
@@ -106,7 +106,7 @@ class InfoPanel extends React.Component {
 
           { !inIframe() &&
             <div id="buttons-bar"><div>
-              <span className="bar-button button-back" onClick={ this.props.history.goBack}>{IconBack} <span className="text">back</span></span>
+              <span className="bar-button button-back" onClick={ () => { this.props.router.navigate(-1) }}>{IconBack} <span className="text">back</span></span>
               <span className="bar-button button-close" onClick={ this.closeInfoPanel.bind(this) }>{IconClose}</span>
               <span className="bar-button button-collapse" onClick={ this.toggleInfoPanel.bind(this)}>{IconCollapse}</span>
             </div></div>

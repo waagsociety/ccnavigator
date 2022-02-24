@@ -4,6 +4,9 @@ import ApiClient from 'client/ApiClient'
 import ApiHelper from 'client/ApiHelper'
 import { setToolStatus } from 'actions'
 import { connect } from 'react-redux'
+
+import { withRouter } from 'util/withRouter'
+
 import { buildJSXFromHTML, isID} from "util/utility"
 import InfoPanel from "containers/InfoPanel/index.js"
 
@@ -13,7 +16,7 @@ class Tool extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      id: props.match.params.id,
+      id: props.router.params.id,
       nodeEntity: null,
       includedEntities: null,
       termEntities: null
@@ -21,16 +24,16 @@ class Tool extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.match.params.id !== state.id) {
+    if (props.router.params.id !== state.id) {
       return {
-        id: props.match.params.id,
+        id: props.router.params.id,
       }
     }
     return null
   }
 
   componentDidMount() {
-    this.update(this.props.match.params.id)
+    this.update(this.props.router.params.id)
   }
 
 
@@ -73,13 +76,13 @@ class Tool extends React.Component {
 
   // flag button hit
   onFlag() {
-    var entityId = this.props.match.params.id
+    var entityId = this.props.router.params.id
     this.props.dispatch(setToolStatus(entityId, "todo"))
   }
 
   // flag button hit
   onUnflag() {
-    var entityId = this.props.match.params.id
+    var entityId = this.props.router.params.id
     this.props.dispatch(setToolStatus(entityId, null))
   }
 
@@ -217,8 +220,8 @@ class Tool extends React.Component {
 
 //connect the status prop to the record for this tool in redux
 const mapStateToProps = (state, ownProps) => ({
-  flagged: state.tools.find((item) => {return item.id === ownProps.match.params.id})
+  flagged: state.tools.find((item) => {return item.id === ownProps.router.params.id})
 })
 Tool = connect(mapStateToProps)(Tool)
 
-export default Tool
+export default withRouter(Tool)

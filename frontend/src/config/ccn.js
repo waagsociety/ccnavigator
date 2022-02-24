@@ -28,31 +28,31 @@ const ccnConfig = {
   routes: [
     {
       path: "/",
-      component: Home
+      component: <Home />
     },
     {
       path: "/waags-public-research",
-      component: Page
+      component: <Page />
     },
     {
       path: "/the-power-of-co-creation",
-      component: Page
+      component: <Page />
     },
     {
       path: "/hosting-co-creation",
-      component: Page
+      component: <Page />
     },
     {
       path: "/ccn-community",
-      component: Page
+      component: <Page />
     },
     {
       path: "/about",
-      component: Page
+      component: <Page />
     },
     {
-      path: "/navigator",
-      component: Map
+      path: "/navigator/*",
+      component: <Map />
     }
   ],
   mapPath: "/navigator/",

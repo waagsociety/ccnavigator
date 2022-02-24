@@ -5,6 +5,7 @@ import ApiClient from 'client/ApiClient'
 import { buildJSXFromHTML} from "util/utility"
 import Config from 'config/Config.js'
 import Footer from 'containers/Footer';
+import { withRouter } from 'util/withRouter'
 
 class Page extends React.Component {
 
@@ -18,13 +19,14 @@ class Page extends React.Component {
   }
 
   componentDidMount() {
-    var path = this.props.remotePath || this.props.match.path
+    //var path = this.props.remotePath || this.props.match.path
+    var path = this.props.router.location.pathname
     this.update(path)
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.match.path !== nextProps.match.path) {
-      this.update(nextProps.match.path)
+    if(this.props.router.location.pathname !== nextProps.router.location.pathname) {
+      this.update(nextProps.router.location.pathname)
     }
   }
 
@@ -68,5 +70,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 })
 Page = connect(mapStateToProps)(Page)
+Page = withRouter(Page)
 
 export default Page

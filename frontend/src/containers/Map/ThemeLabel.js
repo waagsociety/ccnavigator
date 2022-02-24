@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'util/withRouter'
 import { connect } from 'react-redux'
 import Config from 'config/Config'
 
@@ -19,7 +19,8 @@ class ThemeLabel extends React.Component {
     e.preventDefault()
 
     if(!this.props.didDrag) {
-      this.props.history.push(`${Config.mapPath}theme${this.props.id}`)
+      //this.props.history.push(`${Config.mapPath}theme${this.props.id}`)
+      this.props.router.navigate(`${Config.mapPath}theme${this.props.id}`)
     }
   }
 

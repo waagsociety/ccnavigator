@@ -1,6 +1,6 @@
 import React from 'react'
 import sizeMe from 'react-sizeme'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { connect } from 'react-redux'
 import ApiHelper from 'client/ApiHelper'
 
@@ -107,14 +107,18 @@ class Map extends React.Component {
 
         <Panels/>
 
-        <Switch>
-          {/* <Route path={`/theme/:id`} component={Theme} /> */}
-          <Route path={`${Config.mapPath}theme/:id`} component={Theme} />
-          <Route path={`${Config.mapPath}zone/:id`} component={Zone} />
-          <Route path={`${Config.mapPath}tool/:id`} component={Tool} />
-          <Route path={`${Config.mapPath}practice/:id`} component={Practice} />
-          <Route path={`${Config.mapPath}*/taxonomy/term/:id`} component={GlossaryItem} />
-        </Switch>
+        <Routes>
+          <Route path={`/theme/:id`} element={<Theme />} />
+          <Route path={`/zone/:id`} element={<Zone />} />
+          <Route path={`/tool/:id`} element={<Tool />} />
+          <Route path={`/practice/:id`} element={<Practice />} />
+
+          <Route path={`${Config.mapPath}theme/:id`} element={Theme} />
+          <Route path={`${Config.mapPath}zone/:id`} element={Zone} />
+          <Route path={`${Config.mapPath}tool/:id`} element={Tool} />
+          <Route path={`${Config.mapPath}practice/:id`} element={Practice} />
+          <Route path={`${Config.mapPath}*/taxonomy/term/:id`} element={GlossaryItem} />
+        </Routes>
       </div>
     )
   }

@@ -5,6 +5,8 @@ import ApiHelper from 'client/ApiHelper'
 import { connect } from 'react-redux'
 import { buildJSXFromHTML, isID } from 'util/utility.js'
 
+import { withRouter } from 'util/withRouter'
+
 import InfoPanel from "containers/InfoPanel/index.js"
 import InfoPanelItems from 'components/InfoPanelItems'
 
@@ -14,7 +16,7 @@ class Theme extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      id: props.match.params.id,
+      id: props.router.params.id,
       filtersSelected: props.filtersSelected,
       termHierachy: null,
       termEntity: null,
@@ -24,9 +26,9 @@ class Theme extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.match.params.id !== state.id) {
+    if (props.router.params.id !== state.id) {
       return {
-        id: props.match.params.id,
+        id: props.router.params.id,
       }
     }
     if (props.filtersSelected !== state.filtersSelected) {
@@ -42,8 +44,8 @@ class Theme extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.update(this.props.match.params.id)
+    if (this.props.router.params.id !== prevProps.router.params.id) {
+      this.update(this.props.router.params.id)
     }
     if (this.props.filtersSelected !== prevProps.filtersSelected) {
       this.update(this.state.id)
@@ -187,4 +189,4 @@ const mapStateToProps = (state, ownProps) => ({
 
 Theme = connect(mapStateToProps)(Theme)
 
-export default Theme
+export default withRouter(Theme)

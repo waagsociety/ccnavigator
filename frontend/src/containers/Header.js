@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Link, withRouter, matchPath } from 'react-router-dom';
-import Label from 'components/Label';
+import { Link, matchPath } from 'react-router-dom'
+import { withRouter } from 'util/withRouter'
+import Label from 'components/Label'
 import Config from 'config/Config.js'
 //import ToolSelectedList from './ToolSelectedList'
 //import LanguageSelector from "containers/LanguageSelector"
@@ -17,7 +18,8 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
+    //console.log(this.props)
+    //this.unsubscribeFromHistory = this.props.history.listen(this.handleLocationChange);
   }
 
   componentDidUnMount() {
@@ -38,13 +40,13 @@ class Header extends React.Component {
   }
 
   render() {
-    var currentLocation = this.props.location.pathname
+    var currentLocation = this.props.router.location.pathname
     var navigation = (
       <div id="site-navigation">
         <div id="nav-toggle" onClick={() => {this.onNavToggle()}}><span className="fa icon"></span></div>
         <nav>
           <ul>
-            { Config.nav.map(item => <li key={ item.path } className={(item.matchPath && matchPath(currentLocation, {path:`${item.path}*`})) || (!item.matchPath && currentLocation === item.path) ? "current" : ""}>
+            { Config.nav.map(item => <li key={ item.path } className={(!item.matchPath && currentLocation === item.path) ? "current" : ""}>
                 { item.path.includes("http") ?
                   <a href={item.path} target="_blank" rel="noopener noreferrer">{ item.label }</a>
                   :

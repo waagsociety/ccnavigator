@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { setLanguage } from '../actions'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Config from 'config/Config.js'
 
 import Header from "containers/Header.js"
@@ -21,7 +21,7 @@ const SiteSettings = () => {
   });
 
   return <style>
-    @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C300italic%2Cregular%2Citalic%2C700%2C700italic&ver=5.3.2");
+    {/* @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed%3A300%2C300italic%2Cregular%2Citalic%2C700%2C700italic&ver=5.3.2"); */}
     {`
       :root {
         --color-bg: ${Config.colors['color-bg']};
@@ -105,10 +105,10 @@ class App extends React.Component {
         <div id="container-app">
           <SiteSettings />
           { Config.header && <Header /> }
-          <Switch>
-            { Config.routes.map(route => <Route key={route.path} exact={route.path === "/" && Config.routes.length > 1 ? true : false} path={route.path} component={route.component} />) }
+          <Routes>
+            { Config.routes.map(route => <Route key={route.path} exact={route.path === "/" && Config.routes.length > 1 ? true : false} path={route.path} element={route.component} />) }
             <Route path="*" component={() => <Page remotePath="/404"/>} status={404} />
-          </Switch>
+          </Routes>
         </div>
       </Router>
     )
