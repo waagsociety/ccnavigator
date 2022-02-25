@@ -153,6 +153,11 @@ class Tool extends React.Component {
 
       }
 
+      const imageMeta = this.state.nodeEntity.relationships.field_image
+      const imageEntity = this.state.includedEntities.find(o => o.id === imageMeta.data.id)
+      const image = {...imageMeta.data.meta, ...imageEntity.attributes }
+      console.log(image)
+
       //make tool content
       var body = (this.state.nodeEntity.attributes.body || {}).value || ""
       body = buildJSXFromHTML(body)
@@ -165,7 +170,9 @@ class Tool extends React.Component {
 
       var images = (files || [])
         .filter((item) => item.attributes.filemime === "image/jpeg")
-        .map((item) => { return this.renderFile(item) })
+        .map((item) => {
+          return this.renderFile(item)
+        })
 
       var downloads = (files || [])
         .filter((item) => item.attributes.filemime === "application/pdf")
@@ -202,13 +209,21 @@ class Tool extends React.Component {
       content = (
         <div className="tool">
           { (metaDataFields.length > 0 ? <div className="tool-metas">{metaDataFields}</div> : null ) }
-          { (images.length > 0 ? <div className="tool-images">{images}</div> : null ) }
+
+          { image && <figure>
+            <img src={ApiClient.instance().getFullURL(image.uri.url)} alt={image.alt} />
+            { image.title && <figcaption>{ image.title }</figcaption> }
+          </figure> }
+          {/* { (images.length > 0 ? <div className="tool-images">{images}</div> : null ) } */}
+
           { body }
-          { links && <div className="buttons">
+
+          { links.length > 0 && <div className="buttons">
             <h3>links</h3>
             { links }
           </div> }
-          { downloads && <div className="buttons">
+
+          { downloads.length > 0 && <div className="buttons">
             <h3>downloads</h3>
             { downloads }
           </div> }

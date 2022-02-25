@@ -630,7 +630,8 @@ class ApiClient {
   getFullURL(url) {
     var uri = new URI({
       path: url,
-      hostname: "ccn.waag.org"
+      hostname: "ccn.waag.org",
+      protocol: "https"
     });
     return uri.href();
   }

@@ -3204,14 +3204,11 @@ a.item {
       height: 100%;
       overflow-x: hidden;
       overflow-y: hidden;
-      border-top: 1.8rem solid transparent; }
+      border-top: 1.8rem solid transparent;
+      overflow-y: auto; }
     #info-panel.non-embedded #info-panel-content {
       width: 100%;
-      min-height: 100%; }
-    #info-panel.non-embedded:hover #info-panel-viewport {
-      overflow-y: scroll; }
-      #info-panel.non-embedded:hover #info-panel-viewport #info-panel-content {
-        width: calc(100% + 0.4rem); } }
+      min-height: 100%; } }
 
 #info-panel.embedded {
   position: fixed;
@@ -3348,10 +3345,20 @@ a.item {
   .short-tool-meta.online_offline:before {
     content: ""; }
 
-.tool-images {
-  margin: 0 -1rem; }
-  .tool-images img {
+.tool figure {
+  position: relative;
+  margin: 0 -1rem;
+  max-width: none; }
+  .tool figure img {
     margin-bottom: 1.5rem; }
+  .tool figure figcaption {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.1em 0.5em;
+    font-size: 0.9em; }
 
 .tool .buttons {
   display: flex;

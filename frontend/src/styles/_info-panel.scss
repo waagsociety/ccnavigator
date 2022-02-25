@@ -83,19 +83,13 @@
     overflow-x: hidden;
     overflow-y: hidden;
     border-top: $button-size solid transparent;
+    overflow-y: auto;
   }
 
   #info-panel-content {
     width: 100%;
     min-height: 100%;
-  }
-
-  &:hover #info-panel-viewport {
-    overflow-y: scroll;
-
-    #info-panel-content {
-      width: calc(100% + 0.4rem);
-    }
+    
   }
 }
 
