@@ -3357,7 +3357,7 @@ a.item {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  align-items: start; }
+  align-items: flex-start; }
   .tool .buttons h3 {
     margin-top: 1rem; }
   .tool .buttons .button {

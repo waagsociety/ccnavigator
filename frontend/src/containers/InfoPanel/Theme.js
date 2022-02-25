@@ -132,7 +132,9 @@ class Theme extends React.Component {
       var description = (this.state.termEntity.attributes.description || {}).value || ""
       description = buildJSXFromHTML(description)
 
-      var items = this.state.nodeEntities.map((node) => {
+      const stickyItems = this.state.nodeEntities.filter(node => node.attributes.sticky)
+      const normalItems = this.state.nodeEntities.filter(node => !node.attributes.sticky)
+      const items = [...stickyItems, ...normalItems].map((node) => {
         var description = node.attributes.field_short_description ? <p>{node.attributes.field_short_description}</p> : ''
 
         //metadata fields

@@ -440,6 +440,14 @@ class ApiClient {
       queryParts.push(offsetQuery);
     }
 
+
+    //sort
+    if(type === "node--tool") {
+      var sortQuery = `sort=-changed`;
+      queryParts.push(sortQuery);
+    }
+
+
     //combine all
     var query = queryParts.length > 0 ? queryParts.join("&") : ""
     var uri = new URI({
