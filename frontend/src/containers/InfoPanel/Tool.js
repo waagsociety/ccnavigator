@@ -201,11 +201,17 @@ class Tool extends React.Component {
 
       content = (
         <div className="tool">
-          {(metaDataFields.length > 0 ? <div className="tool-metas">{metaDataFields}</div> : null )}
-          {(images.length > 0 ? <div className="tool-images">{images}</div> : null )}
-          {body}
-          {links}
-          {downloads}
+          { (metaDataFields.length > 0 ? <div className="tool-metas">{metaDataFields}</div> : null ) }
+          { (images.length > 0 ? <div className="tool-images">{images}</div> : null ) }
+          { body }
+          { links && <div className="buttons">
+            <h3>links</h3>
+            { links }
+          </div> }
+          { downloads && <div className="buttons">
+            <h3>downloads</h3>
+            { downloads }
+          </div> }
         </div>
       )
     }

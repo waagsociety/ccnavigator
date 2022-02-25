@@ -264,7 +264,7 @@ class ApiClient {
       opts["credentials"] = 'include';
     }
     //fetch
-    console.debug("fetch", localized);
+    //console.debug("fetch", localized);
     var resp = fetch(localized, opts)
     .then(this._checkStatus)
     var payload = resp

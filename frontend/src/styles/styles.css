@@ -3351,6 +3351,16 @@ a.item {
   .tool-images img {
     margin-bottom: 1.5rem; }
 
+.tool .buttons {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: start; }
+  .tool .buttons h3 {
+    margin-top: 1rem; }
+  .tool .buttons .button {
+    margin-block: 0.25rem 0.75rem; }
+
 .tool-filters h3 + .button-clear {
   margin-top: 0.5em; }
 
