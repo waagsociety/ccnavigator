@@ -2613,7 +2613,9 @@ button {
       display: none; } }
 
 .scrollable {
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.025); }
   .scrollable::-webkit-scrollbar {
     width: 0.4rem; }
   .scrollable::-webkit-scrollbar-thumb {

@@ -99,6 +99,10 @@
 .scrollable {
   overflow-y: scroll;
 
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.1) rgba(0,0,0,0.025);
+
+
   &::-webkit-scrollbar { width: 0.4rem; }
   &::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.1); }
   &::-webkit-scrollbar-track { background-color: rgba(0,0,0,0.025); }
