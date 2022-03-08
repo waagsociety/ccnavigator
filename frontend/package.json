@@ -17,7 +17,7 @@
     "react-scripts": "^5.0.0",
     "react-sizeme": "^3.0.2",
     "redux": "^4.1.2",
-    "urijs": "^1.19.8",
+    "urijs": "^1.19.10",
     "whatwg-fetch": "^3.6.2"
   },
   "scripts": {
