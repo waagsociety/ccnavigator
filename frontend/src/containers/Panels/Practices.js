@@ -5,24 +5,19 @@ import Config from 'config/Config.js'
 import { Link } from 'react-router-dom'
 
 
-
-
 class Practices extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
       toggled: false,
-      practices: [],
-      titlePrefixField: Config.practicesPanelTitlePrefixTaxonomy ? "field_"+Config.practicesPanelTitlePrefixTaxonomy : null
+      practicesGroupedByProject: {},
     }
   }
 
   componentDidMount() {
-    const { titlePrefixField } = this.state
-    const include = titlePrefixField ? [titlePrefixField] : []
 
-    ApiClient.instance().fetchContent("node--practice", Config.practicesPanelFilter, null, include, 0, function(nodeEntities, included) {
+    ApiClient.instance().fetchContent("node--practice", Config.practicesPanelFilter, null, ["field_project"], 0, function(nodeEntities, included) {
       const includedEntities = {}
       if(included) {
         for (let i = 0; i < included.length; i++) {
@@ -30,23 +25,20 @@ class Practices extends React.Component {
         }
       }
 
-      const practices = nodeEntities.map(practice => {
-        return {
+      const practicesGroupedByProject = {}
+      nodeEntities.reverse().forEach(practice => {
+        const project = includedEntities[practice.relationships.field_project.data[0].id].attributes.name
+        if(!practicesGroupedByProject[project]) practicesGroupedByProject[project] = []
+
+        practicesGroupedByProject[project].push({
           id : practice.id,
-          titlePrefix: practice.relationships[titlePrefixField] ? includedEntities[practice.relationships[titlePrefixField].data[0].id].attributes.name + ": " : '',
           title: practice.attributes.title,
           link: `${Config.mapPath}practice${practice.attributes.field_path}`
-        }
-      })
-
-      practices.sort(function(a, b){
-        if(a.title < b.title) { return -1; }
-        if(a.title > b.title) { return 1; }
-        return 0;
+        })
       })
 
       this.setState({
-        practices
+        practicesGroupedByProject
       })
     }.bind(this))
   }
@@ -58,7 +50,7 @@ class Practices extends React.Component {
   }
 
   render() {
-    const { toggled, practices} = this.state
+    const { toggled, practicesGroupedByProject } = this.state
 
     var className = "panel practices toggle"
     if(toggled) {
@@ -68,8 +60,15 @@ class Practices extends React.Component {
       <div className={className}>
         <h3 className="toggle-button" onClick={() => {this.onTogglePracticesDisplay()}}><span className="icon"></span>practice timelines</h3>
         <div className="toggle-content">
-          { practices.map(practice => {
-            return <Link key={practice.id} to={practice.link}><h4>{practice.titlePrefix}{practice.title}</h4></Link>
+          { Object.keys(practicesGroupedByProject).map(project => {
+            return <div key={project}>
+              <h4>{ project } project</h4>
+              <ul>
+              { practicesGroupedByProject[project].map(practice => {
+                return <li key={practice.id}><Link to={practice.link}>{practice.title}</Link></li>
+              }) }
+              </ul>
+            </div>
           }) }
         </div>
       </div>

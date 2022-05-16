@@ -78,7 +78,6 @@ const ccnConfig = {
     headings: '500'
   },
   practicesPanelFilter: "",
-  practicesPanelTitlePrefixTaxonomy: "project",
   practiceTaxonomies: [
     "project",
     "theme"

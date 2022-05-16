@@ -2147,7 +2147,7 @@ h2 {
 
 h3, h4, h5 {
   font-size: 1em;
-  line-height: 1.5em; }
+  line-height: 1.35em; }
 
 p {
   margin: 0 0 1.5em;
@@ -3538,3 +3538,9 @@ html, body, #root {
   width: 100%;
   height: 100%;
   position: fixed; }
+
+.practices ul {
+  padding-left: 0.5rem;
+  font-size: 0.85rem; }
+  .practices ul li {
+    margin-top: 0.5rem; }

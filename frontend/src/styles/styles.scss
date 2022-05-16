@@ -32,3 +32,14 @@ html, body, #root {
 //   max-width: 100%;
 //   height: auto;
 // }
+
+.practices {
+  ul {
+    padding-left: 0.5rem;
+    font-size: 0.85rem;
+
+    li {
+      margin-top: 0.5rem;
+    }
+  }
+}
