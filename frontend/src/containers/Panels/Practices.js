@@ -62,7 +62,7 @@ class Practices extends React.Component {
         <div className="toggle-content">
           { Object.keys(practicesGroupedByProject).map(project => {
             return <div key={project}>
-              <h4>{ project } project</h4>
+              <h4>{ project }</h4>
               <ul>
               { practicesGroupedByProject[project].map(practice => {
                 return <li key={practice.id}><Link to={practice.link}>{practice.title}</Link></li>
