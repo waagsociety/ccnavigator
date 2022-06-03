@@ -154,9 +154,8 @@ class Tool extends React.Component {
       }
 
       const imageMeta = this.state.nodeEntity.relationships.field_image
-      const imageEntity = this.state.includedEntities.find(o => o.id === imageMeta.data.id)
-      const image = {...imageMeta.data.meta, ...imageEntity.attributes }
-      console.log(image)
+      const imageEntity = this.state.includedEntities.find(o => o.id === imageMeta.data?.id)
+      const image = imageEntity ? {...imageMeta.data?.meta, ...imageEntity?.attributes } : null
 
       //make tool content
       var body = (this.state.nodeEntity.attributes.body || {}).value || ""
