@@ -21,11 +21,12 @@
     "whatwg-fetch": "^3.6.2"
   },
   "scripts": {
-    "sass": "sass src/styles:src/styles --watch --no-source-map",
+    "watch-sass": "sass src/styles:src/styles --watch --no-source-map",
+    "build-sass": "sass src/styles:src/styles",
     "start-js": "react-scripts start",
-    "start": "npm-run-all -p sass start-js",
+    "start": "npm-run-all -p watch-sass start-js",
     "build-js": "react-scripts build",
-    "build": "npm-run-all sass build-js",
+    "build": "npm-run-all build-sass build-js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
