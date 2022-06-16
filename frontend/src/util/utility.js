@@ -156,7 +156,7 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
           return null;// string only contained whitespace
         }
         break;
-       case "br":
+      case "br":
         converted = React.createElement("br", { key: index })
         break;
       case "a":
