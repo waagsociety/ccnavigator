@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // ui buttons
 .button-back {
   position: absolute;
@@ -40,7 +42,7 @@
   position: absolute;
   top: 0;
   height: $button-size;
-  padding: 0 ($button-size - $button-icon-size) / 2;
+  padding: 0 math.div(($button-size - $button-icon-size), 2);
   color: #FFF;
   text-decoration: none;
   user-select: none;
@@ -49,7 +51,7 @@
   .text {
     font-size: 0.85em;
     margin-top: 0.2em;
-    padding: 0 ($button-size - $button-icon-size) / 4;
+    padding: 0 math.div(($button-size - $button-icon-size), 4);
   }
 
   .icon {
