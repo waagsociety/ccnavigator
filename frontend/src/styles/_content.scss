@@ -16,6 +16,24 @@
     margin-top: 0;
   }
 
+  figure {
+    position: relative;
+
+    img {
+      margin-bottom: 1.5rem;
+    }
+
+    figcaption {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: rgba(0,0,0,0.5);
+      color: white;
+      padding: 0.1em 0.5em;
+      font-size: 0.9em;
+    }
+  }
+
   img {
     width: 100%;
     margin-bottom: 1rem;

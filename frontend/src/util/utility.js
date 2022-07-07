@@ -79,6 +79,7 @@ export const abbreviateString2 = function(string = "", transitionState) {
  */
 
 export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
+  console.log(htmlString)
 
   //
   var endPoint = endPointConfig;
@@ -179,8 +180,10 @@ export const buildJSXFromHTML = function(htmlString, endPointConfig = null) {
         break;
       case "img":
         attrs = convertAttributes(node.attrs)
-        attrs["key"] = index
-        converted = React.createElement("img", attrs)
+        attrs["key"] = `image=${index}`
+        const contents = [ React.createElement("img", attrs) ]
+        if(attrs["data-caption"]) { contents.push(React.createElement("figcaption", { key: `caption-${index}` }, attrs["data-caption"])) }
+        converted = React.createElement("figure", { key: index }, contents)
         break;
       case "table":
       case "tr":
