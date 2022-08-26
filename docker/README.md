@@ -15,13 +15,20 @@ docker exec -w /var/www/drupal -i ccn-cms bash -c './vendor/bin/drush sql-dump |
 gunzip -c db.sql.gz | docker exec -w /var/www/drupal -i ccn-cms bash -c './vendor/bin/drush sqlc'
 # or
 cat ccn.sql | docker exec -w /var/www/drupal -i ccn-cms bash -c './vendor/bin/drush sqlc'
-# then
+# then rebuild db
 docker exec -it ccn-db bash -c 'mysqlcheck -u root -o ccn -p'
+#
+docker exec -w /var/www/drupal -i ccn-cms bash -c './vendor/bin/drush cr'
 ```
+
+**troubleshooting**
+
+Might need to `chown -R www-data:www-data` Drupal files directory.
+
 
 ## N.B.
 
-### Drupal 9 seems to have trouble with JSONAPI filters, overloads mariadb
+#### Drupal 9 seems to have trouble with JSONAPI filters, overloads mariadb
 
 https://www.drupal.org/project/drupal/issues/3022864
 
@@ -43,7 +50,7 @@ $databases['default']['default']['init_commands']['optimizer_search_depth'] = 'S
 > mysqlcheck -u root -o ccn -p
 ```
 
-### Drupal in a subdirectory behind Nginx proxy
+#### Drupal in a subdirectory behind Nginx proxy
 
 Could not find wanted solution (having Drupal run in the web root of the container) and having a sub path only in Nginx conf.
 However what works is: having Drupal in a subdirectory of the webroot of the container and proxying the original path to Drupal.
@@ -53,6 +60,18 @@ However what works is: having Drupal in a subdirectory of the webroot of the con
 ```
 server {
   server_name ccn.local;
+
+  location / {
+      proxy_pass http://127.0.0.1:9206;
+      proxy_redirect off;
+
+      proxy_set_header Host               $host;
+      proxy_set_header X-Real-IP          $remote_addr;
+      proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto  https;
+
+      client_max_body_size 256M;
+  }
 
   location /drupal/ {
       proxy_pass http://127.0.0.1:9205;
@@ -69,7 +88,7 @@ server {
 }
 ```
 
-### Run development inside container
+#### Run development inside container
 
 ```
 REACT_APP_API_ENDPOINT="http://127.0.0.1:9205/drupal" npm start
