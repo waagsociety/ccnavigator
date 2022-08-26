@@ -1,0 +1,64 @@
+version: '3.9'
+
+volumes:
+  db_data:
+
+services:
+  front: #
+    tty: true # use when you have no process yet
+    restart: always #whenever
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "128m"
+    build:
+      context: ../../
+      dockerfile: docker/images/front/Dockerfile
+      args:
+        API_ENDPOINT: ${API_ENDPOINT}
+        SITE: ${SITE}
+    ports:
+      - '${FRONT_PORT}:3000'
+    container_name: '${COMPOSE_PROJECT_NAME}-front'
+    hostname: 'ccn.local'
+  cms:
+    build:
+      context: ../
+      dockerfile: images/cms/Dockerfile
+      args:
+        MAIL_USER: ${MAIL_USER}
+        MAIL_PASS: ${MAIL_PASS}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASS: ${MYSQL_PASS}
+        MYSQL_DB: ${COMPOSE_PROJECT_NAME}
+        MYSQL_HOST: ${COMPOSE_PROJECT_NAME}-db
+    container_name: '${COMPOSE_PROJECT_NAME}-cms'
+    ports:
+      - '${CMS_PORT}:80'
+    working_dir: /var/www
+    environment:
+      - 'DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASS}@db:3306/${COMPOSE_PROJECT_NAME}?serverVersion=10.7'
+    volumes:
+      - ./data/files:/var/www/drupal/web/sites/default/files
+      - ${PWD}/config/cms/php/php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini
+      - ${PWD}/config/cms/mail/msmtprc:/etc/msmtprc
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: 'mariadb:10.7'
+    # server/port in Drupal settings.php must match
+    container_name: '${COMPOSE_PROJECT_NAME}-db'
+    restart: always
+    environment:
+      # N.B. database must no be publicly accessible
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASS}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASS}'
+      MYSQL_DATABASE: '${COMPOSE_PROJECT_NAME}'
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD
+      interval: 5s
+      retries: 5
