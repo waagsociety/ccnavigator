@@ -1,4 +1,4 @@
-#CCN docker
+# CCN docker
 
 ## local install
 
@@ -15,6 +15,8 @@ docker exec -w /var/www/drupal -i ccn-cms bash -c './vendor/bin/drush sql-dump |
 gunzip -c db.sql.gz | docker exec -w /var/www/drupal -i ccn-cms bash -c './vendor/bin/drush sqlc'
 # or
 cat ccn.sql | docker exec -w /var/www/drupal -i ccn-cms bash -c './vendor/bin/drush sqlc'
+# then
+docker exec -it ccn-db bash -c 'mysqlcheck -u root -o ccn -p'
 ```
 
 ## N.B.
