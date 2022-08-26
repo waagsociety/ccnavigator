@@ -1,8 +1,10 @@
 import ccnConfig from "./ccn"
 import c4pConfig from "./c4p"
+const URI = require('urijs')
 
 const siteConfig = process.env.REACT_APP_SITE === "c4p" ? c4pConfig : ccnConfig
-
+//const apiEndpoint = (() => { try { return new URL(process.env.REACT_APP_API_ENDPOINT) } catch(e) { return new URL("https://ccn.waag.org/drupal") } })()
+const apiEndpoint = new URI(process.env.REACT_APP_API_ENDPOINT || "https://ccn.waag.org/drupal")
 
 const Config = {
   ...siteConfig,
@@ -12,14 +14,15 @@ const Config = {
     {
       host: "ccn.localhost",
       port: "80",
-      path: "drupal",
+      path: "/drupal",
       protocol: "http"
     }
     :
     {
-      host: "ccn.waag.org",
-      path: "drupal",
-      protocol: "https"
+      host: apiEndpoint.hostname(),
+      port: apiEndpoint.port(),
+      path: apiEndpoint.path(),
+      protocol: apiEndpoint.protocol()
     }
   ),
 
@@ -46,7 +49,6 @@ const Config = {
     '4-4': { x: 810, y: 620, color: 'color-4' }, // 4-4 open labs
     '5': { x: 120, y: 770, color: 'color-1' }    // 5 ASSESSMENT
   },
-
 
 }
 

@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import Config from '../config/Config';
 import {flattenArray} from 'util/utility'
-var URI = require('urijs');
+const URI = require('urijs');
 
 let instance = null;
 
@@ -630,12 +630,12 @@ class ApiClient {
   getFullURL(url) {
     var uri = new URI({
       path: url,
-      hostname: "ccn.waag.org",
-      protocol: "https"
+      hostname: Config.endPoint.host,
+      protocol: Config.endPoint.protocol,
+      port: Config.endPoint.port
     });
     return uri.href();
   }
-
 
 }
 

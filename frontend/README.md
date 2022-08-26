@@ -10,6 +10,9 @@ Runs the app in the development mode on [http://localhost:3000](http://localhost
 
 set Cities for People config
 
+#### REACT_APP_API_ENDPOINT="http://127.0.0.1:9205" npm run start
+
+set custom endpoint
 
 ### `npm run build`
 
@@ -18,5 +21,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
-
-#### REACT_APP_SITE='c4p' npm run build
