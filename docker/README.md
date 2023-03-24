@@ -93,3 +93,7 @@ server {
 ```
 REACT_APP_API_ENDPOINT="http://127.0.0.1:9205/drupal" npm start
 ```
+
+## Mmmm
+
+Na met image 10.10 en extra settings gaat het iig wel veel soepeler!

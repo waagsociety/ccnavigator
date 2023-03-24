@@ -46,7 +46,7 @@ services:
       db:
         condition: service_healthy
   db:
-    image: 'mariadb:10.7'
+    image: 'mariadb:10.10'
     # server/port in Drupal settings.php must match
     container_name: '${COMPOSE_PROJECT_NAME}-db'
     restart: always
