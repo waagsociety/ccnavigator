@@ -1,4 +1,4 @@
-# CCN docker
+# CCN to docker
 
 ## local install
 
@@ -30,14 +30,6 @@ Might need to `chown -R www-data:www-data` Drupal files directory.
 
 #### Drupal 9 seems to have trouble with JSONAPI filters, overloads mariadb
 
-https://www.drupal.org/project/drupal/issues/3022864
-
-To make queries like the following work
-
-```
-http://127.0.0.1:9205/jsonapi/node/tool?filter[a][group][conjunction]=OR&filter[a1][condition][path]=field_facilitator_participant.id&filter[a1][condition][value]=065cfb65-0fc6-49d6-a7e7-791c3d4faa4f&filter[a1][condition][memberOf]=a&filter[b][group][conjunction]=OR&filter[b1][condition][path]=field_group_size.id&filter[b1][condition][value]=3c24410d-f30f-43c1-b74f-8cb96ff2bfd1&filter[b1][condition][memberOf]=b&filter[b2][condition][path]=field_group_size.id&filter[b2][condition][value]=2e85c40a-5bb7-4d45-8979-6791b14fd769&filter[b2][condition][memberOf]=b&filter[c][group][conjunction]=OR&filter[c1][condition][path]=field_duration.id&filter[c1][condition][value]=72208106-699f-4a29-870a-1bd0f6d9ea1c&filter[c1][condition][memberOf]=c&filter[d][group][conjunction]=OR&filter[d1][condition][path]=field_experience_level.id&filter[d1][condition][value]=0e26463b-c93a-4cfb-96d2-ed49b2da9c43&filter[d1][condition][memberOf]=d&filter[e][group][conjunction]=OR&filter[e1][condition][path]=field_online_offline.id&filter[e1][condition][value]=f06f71c8-9bb3-44d0-8a1c-4f76eeba4324&filter[e1][condition][memberOf]=e&fields[node--tool]=title,field_category&page[offset]=0&sort=-changed
-```
-
 * have the following line in `settings.php` (generated from Dockerfile)
 
 ```
@@ -59,33 +51,48 @@ However what works is: having Drupal in a subdirectory of the webroot of the con
 
 ```
 server {
-  server_name ccn.local;
+        server_name ccn.waag.org;
 
-  location / {
-      proxy_pass http://127.0.0.1:9206;
-      proxy_redirect off;
+        location / {
+           proxy_pass http://127.0.0.1:9206;
+           proxy_redirect off;
+           proxy_set_header Host               $host;
+           proxy_set_header X-Real-IP          $remote_addr;
+           proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+           proxy_set_header X-Forwarded-Proto  https;
 
-      proxy_set_header Host               $host;
-      proxy_set_header X-Real-IP          $remote_addr;
-      proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto  https;
+           client_max_body_size 256M;
+        }
 
-      client_max_body_size 256M;
-  }
+        location /drupal/ {
+          proxy_pass http://127.0.0.1:9205;
+          proxy_redirect off;
 
-  location /drupal/ {
-      proxy_pass http://127.0.0.1:9205;
-      proxy_redirect off;
+          proxy_set_header Host               $host;
+          proxy_set_header X-Real-IP          $remote_addr;
+          proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto  https;
 
-      proxy_set_header Host               $host;
-      proxy_set_header X-Real-IP          $remote_addr;
-      proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto  https;
+          client_max_body_size 256M;
+        }
 
-      client_max_body_size 256M;
-  }
-  listen 80;
+        listen 443 ssl;
+        ssl_certificate /etc/letsencrypt/live/ccn.waag.org/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/ccn.waag.org/privkey.pem;
 }
+
+server {
+        listen 80;
+        server_name ccn.waag.org;
+        rewrite ^ https://$server_name$request_uri? permanent;
+}
+```
+
+#### Mail
+
+```
+chown www-data:www-data /etc/msmtprc
+chmod 400 /etc/msmtprc
 ```
 
 #### Run development inside container
@@ -93,7 +100,3 @@ server {
 ```
 REACT_APP_API_ENDPOINT="http://127.0.0.1:9205/drupal" npm start
 ```
-
-## Mmmm
-
-Na met image 10.10 en extra settings gaat het iig wel veel soepeler!
